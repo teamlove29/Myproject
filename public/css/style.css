@@ -1,0 +1,107 @@
+@import url('https://fonts.googleapis.com/css?family=Kanit:400&display=swap&subset=thai');
+
+body,
+html {
+  font-family: "Kanit", sans-serif;
+  margin: auto;
+}
+
+.bg {
+    /* background-image: url("https://images.unsplash.com/photo-1569495380947-a27b358be58a?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"); */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    background-color: white;
+    height: 100%;
+    min-height: 100vh;
+    z-index: 1;
+  }
+
+.responsive {
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+.img-center {
+  padding-top: 10rem;
+  padding-bottom: 10rem;
+}
+
+.img-sponser{
+    margin: 3rem 2rem 0 0;
+    width: 5rem;
+    float: right;
+
+}
+
+@media screen and (max-width: 390px) and (min-width: 320px){
+    .img-sponser {
+        width: 25%;
+        max-width: 15%;
+        margin: 3rem 1rem 0 0;
+    }
+    .responsive {
+        width: 100%;
+        max-width: 250px;
+        height: auto;
+        display: block;
+        margin: 0 auto;
+      }
+
+
+
+}
+
+
+
+.btn-register {
+  background-color: #002e5d;
+  font-size: 25px;
+  color: white;
+  padding: 0.5rem 5rem 0.5rem 5rem;
+  border-radius: 5rem;
+  font-family: "Kanit", sans-serif;
+  margin: 0 auto;
+  display: block;
+}
+
+.text-main {
+  text-align: center;
+  font-size: 30px;
+  color: #002E5D;
+}
+
+footer {
+    font-size: 14px;
+    margin-top: 76px;
+    position: absolute;
+    bottom: 0px;
+    color: #ecb731;
+    background: #ffffff;
+    width: 100%;
+    text-align: right;
+}
+
+a{
+    margin-right: 5px;
+    text-decoration: none;
+    font-size: 14px;
+    /* color: #ff0000; */
+    
+}
+
+
+.bg-blue1 {
+  background-color: #e3f2fd;
+}
+
+#text-box-sha {
+  border: 1px solid darkgray;
+  padding: 10px;
+  box-shadow: 0px 10px 10px grey;
+  margin-top: 2rem;
+}

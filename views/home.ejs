@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include ('./component/user/head')%>
+    <title>Home</title>
+  </head>
+  <body>
+    <%- include ('./component/user/navbar')%>
+    <div class="container">
+      <div class="text-center">
+        <img
+          class="img-fluid mt-5 rounded"
+          src="https://scontent.fbkk8-4.fna.fbcdn.net/v/t1.0-9/71601843_1239007006292061_5240852573572825088_n.jpg?_nc_cat=100&_nc_eui2=AeEAjN_ed5Dc6BjB2yOY2rjreYUnUCphSOt3SEGd4Rtg8zF-RN9l_2Zb1t4_6WtPtV9Dr0-il13JuH4oq_dhvzUG-XvUDCHAoxELZEArW8KPtA&_nc_ohc=B-7zNugAiaQAQniwd7aK9XfdF3giKPr6gDhYygTQCsG0bvZj1cebf-USg&_nc_ht=scontent.fbkk8-4.fna&oh=b9643e0761fb2c7afeb536f3499aaf83&oe=5E6A5978"
+          alt=""
+        />
+      </div>
+      <div class="row text-center mt-3">
+        <div class="col-3">
+          <%- include ('./component/user/sidebar')%>
+        </div>
+        <!-- end col-4 -->
+
+        <div class="col-8">
+          <%- include ('./component/user/tableHome')%>
+        </div>
+        <!-- end col-7 -->
+      </div>
+
+      <div id="text-box-sha" class="mb-5 text-center">
+        <h1 class="display-5 text-danger">ปฏิทินกิจกรรมที่กำลังจะถึง</h1>
+        <p style="line-height: 5px" class="text-danger">
+          (ประจำเดือน : ธ.ค. 2562)
+        </p>
+        <table class="table table-borderless">
+          <thead>
+            <tr>
+              <th scope="col">วันที่จัดกิจกรรม</th>
+              <th scope="col">กิจกรรม</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>12-13 ธ.ค</td>
+              <td>รายงานตัว</td>
+            </tr>
+            <tr>
+              <td>15 ธ.ค</td>
+              <td>วันที่สภาวิชาการให้ความเห็นชอบ</td>
+            </tr>
+            <tr>
+              <td>15 ธ.ค</td>
+              <td>วันที่สภาวิชาการให้ความเห็นชอบ</td>
+            </tr>
+            <tr>
+              <td>15 ธ.ค</td>
+              <td>วันที่สภาวิชาการให้ความเห็นชอบ</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </body>
+  <script
+    src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+    crossorigin="anonymous"
+  ></script>
+</html>

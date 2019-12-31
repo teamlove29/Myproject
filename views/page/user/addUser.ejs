@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+      <!-- Custom fonts for this template-->
+  <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <!-- Custom styles for this template-->
+  <link href="/css/sb-admin.css" rel="stylesheet">
+
+    <title>Document</title>
+</head>
+
+
+<body id="page-top">
+
+    <%- include('../../component/admin/navbar')%>
+ 
+   <div id="wrapper">
+ 
+     <!-- Sidebar -->
+     <%- include('../../component/admin/sidebar.ejs')%>
+ 
+     <div id="content-wrapper">
+       <div class="container-fluid">
+         <% if (data.isEdit === true) { 
+           user.map(value => {
+            %>
+         <!-- Breadcrumbs edit -->
+         <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="/ManagerUser">จัดการบุคลากร</a>
+          </li>
+          <li class="breadcrumb-item active">แก้ไขบุคลากร</li>
+        </ol>
+
+ <!-- DataTables Example edit -->
+ <div class="container">
+  <div class="card card-register mx-auto mt-5">
+    <div class="card-header">แก้ไขบุคลากร</div>
+    <div class="card-body">
+      <form action="/ManagerUser/editUser/<%= value.user_ID %>" method="POST">
+        <div class="form-group">
+          <div class="form-row">
+            <div class="col-md-6">
+              <div class="form-label-group">
+                <input value="<%= value.user_Fname %>" type="text" name="firstName" id="firstName" class="form-control" placeholder="ชื่อ" required="required" autofocus="autofocus">
+                <label for="firstName">ชื่อ</label>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-label-group">
+                <input value="<%= value.user_Lname %>" type="text" name="lastName" id="lastName" class="form-control" placeholder="นามสกุล" required="required">
+                <label for="lastName">นามสกุล</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="form-label-group">
+            <input value="<%= value.user_position %>"  type="text" name="positionId" id="positionId" class="form-control" placeholder="รหัสประจำตำแหน่ง" required="required">
+            <label for="positionId">รหัสประจำตำแหน่ง</label>
+          </div>
+        </div>
+
+          <label class="radio-inline"><input name="sex" value="ชาย" type="radio" checked name="optradio"> ชาย</label>
+          <label class="radio-inline"><input name="sex" value="หญิง" type="radio" name="optradio"> หญิง</label>
+
+        <div class="form-group">
+          <div class="form-label-group">
+            <input value="<%= value.user_Birth.toISOString().slice(0,10).replace(/-/g,"-") %>" type="date" name="date" id="date" class="form-control" placeholder="วันเกิด" required="required">
+            <label for="date">วันเกิด</label>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="form-label-group">
+            <input value="<%= value.user_IDcard %>" type="text" name="idCard" id="idCard" class="form-control" placeholder="บัตรประชาชน" required="required">
+            <label for="idCard">บัตรประชาชน</label>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="form-label-group">
+              <input value="<%= value.user_Address %>" name="address" id="address" class="form-control" placeholder="ที่อยู่"></input>
+            <label for="address">ที่อยู่</label>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="form-label-group">
+            <input value="<%= value.user_Email %>" type="email" name="Email" id="Email" class="form-control" placeholder="อีเมล์" required="required">
+            <label for="Email">อีเมล์</label>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="form-label-group">
+            <input value="<%= value.user_Tel %>" type="text" name="tel" id="tel" class="form-control" placeholder="Email address" required="required">
+            <label for="tel">เบอร์โทร</label>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="form-label-group">
+            <input value="<%= value.user_Status %>" type="text" name="status" id="status" class="form-control" placeholder="Email address" required="required">
+            <label for="status">สถานะ</label>
+          </div>
+        </div>
+        
+        <button>แก้ไข</button>
+      </form>
+
+    </div>
+  </div>
+</div>
+<!-- /.container-fluid edit-->
+
+
+          <% }) }else{ %>
+
+         <!-- Breadcrumbs-->
+         <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="/ManagerUser">จัดการบุคลากร</a>
+          </li>
+          <li class="breadcrumb-item active">เพิ่มบุคลากร</li>
+        </ol>
+
+         <!-- DataTables Example -->
+         <div class="container">
+            <div class="card card-register mx-auto mt-5">
+              <div class="card-header">+เพิ่มบุคลากร</div>
+              <div class="card-body">
+                <form action="/ManagerUser/adduser/user" method="POST">
+                  <div class="form-group">
+                    <div class="form-row">
+                      <div class="col-md-6">
+                        <div class="form-label-group">
+                          <input value="test" type="text" name="firstName" id="firstName" class="form-control" placeholder="ชื่อ" required="required" autofocus="autofocus">
+                          <label for="firstName">ชื่อ</label>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-label-group">
+                          <input type="text" name="lastName" id="lastName" class="form-control" placeholder="นามสกุล" required="required">
+                          <label for="lastName">นามสกุล</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="form-label-group">
+                      <input type="text" name="positionId" id="positionId" class="form-control" placeholder="รหัสประจำตำแหน่ง" required="required">
+                      <label for="positionId">รหัสประจำตำแหน่ง</label>
+                    </div>
+                  </div>
+
+                    <label class="radio-inline"><input name="sex" value="ชาย" type="radio" checked name="optradio"> ชาย</label>
+                    <label class="radio-inline"><input name="sex" value="หญิง" type="radio" name="optradio"> หญิง</label>
+
+                  <div class="form-group">
+                    <div class="form-label-group">
+                      <input type="date" name="date" id="date" class="form-control" placeholder="วันเกิด" required="required">
+                      <label for="date">วันเกิด</label>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="form-label-group">
+                      <input type="text" name="idCard" id="idCard" class="form-control" placeholder="บัตรประชาชน" required="required">
+                      <label for="idCard">บัตรประชาชน</label>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="form-label-group">
+                        <input name="address" id="address" class="form-control" placeholder="ที่อยู่"></input>
+                      <label for="address">ที่อยู่</label>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="form-label-group">
+                      <input type="email" name="Email" id="Email" class="form-control" placeholder="อีเมล์" required="required">
+                      <label for="Email">อีเมล์</label>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="form-label-group">
+                      <input type="text" name="tel" id="tel" class="form-control" placeholder="Email address" required="required">
+                      <label for="tel">เบอร์โทร</label>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="form-label-group">
+                      <input type="text" name="status" id="status" class="form-control" placeholder="Email address" required="required">
+                      <label for="status">สถานะ</label>
+                    </div>
+                  </div>
+                  
+                  <button>ลงทะเบียน</button>
+                </form>
+        
+              </div>
+            </div>
+          </div>
+       <!-- /.container-fluid -->
+ 
+       <% } %>
+       <!-- Sticky Footer -->
+       <footer class="sticky-footer">
+         <div class="container my-auto">
+           <div class="copyright text-center my-auto">
+             <span>powered by Marutthep Rompho Sotfware lpru</span>
+           </div>
+         </div>
+       </footer>
+ 
+     </div>
+     <!-- /.content-wrapper -->
+ 
+   </div>
+   <!-- /#wrapper -->
+ 
+   <!-- Scroll to Top Button-->
+   <a class="scroll-to-top rounded" href="#page-top">
+     <i class="fas fa-angle-up"></i>
+   </a>
+ 
+   <!-- Logout Modal-->
+   <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+     <div class="modal-dialog" role="document">
+       <div class="modal-content">
+         <div class="modal-header">
+           <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+           <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+             <span aria-hidden="true">×</span>
+           </button>
+         </div>
+         <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+         <div class="modal-footer">
+           <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+           <a class="btn btn-primary" href="/logout">Logout</a>
+         </div>
+       </div>
+     </div>
+   </div>
+ 
+ <%- include('../../component/admin/scriptJs')%>
+ 
+ </body>
+</html>
