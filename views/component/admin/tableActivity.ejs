@@ -17,51 +17,53 @@
           </thead>
           <tfoot>
             <tr>
+              <th>วันที่</th>
               <th>รหัส</th>
-              <th>ชื่อ-นามสกุล</th>
-              <th>พื้นที่ดูแล</th>
-              <th>คะนนกิจกรรม</th>
+              <th>รายการ</th>
+              <th>คนเข้าร่วม</th>
               <th>สถานะ</th>
               <th>ตัวเลือก</th>
             </tr>
           </tfoot>
           <tbody>
+            <% listsActivity.map((value, index) => {  %>
             <tr>
-              <td>20/12/2019</td>
-              <td>A2ae7158W1</td>
-              <td>อบรบการเอาชีวิตรอด</td>
-              <td>1078</td>
+              <td>22-05-1994</td>
+              <td><%= value.ac_Code %></td>
+              <td><%= value.ac_Name %></td>
+              <td>10</td>
               <td>ดำเนินการ</td>
               <td>
                   <button class="btn btn-sm btn-secondary"><i class="fas fa-search"></i></button>
-                  <button class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></button>
-                  <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                  <button 
+                  onclick="javascript:window.location.href='/ManagerActivity/editactivity/<%= value.ac_ID%>'"
+                  class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></button>
+                  <button 
+                  data-toggle="modal" data-target="#DeleteModal<%= index%>"
+                  class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
               </td>
             </tr>
-            <tr>
-                <td>21/12/2019</td>
-                <td>A2ae7158W1</td>
-                <td>อบรบการเอาชีวิตรอด</td>
-                <td>25</td>
-                <td>หมดเวลา</td>
-                <td>
-                    <button class="btn btn-sm btn-secondary"><i class="fas fa-search"></i></button>
-                    <button class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></button>
-                    <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
-                </td>
-              </tr>
-              <tr>
-                <td>25/12/2019</td>
-                <td>A2ae7158W1</td>
-                <td>อบรบการเอาชีวิตรอด</td>
-                <td>10</td>
-                <td>หมดเวลา</td>
-                <td>
-                    <button class="btn btn-sm btn-secondary"><i class="fas fa-search"></i></button>
-                    <button class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></button>
-                    <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
-                </td>
-              </tr>
+                           <!-- modal -->
+                           <div class="modal fade" id="DeleteModal<%= index%>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="exampleModalLabel">ต้องการลบใช่ไหม ?</h5>
+                                  <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                  </button>
+                                </div>
+                                <div class="modal-body">เลือก"ลบ"เพื่อลบข้อมูลออกจากฐานข้อมูลทั้งหมด</div>
+                                <div class="modal-footer">
+                                  <button class="btn btn-secondary" type="button" data-dismiss="modal">ยกเลิก</button>
+                                  <a class="btn btn-primary" href="/ManagerActivity/delactivity/<%= value.ac_ID %>">ลบ</a>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <!-- End modal -->
+            <% })%>
           </tbody>
         </table>
       </div>

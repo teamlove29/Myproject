@@ -1,13 +1,14 @@
-@import url('https://fonts.googleapis.com/css?family=Kanit:400&display=swap&subset=thai');
+@import url('https://fonts.googleapis.com/css?family=Prompt&display=swap');
+
 
 body,
 html {
-  font-family: "Kanit", sans-serif;
+  font-family: 'Prompt', sans-serif;
   margin: auto;
 }
 
 .bg {
-    /* background-image: url("https://images.unsplash.com/photo-1569495380947-a27b358be58a?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"); */
+    background-image: url("https://images.unsplash.com/photo-1575525351624-d5cbc45a82a1?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=955&q=80");
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -73,6 +74,7 @@ html {
   text-align: center;
   font-size: 30px;
   color: #002E5D;
+  text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
 }
 
 footer {

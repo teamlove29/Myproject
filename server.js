@@ -2,7 +2,8 @@ var express = require("express");
 var app = express();
 var bodyparser = require("body-parser");
 var route = require("./controller/router/app")
-const session = require('express-session');
+var session = require('express-session');
+
 
 app.use(session({secret: 'SECRETKEY',saveUninitialized: true,resave: false}));
 app.use(express.static("./public"));

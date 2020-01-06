@@ -7,20 +7,22 @@
         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
           <thead>
             <tr>
+              <th>รูป</th>
               <th>รหัส</th>
               <th>ชื่อ-นามสกุล</th>
               <th>พื้นที่ดูแล</th>
-              <th>คะนนกิจกรรม</th>
+              <th>เพศ</th>
               <th>สถานะ</th>
               <th>ตัวเลือก</th>
             </tr>
           </thead>
           <tfoot>
             <tr>
+              <th>รูป</th>
               <th>รหัส</th>
               <th>ชื่อ-นามสกุล</th>
               <th>พื้นที่ดูแล</th>
-              <th>คะนนกิจกรรม</th>
+              <th>เพศ</th>
               <th>สถานะ</th>
               <th>ตัวเลือก</th>
             </tr>
@@ -28,12 +30,13 @@
           <tbody>
             <% listsUser.map((value, index) => {  %>
             <tr>
-              <td><%= value.user_position%></td>
-              <td><%= value.user_Fname +' '+ value.user_Lname%></td>
-              <td>เกาะคา</td>
-              <td><%= value.user_AllScore %></td>
-              <td><%= value.user_Status %></td>
-              <td>
+              <td class="align-middle"><img style="width: 100px;" src="/uploads/<%= value.user_Image %>" alt=""></td>
+              <td class="align-middle"><%= value.user_position%></td>
+              <td class="align-middle"><%= value.user_Fname +' '+ value.user_Lname%></td>
+              <td class="align-middle">เกาะคา</td>
+              <td class="align-middle"><%= value.user_Sex %></td>
+              <td class="align-middle"><%= value.user_Status %></td>
+              <td class="align-middle">
                 <button 
                 onclick="javascript:window.location.href='/ManagerUser/deluser/<%= value.user_ID %>'"
                 class="btn btn-sm btn-secondary"

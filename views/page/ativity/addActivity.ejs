@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+      <!-- Custom fonts for this template-->
+  <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <!-- Custom styles for this template-->
+  <link href="/css/sb-admin.css" rel="stylesheet">
+
+    <title>Document</title>
+</head>
+
+
+<body id="page-top">
+
+    <%- include('../../component/admin/navbar')%>
+ 
+   <div id="wrapper">
+ 
+     <!-- Sidebar -->
+     <%- include('../../component/admin/sidebar.ejs')%>
+ 
+     <div id="content-wrapper">
+       <div class="container-fluid">
+
+
+<% if(data.isEdit === true ){
+  activity.map(value => {  %>
+
+
+      <!-- Breadcrumbs edit -->
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="/ManagerActivity">จัดการงานกิจกรรม</a>
+        </li>
+        <li class="breadcrumb-item active">แก้ไขงานกิจกรรม</li>
+      </ol>
+
+<!-- DataTables Example edit -->
+<div class="container">
+<div class="card card-register mx-auto mt-5">
+  <div class="card-header">แก้ไขงานกิจกรรม</div>
+  <div class="card-body">
+    <form action="/ManagerActivity/editactivity/<%= value.ac_ID %>" method="POST">
+      <div class="form-group">
+        <div class="form-row">
+          <div class="col-md-6">
+            <div class="form-label-group">
+              <input value="<%= value.ac_Name %>" type="text" name="name" id="name" class="form-control" placeholder="ชื่อกิจกรรม" required="required" autofocus="autofocus">
+              <label for="name">ชื่อกิจกรรม</label>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-label-group">
+              <input value="" type="date" name="date" id="date" class="form-control" placeholder="วันที่จัดกิจจกรม" required="required">
+              <label for="date">วันที่จัดกิจจกรม</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="form-label-group">
+          <input value="<%= value.ac_Score %>"  type="text" name="score" id="score" class="form-control" placeholder="คะแนนกิจกรรม" required="required">
+          <label for="score">คะแนนกิจกรรม</label>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="form-label-group">
+          <textarea type="textarea" name="detail" id="detail" class="form-control" placeholder="รายละเอียดกิจกรรม" required="required"><%= value.ac_Detail %></textarea>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-success">แก้ไข</button>
+    </form>
+
+  </div>
+</div>
+</div>
+<!-- /.container-fluid edit-->
+
+
+  <% })} else { %>
+         <!-- Breadcrumbs edit -->
+         <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="/ManagerActivity">จัดการงานกิจกรรม</a>
+          </li>
+          <li class="breadcrumb-item active">เพิ่มงานกิจกรรม</li>
+        </ol>
+
+ <!-- DataTables Example edit -->
+ <div class="container">
+  <div class="card card-register mx-auto mt-5">
+    <div class="card-header">+เพิ่มงานกิจกรรม</div>
+    <div class="card-body">
+      <form action="/ManagerActivity/addactivity/activity" method="POST">
+        <div class="form-group">
+          <div class="form-row">
+            <div class="col-md-6">
+              <div class="form-label-group">
+                <input value="" type="text" name="name" id="name" class="form-control" placeholder="ชื่อกิจกรรม" required="required" autofocus="autofocus">
+                <label for="name">ชื่อกิจกรรม</label>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-label-group">
+                <input value="" type="date" name="date" id="date" class="form-control" placeholder="วันที่จัดกิจจกรม" required="required">
+                <label for="date">วันที่จัดกิจจกรม</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="form-label-group">
+            <input value=""  type="text" name="score" id="score" class="form-control" placeholder="คะแนนกิจกรรม" required="required">
+            <label for="score">คะแนนกิจกรรม</label>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="form-label-group">
+            <textarea value="" type="textarea" name="detail" id="detail" class="form-control" placeholder="รายละเอียดกิจกรรม" required="required"></textarea>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-success">บันทึก</button>
+        <button type="reset" class="btn btn-secondary">เคลียร์</button>
+      </form>
+
+    </div>
+  </div>
+</div>
+<!-- /.container-fluid edit-->
+<% }%>
+
+       <!-- Sticky Footer -->
+       <footer class="sticky-footer">
+         <div class="container my-auto">
+           <div class="copyright text-center my-auto">
+             <span>powered by Marutthep Rompho Sotfware lpru</span>
+           </div>
+         </div>
+       </footer>
+ 
+     </div>
+     <!-- /.content-wrapper -->
+ 
+   </div>
+   <!-- /#wrapper -->
+ 
+   <!-- Scroll to Top Button-->
+   <a class="scroll-to-top rounded" href="#page-top">
+     <i class="fas fa-angle-up"></i>
+   </a>
+ 
+ 
+ <%- include('../../component/admin/scriptJs')%>
+ 
+ </body>
+</html>

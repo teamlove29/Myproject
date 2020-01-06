@@ -40,13 +40,15 @@
           <li class="breadcrumb-item">
             <a href="/ManagerResource">จัดการรัพยากร</a>
           </li>
-          <li class="breadcrumb-item active">Overview</li>
+          <li class="breadcrumb-item active">ภาพรวม</li>
         </ol>
 
         <!-- DataTables Example -->
-        <button class="p-3 mb-3 btn btn-success">+ เพิ่มทรัพยากร</button>
-        <button class="p-3 mb-3 btn btn-secondary">ประวัติย้อนหลัง</button>
-        <button class="p-3 mb-3 btn btn-secondary">ทรัพยากรที่ใช้แต่ละวัน</button>
+        <button 
+      onclick="javescript:window.location.href='/ManagerResource/addresource'"
+        class="p-2 mb-3 btn btn-success">+ เพิ่มทรัพยากร</button>
+        <button class="p-2 mb-3 btn btn-secondary">ประวัติย้อนหลัง</button>
+        <button class="p-2 mb-3 btn btn-secondary">ทรัพยากรที่ใช้แต่ละวัน</button>
         <%- include ('../../component/admin/tableResource')%>
       <!-- /.container-fluid -->
 

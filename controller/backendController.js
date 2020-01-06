@@ -1,12 +1,21 @@
+const con = require('./conDB')
+
+
 const main =  (req, res) => {
-  res.render("page/backend/main",{
-    data:{
-      dashboard:true,
-      managerUser : false,
-      managerActivity: false,
-      managerResource : false
-    }
+  const sql = "SELECT * FROM `user_tb`"
+  con.query(sql,(err,respon) => {
+    res.render("page/backend/main",{
+      user:respon,
+      data:{
+        dashboard:true,
+        managerUser : false,
+        managerActivity: false,
+        managerResource : false
+      }
+    })
   })
+  
+  
 }
 
 const notFound = (req, res) => {

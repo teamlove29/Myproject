@@ -128,7 +128,7 @@
             <div class="card card-register mx-auto mt-5">
               <div class="card-header">+เพิ่มบุคลากร</div>
               <div class="card-body">
-                <form action="/ManagerUser/adduser/user" method="POST">
+                <form action="/ManagerUser/adduser/user" method="POST" enctype="multipart/form-data">
                   <div class="form-group">
                     <div class="form-row">
                       <div class="col-md-6">
@@ -181,18 +181,23 @@
                   </div>
                   <div class="form-group">
                     <div class="form-label-group">
-                      <input type="text" name="tel" id="tel" class="form-control" placeholder="Email address" required="required">
+                      <input type="text" name="tel" id="tel" class="form-control" placeholder="tel" required="required">
                       <label for="tel">เบอร์โทร</label>
                     </div>
                   </div>
                   <div class="form-group">
                     <div class="form-label-group">
-                      <input type="text" name="status" id="status" class="form-control" placeholder="Email address" required="required">
+                      <input type="text" name="status" id="status" class="form-control" placeholder="status" required="required">
                       <label for="status">สถานะ</label>
                     </div>
                   </div>
+                  <div class="form-group">
+
+                      <input type="file" name="avatar" id="avatar" >
+     
+                  </div>
                   
-                  <button>ลงทะเบียน</button>
+                  <button class="btn btn-success">ลงทะเบียน</button>
                 </form>
         
               </div>
@@ -221,24 +226,6 @@
      <i class="fas fa-angle-up"></i>
    </a>
  
-   <!-- Logout Modal-->
-   <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-     <div class="modal-dialog" role="document">
-       <div class="modal-content">
-         <div class="modal-header">
-           <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-           <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-             <span aria-hidden="true">×</span>
-           </button>
-         </div>
-         <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-         <div class="modal-footer">
-           <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-           <a class="btn btn-primary" href="/logout">Logout</a>
-         </div>
-       </div>
-     </div>
-   </div>
  
  <%- include('../../component/admin/scriptJs')%>
  
