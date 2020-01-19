@@ -7,7 +7,7 @@ var userController = require("../userController")
 var backendController = require("../backendController")
 var resourceControlloer = require('../resourceController')
 var ActivityControlloer = require('../activityController')
-
+var registerController = require('../registerController')
 
 
 router.get("/", mainController.main)
@@ -32,6 +32,9 @@ router.post("/ManagerActivity/addactivity/activity", ActivityControlloer.Postadd
 router.get("/ManagerActivity/editactivity/:id", ActivityControlloer.editActivity)
 router.post("/ManagerActivity/editactivity/:id", ActivityControlloer.posteditActivity)
 router.get("/ManagerActivity/delactivity/:id", ActivityControlloer.delActivity)
+router.get("/listJoin/:id", ActivityControlloer.listJoin)
+router.get("/deljoin", ActivityControlloer.delJoin)
+router.get("/activityStatus/:id", ActivityControlloer.activityStatus)
 //Resource
 router.get("/ManagerResource", resourceControlloer.resourcePage)
 router.get("/ManagerResource/addresource", resourceControlloer.addResource)
@@ -39,6 +42,13 @@ router.post("/ManagerResource/addresource/resource", resourceControlloer.Postadd
 router.get("/ManagerResource/editresource/:id", resourceControlloer.editResource)
 router.post("/ManagerResource/editresource/:id", resourceControlloer.posteditResource)
 router.get("/ManagerResource/delresource/:id", resourceControlloer.delResource)
+router.get("/exportResource", resourceControlloer.exportResouce)
+router.post("/addExport", resourceControlloer.AddExport)
+router.get("/returnExport", resourceControlloer.ReturnExport)
+
+//register
+router.get("/register", registerController.registerPage)
+router.post("/register", registerController.regiser)
 
 router.get("*",backendController.notFound)
 module.exports = router;

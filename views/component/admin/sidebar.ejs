@@ -6,25 +6,9 @@
         <span>แผงควบคุม</span>
       </a>
     </li>
-    <!-- <li class="nav-item dropdown">
-      <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <i class="fas fa-fw fa-folder"></i>
-        <span>จัดการบุคลากร</span>
-      </a>
-      <div class="dropdown-menu" aria-labelledby="pagesDropdown">
-        <h6 class="dropdown-header">Login Screens:</h6>
-        <a class="dropdown-item" href="login.html">Login</a>
-        <a class="dropdown-item" href="register.html">Register</a>
-        <a class="dropdown-item" href="forgot-password.html">Forgot Password</a>
-        <div class="dropdown-divider"></div>
-        <h6 class="dropdown-header">Other Pages:</h6>
-        <a class="dropdown-item" href="404.html">404 Page</a>
-        <a class="dropdown-item" href="blank.html">Blank Page</a>
-      </div>
-    </li> -->
     <li class="nav-item <%= data.managerUser === true ? 'active' : '' %>">
         <a class="nav-link" href="/ManagerUser">
-          <i class="fas fa-fw fa-chart-area"></i>
+          <i class="fas fa-users"></i>
           <span>จัดการบุคลากร</span></a>
       </li>
     <li class="nav-item <%= data.managerActivity === true ? 'active' : '' %>">
@@ -34,7 +18,40 @@
     </li>
     <li class="nav-item <%= data.managerResource === true ? 'active' : '' %>">
       <a class="nav-link" href="/ManagerResource">
-        <i class="fas fa-fw fa-table"></i>
+        <i class="fas fa-box-open"></i>
         <span>จัดการทรัพยากร</span></a>
     </li>
+    <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="fas fa-fw fa-folder"></i>
+        <span>รายงาน</span>
+      </a>
+      <div class="dropdown-menu" aria-labelledby="pagesDropdown">
+        <h6 class="dropdown-header">รายทรัพยากร</h6>
+        <a class="dropdown-item" href="#"><i class="fas fa-redo-alt"></i> ประวัติย้อนหลัง</a>
+        <a class="dropdown-item" href="#"><i class="far fa-calendar-check"></i> ทรัพยากรที่ใช้ในแต่ละวัน</a>
+      </div>
+    </li>
+    <li class="nav-item">
+      <a data-toggle="modal" data-target="#logoutModal"  class="nav-link" href="/ManagerResource">
+        <i class="text-danger fas fa-sign-out-alt"></i>
+        <span class="text-danger">ออกจากระบบ</span></a>
+    </li>
   </ul>
+       <!-- Logout Modal-->
+       <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">ต้องการออกจากระบบ ?</h5>
+              <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">×</span>
+              </button>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-secondary" type="button" data-dismiss="modal">ยกเลิก</button>
+              <a class="btn btn-primary" href="/logout">ออกจากระบบ</a>
+            </div>
+          </div>
+        </div>
+      </div>

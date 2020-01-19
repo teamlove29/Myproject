@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>เบิกทรัพยากร</title>
+
+  <!-- Custom fonts for this template-->
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+
+  <!-- Page level plugin CSS-->
+  <link href="vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
+
+  <!-- Custom styles for this template-->
+  <link href="css/sb-admin.css" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+
+  <%- include('../../component/admin/navbar')%>
+
+  <div id="wrapper">
+
+    <!-- Sidebar -->
+    <%- include('../../component/admin/sidebar')%>
+
+    <div id="content-wrapper">
+
+      <div class="container-fluid">
+
+        <!-- Breadcrumbs-->
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="/ManagerResource">จัดการรัพยากร</a>
+          </li>
+          <li class="breadcrumb-item active">เบิกทรัพยากร</li>
+        </ol>
+
+        <div class="<%= data.cls%>" role="alert">
+          <%= data.msg %>
+        </div>
+        <!-- DataTables Example add -->
+        <div class="container">
+          <div class="card card-register mx-auto mt-5">
+            <div class="card-header">เบิกทรัพยากร</div>
+            <div class="card-body">
+
+              <form action="/addExport" method="post" id="insert_form">
+                <div class="table-repsonsive">
+                  <h5>กิจกรรม</h5>
+                  <hr>
+                  <div class="form-group">
+                    <select name="name" class="form-control name" required>
+                      <option value="">เลือกกิจกรรม</option>
+                      <% activity.map(value =>{  %>
+                      <option value="<%= value.actId %>"><%= value.actName %></option><% }) %>
+                    </select>
+                  </div>
+                  <hr>
+                  <h5>รายการ</h5>
+                  <hr>
+                  <span id="error"></span>
+                  <table class="table table-bordered" id="item_table">
+                    <tr>
+                      <th>ชื่อทรัพยากร</th>
+                      <th>จำนวน</th>
+                      <th>จำนวนคงเหลือ</th>
+                      <th><button type="button" name="add" class="btn btn-success btn-sm add"><i
+                            class="far fa-plus-square"></i></button></th>
+                    </tr>
+                    <tr>
+                      <td>
+                        <select id="value0"
+                          name="item_name" class="form-control item_name" required>
+                          <option value="">เลือกทรัพยากร</option>
+                          <% listsResource.map(value =>{  %>
+                          <option value="<%= value.resId %>"><%= value.resName %></option><% }) %>
+                        </select>
+                      </td>
+                      <td><input type="number" name="item_quantity" class="form-control item_quantity" required /></td>
+                      <td id="txt0"></td>
+                      <td>
+                    </tr>
+                  </table>
+                  <div align="center">
+                    <button type="submit" class="btn btn-success btn-sm">บันทึก</button>
+                  </div>
+
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <!-- /.container-fluid add-->
+
+        <!-- /.container-fluid -->
+
+        <!-- Sticky Footer -->
+        <footer class="sticky-footer">
+          <div class="container my-auto">
+            <div class="copyright text-center my-auto">
+              <span>powered by Marutthep Rompho Sotfware lpru</span>
+            </div>
+          </div>
+        </footer>
+
+      </div>
+      <!-- /.content-wrapper -->
+
+
+
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+      <i class="fas fa-angle-up"></i>
+    </a>
+
+    <!-- Logout Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+            <a class="btn btn-primary" href="/logout">Logout</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <%- include('../../component/admin/scriptJs')%>
+
+</body>
+
+<script>
+
+  var loop = 1
+  $(document).ready(function () {
+
+    //     $("#item_quantity").change(function() {
+    //         $("#item_quantity" ).each(function(){
+    //             if($(this).val() == '')
+    //    {
+    //     document.getElementById("#item_quantity").disabled = false;
+    //    }else{
+    //     document.getElementById("#item_quantity").disabled = true;
+    //    }
+
+    //         })}).change();
+
+    $(document).on('click', '.add', function () {
+      var html = '';
+      // var new_chq_no = parseInt($('#total_chq').val())+1;
+      // var new_input="<input type='text' id='new_"+loop+"'>";
+      // $('#item_table').append(new_input);
+      var test = loop
+      loop = loop + 1
+      html += '<tr>';
+      html += '<td><select onChange="myFunction('+ test +')" id=value' + test + ' required name="item_name" class="form-control item_name"><option value="">เลือกทรัพยากร</option><% listsResource.map(value =>{  %><option value="<%= value.resId %>"><%= value.resName %> </option> <% }) %></select></td>';
+      html += '<td><input required type="number" name="item_quantity" class="form-control item_quantity" /></td>';
+      html += '<td id=txt' + test + '></td>';
+      html += '<td><button type="button" name="remove" class="btn btn-danger btn-sm remove"><i class="far fa-trash-alt"></i></button></td></tr>';
+      $('#item_table').append(html);
+    });
+
+    $(document).on('click', '.remove', function () {
+      $(this).closest('tr').remove();
+      loop = loop - 1
+    });
+
+    //  $('#insert_form').on('submit', function(event){
+    //   event.preventDefault();
+    //   var error = '';
+    //   var check ='';
+    //   $('.item_name').each(function(){
+    //    var count = 1;
+    //    if($(this).val() == '')
+    //    {
+    //     error += "<p>โปรดเช็คค่าที่ชื่อทรัพยากร </p>";
+    //     check = 'noPass';
+    //     return false;
+    //    }else{check = '';}
+    //    count = count + 1;
+    //   });
+
+    // $('.item_quantity').each(function(){
+    //  var count = 1;
+    //  if($(this).val() == '')
+    //  {
+    //   error += "<p>โปรดเช็คค่าที่ช่องจำนวน </p>";
+    //   check = 'noPass';
+    //   return false;
+    //  }else{check = '';}
+    //  count = count + 1;
+    // });
+
+    // var form_data = $(this).serialize();
+
+    // if(error == '' && check == 'ok')
+    // {
+    //  $.ajax({
+    //   url:"/addExport",
+    //   method:"POST",
+    //   data:form_data,
+    //   success:function(data)
+    //   {
+    //    if(data == 'ok')
+    //    {
+    //     $('#item_table').find("tr:gt(0)").remove();
+    //     $('#error').html('<div class="alert alert-success">Item Details Saved</div>');
+    //    }
+    //   }
+    //  });
+    // }
+    // else
+    // {
+    //  $('#error').html('<div class="alert alert-danger">'+error+'</div>');
+    // }
+
+
+
+
+    // });
+
+    $(document).ready(function () {
+
+
+
+
+    });
+  });
+
+
+</script>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+
+var socket = io(); //connect
+
+$("#value0").change( () => {
+  socket.emit('updateAmount', $("#value0").val()+'/'+0);
+});
+socket.on('updateAmount0', (respon) => {
+  $("#txt0").text(respon[0].resAmount);
+  if($("#value0").val() === ''){$("#txt0").text('');}
+});
+
+  function myFunction(num) {
+    // console.log(num);
+    socket.emit('updateAmount', $("#value"+num).val() +'/'+ num);
+    socket.on('updateAmount'+num, (respon) => {
+      $("#txt"+num).text(respon[0].resAmount);
+      if($("#value"+num).val() === ''){$("#txt"+num).text('');}
+});
+  }
+  
+</script>
+
+</html>

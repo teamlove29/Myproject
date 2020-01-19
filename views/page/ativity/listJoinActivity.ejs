@@ -12,11 +12,13 @@
   <title>backend : สมาคมกู้ภัยจังหวัดลำปาง</title>
 
   <!-- Custom fonts for this template-->
-  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <!-- Page level plugin CSS-->
-    <link href="vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
+  <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+
+  <!-- Page level plugin CSS-->
+  <link href="/vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
+
   <!-- Custom styles for this template-->
-  <link href="css/sb-admin.css" rel="stylesheet">
+  <link href="/css/sb-admin.css" rel="stylesheet">
 
 </head>
 
@@ -27,7 +29,7 @@
   <div id="wrapper">
 
     <!-- Sidebar -->
-    <%- include('../../component/admin/sidebar.ejs')%>
+    <%- include('../../component/admin/sidebar')%>
 
     <div id="content-wrapper">
 
@@ -36,17 +38,19 @@
         <!-- Breadcrumbs-->
         <ol class="breadcrumb">
           <li class="breadcrumb-item">
-            <a href="/ManagerUser">จัดการบุคลากร</a>
+            <a href="/ManagerActivity">จัดการงานกิจกรรม</a>
           </li>
-          <li class="breadcrumb-item active">ภาพรวม</li>
+          <li class="breadcrumb-item active">กิจกรรม<%= listJoin[0].actName %></li>
         </ol>
 
         <!-- DataTables Example -->
-        <button 
-        onclick="javascript:window.location.href='/ManagerUser/adduser'"
-        class="p-2 mb-3 btn btn-success btn-sm"
-        ><i class="fas fa-plus"></i> เพิ่มบุคลากร</button>
-        <%- include ('../../component/admin/tableUser')%>
+        <div class="text-center">
+            <h3>กิจกรรม <%= listJoin[0].actName %></h3>
+            <p>เริ่มอบรม <%= listJoin[0].actDate %></p>
+            <p>จำนวนผู้เข้าร่วม <%= listJoin.length %> คน</p>
+        </div>
+
+        <%- include ('../../component/admin/tableListJoin')%>
       <!-- /.container-fluid -->
 
       <!-- Sticky Footer -->

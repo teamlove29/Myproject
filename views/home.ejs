@@ -16,18 +16,19 @@
     </style>
   </head>
   <body>
-    <div class="bgimg">
-    </div>
     <%- include ('./component/user/navbar')%>
-    <div class="container">
-      <div class="text-center">
-        <img
-          class="img-fluid mt-5 rounded"
-          src="https://scontent.fbkk8-4.fna.fbcdn.net/v/t1.0-9/71601843_1239007006292061_5240852573572825088_n.jpg?_nc_cat=100&_nc_eui2=AeEAjN_ed5Dc6BjB2yOY2rjreYUnUCphSOt3SEGd4Rtg8zF-RN9l_2Zb1t4_6WtPtV9Dr0-il13JuH4oq_dhvzUG-XvUDCHAoxELZEArW8KPtA&_nc_ohc=B-7zNugAiaQAQniwd7aK9XfdF3giKPr6gDhYygTQCsG0bvZj1cebf-USg&_nc_ht=scontent.fbkk8-4.fna&oh=b9643e0761fb2c7afeb536f3499aaf83&oe=5E6A5978"
-          alt=""
-        />
-      </div>
-      <div class="row text-center mt-3">
+
+    <div class="text-center margin-20">
+      <img
+        class="img-fluid rounded "
+        src="https://www.jtexpress.co.th/indexUploads/images/20200106/d8ba670b21a496fa1e4ef81f72c55306.jpg"
+        alt=""
+      />
+    </div>
+
+    <div class="container wrapper">
+
+      <div class="row text-center mt-4">
         <div class="col-3">
           <%- include ('./component/user/sidebar')%>
         </div>
@@ -72,6 +73,7 @@
         </table>
       </div>
     </div>
+    <%- include ('./component/user/footer.ejs')%>
   </body>
   <script
     src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
@@ -88,4 +90,24 @@
     integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
     crossorigin="anonymous"
   ></script>
+
+  <script>
+    $(window).scroll(function () {
+
+        var scrolltop = $(this).scrollTop();
+
+        if (scrolltop > 1) {
+            $('#navbar').css('padding', '0 16px')
+        }
+        else {
+            $('#navbar').css('padding', '16px')
+        }
+
+
+    });
+
+
+</script>
+
+
 </html>

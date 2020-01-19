@@ -24,31 +24,29 @@ const loginPost =  ("/login", async (req, res) => {
         }
       });
     } else {
-      const sql = await "SELECT * FROM user_tb WHERE user_position = ? AND user_pass = ? ";
+      const sql = await "SELECT * FROM user WHERE userPosition = ? AND userPass = ? ";
       con.query(sql, [username, password], async (err, respon) => {
         if  (respon.length > 0)  {
-          req.session.username = respon[0].user_Fname + ' ' + respon[0].user_Lname
-          req.session.status = respon[0].user_Status
-          req.session.Islogin = true
           const token = await jwt.sign({ 
-            name: respon[0].user_Fname + respon[0].user_Lname
-            ,positionID:respon[0].user_position
-            ,status: respon[0].user_Status }, "SECRETKEY", {expiresIn: '1h'}
+            name: respon[0].userFname + respon[0].userLname
+            ,positionID:respon[0].userPosition
+            ,status: respon[0].userStatus }, "SECRETKEY", {expiresIn: '1h'}
           );
-          req.session.token= token
-          respon[0].user_Status == 'user'
+          req.session.userId = respon[0].userId
+          req.session.username = respon[0].userFname + ' ' + respon[0].userLname
+          req.session.status = respon[0].userStatus
+          req.session.Islogin = true
+          req.session.token = token
+          req.session.image = respon[0].userImage
+          respon[0].userStatus == 'user'
             ? res.render("home", {
+              
               data: {
                 name:req.session.username,
+                image:req.session.image,
                 loginStatus: true
               }})
-            : res.render("page/backend/main",{
-              data:{
-                dashboard:true,
-                managerUser : false,
-                managerActivity: false,
-                managerResource : false
-              }})
+            : res.redirect('/main')
         } else {
           res.render("page/auth/login", {
             data: {

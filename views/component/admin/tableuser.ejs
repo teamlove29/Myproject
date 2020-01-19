@@ -1,10 +1,10 @@
 <div class="card mb-3">
   <div class="card-header">
     <i class="fas fa-table"></i>
-    Data Table Example
+    ตารางบุคลากร
     <div class="card-body">
       <div class="table-responsive">
-        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+        <table class="table table-bordered text-center" id="dataTable" width="100%" cellspacing="0">
           <thead>
             <tr>
               <th>รูป</th>
@@ -16,32 +16,20 @@
               <th>ตัวเลือก</th>
             </tr>
           </thead>
-          <tfoot>
-            <tr>
-              <th>รูป</th>
-              <th>รหัส</th>
-              <th>ชื่อ-นามสกุล</th>
-              <th>พื้นที่ดูแล</th>
-              <th>เพศ</th>
-              <th>สถานะ</th>
-              <th>ตัวเลือก</th>
-            </tr>
-          </tfoot>
           <tbody>
             <% listsUser.map((value, index) => {  %>
             <tr>
-              <td class="align-middle"><img style="width: 100px;" src="/uploads/<%= value.user_Image %>" alt=""></td>
-              <td class="align-middle"><%= value.user_position%></td>
-              <td class="align-middle"><%= value.user_Fname +' '+ value.user_Lname%></td>
+              <td class="align-middle"><img style="width: 100px;" src="/uploads/<%= value.userImage %>" alt=""></td>
+              <td class="align-middle"><%= value.userPosition%></td>
+              <td class="align-middle"><%= value.userFname +' '+ value.userLname%></td>
               <td class="align-middle">เกาะคา</td>
-              <td class="align-middle"><%= value.user_Sex %></td>
-              <td class="align-middle"><%= value.user_Status %></td>
+              <td class="align-middle"><%= value.userSex %></td>
+              <td class="align-middle"><%= value.userStatus %></td>
               <td class="align-middle">
                 <button 
-                onclick="javascript:window.location.href='/ManagerUser/deluser/<%= value.user_ID %>'"
                 class="btn btn-sm btn-secondary"
                 ><i class="fas fa-search"></i></button>
-                <button onclick="javascript:window.location.href='/ManagerUser/edituser/<%= value.user_ID %>'"
+                <button onclick="javascript:window.location.href='/ManagerUser/edituser/<%= value.userId %>'"
                   class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></button>
                 <button data-toggle="modal" data-target="#DeleteModal<%= index%>" class="btn btn-sm btn-danger"><i
                     class="fas fa-trash"></i></button>
@@ -62,7 +50,7 @@
                    <div class="modal-body">เลือก"ลบ"เพื่อลบข้อมูลออกจากฐานข้อมูลทั้งหมด</div>
                    <div class="modal-footer">
                      <button class="btn btn-secondary" type="button" data-dismiss="modal">ยกเลิก</button>
-                     <a class="btn btn-primary" href="/ManagerUser/deluser/<%= value.user_ID%>">ลบ</a>
+                     <a class="btn btn-primary" href="/ManagerUser/deluser/<%= value.userId %>">ลบ</a>
                    </div>
                  </div>
                </div>
@@ -74,7 +62,6 @@
         </table>
       </div>
     </div>
-    <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
   </div>
 </div>
 

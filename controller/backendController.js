@@ -1,8 +1,8 @@
 const con = require('./conDB')
 
 
-const main =  (req, res) => {
-  const sql = "SELECT * FROM `user_tb`"
+const main =  async (req, res) => {
+  const sql = await "SELECT * FROM `user`"
   con.query(sql,(err,respon) => {
     res.render("page/backend/main",{
       user:respon,

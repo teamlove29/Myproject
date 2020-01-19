@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+          <!-- Custom fonts for this template-->
+  <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <!-- Custom styles for this template-->
+  <link href="/css/sb-admin.css" rel="stylesheet">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+        <div class="card card-register mx-auto mt-5">
+          <div class="<%= data.cls %>" role="alert">
+            <%= data.msg %>
+          </div>
+          <div class="card-header">ลงทะเบียนกิจกรรม</div>
+          <div class="card-body">
+            <form action="/register" method="POST">
+              <div class="form-group">
+                <div class="form-label-group">
+                  <input type="text" name="code" id="code" class="form-control" placeholder="รหัสกิจกรรม" required="required">
+                  <label for="code">รหัสกิจกรรม</label>
+                </div>
+              </div>
+
+              <button class="btn btn-success">ลงทะเบียนกิจกรรม</button>
+              
+            </form>
+      
+          </div>
+        </div>
+      </div>
+
+
+
+
+</body>
+</html>

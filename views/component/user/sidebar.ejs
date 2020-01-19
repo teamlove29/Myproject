@@ -3,7 +3,7 @@
       width="150"
       height="150"
       class="rounded-circle"
-      src="https://scontent.fbkk12-4.fna.fbcdn.net/v/t1.0-9/p960x960/62191430_10216624784064469_6780465909577285632_o.jpg?_nc_cat=110&_nc_ohc=RkdquuvlviwAQk__Q293zrCydQs4kdiogQeRSp_0DSmEXMFUHQ9j4sIzA&_nc_ht=scontent.fbkk12-4.fna&oh=9fd52c356e7567f3e556d4e13c56ca73&oe=5E69E26D"
+      src="/uploads/<%= data.image %>"
       alt=""
     />
     <p class="mt-2"><%= data.name%></p>
@@ -13,7 +13,9 @@
     </button>
   </div>
 
-  <button class="btn btn-warning btn-block text-white pt-3 pb-3 text-center">
+  <button 
+  onclick="javascript:window.location.href='/register'"
+  class="btn btn-warning btn-block text-white pt-3 pb-3 text-center">
     <i class="my-auto far fa-registered"></i>
     ลงทะเบียนกิจกรรม
   </button>

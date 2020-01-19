@@ -40,18 +40,18 @@
   <div class="card card-register mx-auto mt-5">
     <div class="card-header">แก้ไขบุคลากร</div>
     <div class="card-body">
-      <form action="/ManagerUser/editUser/<%= value.user_ID %>" method="POST">
+      <form action="/ManagerUser/editUser/<%= value.userId %>" method="POST" enctype="multipart/form-data">
         <div class="form-group">
           <div class="form-row">
             <div class="col-md-6">
               <div class="form-label-group">
-                <input value="<%= value.user_Fname %>" type="text" name="firstName" id="firstName" class="form-control" placeholder="ชื่อ" required="required" autofocus="autofocus">
+                <input value="<%= value.userFname %>" type="text" name="firstName" id="firstName" class="form-control" placeholder="ชื่อ" required="required" autofocus="autofocus">
                 <label for="firstName">ชื่อ</label>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-label-group">
-                <input value="<%= value.user_Lname %>" type="text" name="lastName" id="lastName" class="form-control" placeholder="นามสกุล" required="required">
+                <input value="<%= value.userLname %>" type="text" name="lastName" id="lastName" class="form-control" placeholder="นามสกุล" required="required">
                 <label for="lastName">นามสกุล</label>
               </div>
             </div>
@@ -59,7 +59,13 @@
         </div>
         <div class="form-group">
           <div class="form-label-group">
-            <input value="<%= value.user_position %>"  type="text" name="positionId" id="positionId" class="form-control" placeholder="รหัสประจำตำแหน่ง" required="required">
+            <input value="<%= value.userArea %>"  type="text" name="area" id="area" class="form-control" placeholder="พื้นที่ดูแล" required="required">
+            <label for="area">พื้นที่ดูแล</label>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="form-label-group">
+            <input value="<%= value.userPosition %>"  type="text" name="positionId" id="positionId" class="form-control" placeholder="รหัสประจำตำแหน่ง" required="required">
             <label for="positionId">รหัสประจำตำแหน่ง</label>
           </div>
         </div>
@@ -69,40 +75,49 @@
 
         <div class="form-group">
           <div class="form-label-group">
-            <input value="<%= value.user_Birth.toISOString().slice(0,10).replace(/-/g,"-") %>" type="date" name="date" id="date" class="form-control" placeholder="วันเกิด" required="required">
+            <input value="<%= value.userBirth.toISOString().slice(0,10).replace(/-/g,"-") %>" type="date" name="date" id="date" class="form-control" placeholder="วันเกิด" required="required">
             <label for="date">วันเกิด</label>
           </div>
         </div>
         <div class="form-group">
           <div class="form-label-group">
-            <input value="<%= value.user_IDcard %>" type="text" name="idCard" id="idCard" class="form-control" placeholder="บัตรประชาชน" required="required">
+            <input value="<%= value.userIdCard %>" type="text" name="idCard" id="idCard" class="form-control" placeholder="บัตรประชาชน" required="required">
             <label for="idCard">บัตรประชาชน</label>
           </div>
         </div>
         <div class="form-group">
           <div class="form-label-group">
-              <input value="<%= value.user_Address %>" name="address" id="address" class="form-control" placeholder="ที่อยู่"></input>
+              <input value="<%= value.userAddress %>" name="address" id="address" class="form-control" placeholder="ที่อยู่"></input>
             <label for="address">ที่อยู่</label>
           </div>
         </div>
         <div class="form-group">
           <div class="form-label-group">
-            <input value="<%= value.user_Email %>" type="email" name="Email" id="Email" class="form-control" placeholder="อีเมล์" required="required">
+            <input value="<%= value.userEmail %>" type="email" name="Email" id="Email" class="form-control" placeholder="อีเมล์" required="required">
             <label for="Email">อีเมล์</label>
           </div>
         </div>
         <div class="form-group">
           <div class="form-label-group">
-            <input value="<%= value.user_Tel %>" type="text" name="tel" id="tel" class="form-control" placeholder="Email address" required="required">
+            <input value="<%= value.userTel %>" type="text" name="tel" id="tel" class="form-control" placeholder="Email address" required="required">
             <label for="tel">เบอร์โทร</label>
           </div>
         </div>
         <div class="form-group">
           <div class="form-label-group">
-            <input value="<%= value.user_Status %>" type="text" name="status" id="status" class="form-control" placeholder="Email address" required="required">
-            <label for="status">สถานะ</label>
+            <select name="status" id="status" class="form-control" required>
+              <option <%= value.userStatus === 'user' ? 'selected="selected"' : '' %>  value="user">บุคลากร</option>
+              <option <%= value.userStatus === 'admin' ? 'selected="selected"' : '' %>  value="admin">ผู้ดูแล</option>
+            </select>
           </div>
         </div>
+        <div class="form-group">
+          <img width="200" id="output"/>
+        </div>
+        <div class="form-group">
+          <input value="" type="file" accept="image/*" name="avatar" id="avatar"  accept="image/png, image/jpeg" onchange="loadFile(event)">
+        </div>
+        
         
         <button>แก้ไข</button>
       </form>
@@ -147,6 +162,12 @@
                   </div>
                   <div class="form-group">
                     <div class="form-label-group">
+                      <input type="text" name="area" id="area" class="form-control" placeholder="พื้นที่ดูแล" required="required">
+                      <label for="area">พื้นที่ดูแล</label>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="form-label-group">
                       <input type="text" name="positionId" id="positionId" class="form-control" placeholder="รหัสประจำตำแหน่ง" required="required">
                       <label for="positionId">รหัสประจำตำแหน่ง</label>
                     </div>
@@ -187,14 +208,17 @@
                   </div>
                   <div class="form-group">
                     <div class="form-label-group">
-                      <input type="text" name="status" id="status" class="form-control" placeholder="status" required="required">
-                      <label for="status">สถานะ</label>
+                      <select name="status" id="status" class="form-control" required>
+                        <option value="user">บุคลากร</option>
+                        <option value="admin">ผู้ดูแล</option>
+                      </select>
                     </div>
                   </div>
                   <div class="form-group">
-
-                      <input type="file" name="avatar" id="avatar" >
-     
+                    <img width="200" id="output"/>
+                  </div>
+                  <div class="form-group">
+                    <input type="file" accept="image/*" name="avatar" id="avatar"  accept="image/png, image/jpeg" onchange="loadFile(event)">
                   </div>
                   
                   <button class="btn btn-success">ลงทะเบียน</button>
@@ -229,5 +253,12 @@
  
  <%- include('../../component/admin/scriptJs')%>
  
+
  </body>
+ <script>
+  var loadFile = function(event) {
+    var output = document.getElementById('output');
+    output.src = URL.createObjectURL(event.target.files[0]);
+  };
+</script>
 </html>

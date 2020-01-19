@@ -1,0 +1,93 @@
+<div class="table-responsive">
+    <table class="table table-striped table-sm" width="100%" cellspacing="0">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>รหัสผู้เข้าร่วมอบรม</th>
+                <th>ชื่อ- สกุล</th>
+                <th>พื้นที่</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <% listJoin.map((value, index) => {  %>
+            <tr>
+                <td><%= index+1 %></td>
+                <td><%= value.userPosition %></td>
+                <td><%= value.userFname + ' ' +value.userLname %></td>
+                <td><%= value.userArea %></td>
+                <td>
+
+                    <button onclick="return ConfirmDelete(<%= value.regId %>,<%= value.userId %>,<%= value.actId %>)"
+                        class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                </td>
+            </tr>
+            <% }) %>
+        </tbody>
+    </table>
+</div>
+<hr class="mb-5 mt-5">
+<div id="msg" class="alert alert-warning" role="alert">
+  </div>
+<h4>ทรัพยากรที่ในกิจกรรมนี้</h4>
+<div class="table-responsive">
+    <table class="table table-striped table-sm" width="100%" cellspacing="0">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>ทรัพยากร</th>
+                <th>จำนวนที่เบิก</th>
+                <th>จำนวนที่คืน</th>
+                <th></th>
+            </tr>
+        </thead> 
+        <tbody>
+            <% if(listResouce != '') { %>
+            <%  listResouce.map((value, index) => {  %> 
+            <tr>
+                <td><%= index+1 %></td>
+                <td><%= value.resName %></td>
+                <td><%= value.total %></td>
+                <% if(index < listResouceRe.length) { %>
+                <td><%= value.resName == listResouceRe[index].resName ? listResouceRe[index].total : ''  %></td>
+                <% }else{ %>
+                    <td></td>
+                    <%}%>
+                <td>
+                    <button onclick="return ConfirReturn(<%= value.resId %>,<%= value.actId %>,<%= value.total %>)"
+                        class="btn btn-sm btn-info">คืน
+                </td>
+            </tr>
+            <% })} else{  %>
+            <tr>
+                <td class="text-center" colspan="5">----- ไม่มีข้อมูล -----</td>
+            </tr>
+            <% } %>
+        </tbody>
+    </table>
+</div>
+<script>
+    function ConfirmDelete(idreg, iduser, idAct) {
+        var x = confirm("ต้องการลบบุคคลนี้ใช่ไหม?");
+        if (x)
+            window.location.href = '/deljoin?regId=' + idreg + '&userId=' + iduser + '&actId=' + idAct;
+        else
+            return false;
+    }
+
+    function ConfirReturn(idresId, idAct, total) {
+        var txt;
+        var person = prompt("กรุณาใส่จำนวนที่้องการคืน:", "0");
+        var numbers = /^[0-9]+$/;
+        if (person.match(numbers) && person <= total) {
+            txt = "เรียบร้อย";
+            // console.log("ok " + idresId, idAct, total,person);
+            window.location.href = '/returnExport?idresId=' + idresId + '&idAct=' + idAct + '&Amount=' + person;
+        }
+        else {
+            txt = "กรุณาใส่จำนวน หรือ จำนวนเกินกว่าที่เบิก";
+            // console.log("No " + idresId, idAct,total, person);
+        }
+        document.getElementById("msg").innerHTML = txt;
+    }
+</script>

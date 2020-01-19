@@ -1,38 +1,33 @@
 <div class="card mb-3">
     <div class="card-header">
       <i class="fas fa-table"></i>
-      Data Table Example
+      ตารางทรัพยากร
     <div class="card-body">
       <div class="table-responsive">
         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
           <thead>
             <tr>
               <th>รายการ</th>
-              <th>จำนวน</th>
-              <th>ตัวเลือก</th>
+              <th>คงเหลือ</th>
             </tr>
           </thead>
-          <tfoot>
-            <tr>
-              <th>รายการ</th>
-              <th>จำนวน</th>
-              <th>ตัวเลือก</th>
-            </tr>
-          </tfoot>
           <tbody>
             <% listsResource.map((value,index) => { %>
             <tr>
-              <td><%= value.res_Name %></td>
-              <td><%= value.res_Amount %></td>
-              <td>
-                  <button class="btn btn-sm btn-secondary"><i class="fas fa-search"></i></button>
+              <td><%= value.resName %>
+                 <br> 
+                 <button class="btn btn-info btn-sm"> 
+                   +เพิ่มจำนวน
+                  </button>
                   <button 
-                  onclick="javascript:window.location.href='/ManagerResource/editresource/<%= value.res_id %>'"
-                  class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></button>
-                  <button 
-                  data-toggle="modal" data-target="#DeleteModal<%= index%>"
-                  class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
-              </td>
+                  onclick="javascript:window.location.href='/ManagerResource/editresource/<%= value.resId %>'"
+                  class="btn btn-sm btn-warning"><i class="fas fa-edit"></i>
+                </button>
+                <button 
+                data-toggle="modal" data-target="#DeleteModal<%= index%>"
+                class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                </td>
+              <td><%= value.resAmount %></td>
             </tr>
 
                <!-- modal -->
@@ -49,7 +44,7 @@
                     <div class="modal-body">เลือก"ลบ"เพื่อลบข้อมูลออกจากฐานข้อมูลทั้งหมด</div>
                     <div class="modal-footer">
                       <button class="btn btn-secondary" type="button" data-dismiss="modal">ยกเลิก</button>
-                      <a class="btn btn-primary" href="/ManagerResource/delresource/<%= value.res_id %>">ลบ</a>
+                      <a class="btn btn-primary" href="/ManagerResource/delresource/<%= value.resId %>">ลบ</a>
                     </div>
                   </div>
                 </div>
@@ -61,7 +56,6 @@
         </table>
       </div>
     </div>
-    <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
   </div>
 
 </div>

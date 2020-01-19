@@ -43,18 +43,18 @@
 <div class="card card-register mx-auto mt-5">
   <div class="card-header">แก้ไขงานกิจกรรม</div>
   <div class="card-body">
-    <form action="/ManagerActivity/editactivity/<%= value.ac_ID %>" method="POST">
+    <form action="/ManagerActivity/editactivity/<%= value.actId %>" method="POST">
       <div class="form-group">
         <div class="form-row">
           <div class="col-md-6">
             <div class="form-label-group">
-              <input value="<%= value.ac_Name %>" type="text" name="name" id="name" class="form-control" placeholder="ชื่อกิจกรรม" required="required" autofocus="autofocus">
+              <input value="<%= value.actName %>" type="text" name="name" id="name" class="form-control" placeholder="ชื่อกิจกรรม" required="required" autofocus="autofocus">
               <label for="name">ชื่อกิจกรรม</label>
             </div>
           </div>
           <div class="col-md-6">
             <div class="form-label-group">
-              <input value="" type="date" name="date" id="date" class="form-control" placeholder="วันที่จัดกิจจกรม" required="required">
+              <input value="<%= value.actDate.toISOString().slice(0,10).replace(/-/g,"-")%>" type="date" name="date" id="date" class="form-control" placeholder="วันที่จัดกิจจกรม" required="required">
               <label for="date">วันที่จัดกิจจกรม</label>
             </div>
           </div>
@@ -62,13 +62,13 @@
       </div>
       <div class="form-group">
         <div class="form-label-group">
-          <input value="<%= value.ac_Score %>"  type="text" name="score" id="score" class="form-control" placeholder="คะแนนกิจกรรม" required="required">
+          <input value="<%= value.actScore %>"  type="text" name="score" id="score" class="form-control" placeholder="คะแนนกิจกรรม" required="required">
           <label for="score">คะแนนกิจกรรม</label>
         </div>
       </div>
       <div class="form-group">
         <div class="form-label-group">
-          <textarea type="textarea" name="detail" id="detail" class="form-control" placeholder="รายละเอียดกิจกรรม" required="required"><%= value.ac_Detail %></textarea>
+          <textarea type="textarea" name="detail" id="detail" class="form-control" placeholder="รายละเอียดกิจกรรม" required="required"><%= value.actDetail %></textarea>
         </div>
       </div>
       <button type="submit" class="btn btn-success">แก้ไข</button>

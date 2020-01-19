@@ -46,9 +46,17 @@
         <!-- DataTables Example -->
         <button 
       onclick="javescript:window.location.href='/ManagerResource/addresource'"
-        class="p-2 mb-3 btn btn-success">+ เพิ่มทรัพยากร</button>
-        <button class="p-2 mb-3 btn btn-secondary">ประวัติย้อนหลัง</button>
-        <button class="p-2 mb-3 btn btn-secondary">ทรัพยากรที่ใช้แต่ละวัน</button>
+        class="p-2 mb-3 btn btn-success btn-sm"><i class="fas fa-plus"></i> เพิ่มทรัพยากร</button>
+        <button class="p-2 mb-3 btn btn-secondary btn-sm"><i class="fas fa-redo-alt"></i> ประวัติย้อนหลัง</button>
+        <button class="p-2 mb-3 btn btn-secondary btn-sm"><i class="far fa-calendar-check"></i> ทรัพยากรที่ใช้แต่ละวัน</button>
+        <div class="float-right">
+          <button
+          onclick="javascript:window.location.href='/exportResource'"
+          class="p-2 mb-3 btn btn-warning btn-sm"><i class="fas fa-exchange-alt"></i> เบิกทรัพยากร</button
+            >
+        </div>
+
+
         <%- include ('../../component/admin/tableResource')%>
       <!-- /.container-fluid -->
 
