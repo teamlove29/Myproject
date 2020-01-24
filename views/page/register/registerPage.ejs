@@ -8,15 +8,18 @@
   <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <!-- Custom styles for this template-->
   <link href="/css/sb-admin.css" rel="stylesheet">
-    <title>Document</title>
+  <link href="/css/style.css" rel="stylesheet">
+    <title>ลงทะเบียนกิจกรรม</title>
 </head>
-<body>
+<body id="page-top loadedPage"   onload="myFunction()">
+  <div id="loader"></div>
+  <div style="display:none;" id="loadedPage" class="animate-bottom">
     <div class="container">
         <div class="card card-register mx-auto mt-5">
           <div class="<%= data.cls %>" role="alert">
             <%= data.msg %>
           </div>
-          <div class="card-header">ลงทะเบียนกิจกรรม</div>
+          <div class="card-header">ลงทะเบียนกิจกรรม </div>
           <div class="card-body">
             <form action="/register" method="POST">
               <div class="form-group">
@@ -33,9 +36,11 @@
           </div>
         </div>
       </div>
+ 
 
-
-
-
+      <p class="lead text-center mt-5">กลับหน้าหลัก
+        <a href="/home">คลิ๊ก</a>
+      </div>
 </body>
+<%- include('../../component/admin/scriptJs')%>
 </html>

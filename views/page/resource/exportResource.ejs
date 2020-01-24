@@ -15,10 +15,12 @@
 
   <!-- Custom styles for this template-->
   <link href="css/sb-admin.css" rel="stylesheet">
+  <link href="css/style.css" rel="stylesheet">
 
 </head>
 
 <body id="page-top">
+
 
   <%- include('../../component/admin/navbar')%>
 
@@ -26,23 +28,22 @@
 
     <!-- Sidebar -->
     <%- include('../../component/admin/sidebar')%>
-
     <div id="content-wrapper">
-
       <div class="container-fluid">
-
         <!-- Breadcrumbs-->
         <ol class="breadcrumb">
           <li class="breadcrumb-item">
             <a href="/ManagerResource">จัดการรัพยากร</a>
           </li>
-          <li class="breadcrumb-item active">เบิกทรัพยากร</li>
+          <li class="breadcrumb-item">
+            เบิกทรัพยากร</li>
         </ol>
 
         <div class="<%= data.cls%>" role="alert">
           <%= data.msg %>
         </div>
         <!-- DataTables Example add -->
+  
         <div class="container">
           <div class="card card-register mx-auto mt-5">
             <div class="card-header">เบิกทรัพยากร</div>
@@ -94,6 +95,7 @@
             </div>
           </div>
         </div>
+
         <!-- /.container-fluid add-->
 
         <!-- /.container-fluid -->

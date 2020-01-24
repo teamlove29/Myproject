@@ -8,12 +8,14 @@
   <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <!-- Custom styles for this template-->
   <link href="/css/sb-admin.css" rel="stylesheet">
+  <link href="/css/style.css" rel="stylesheet">
 
     <title>Document</title>
 </head>
 
 
-<body id="page-top">
+<body id="page-top loadedPage"   onload="myFunction()">
+  <div id="loader"></div>
 
     <%- include('../../component/admin/navbar')%>
  
@@ -34,13 +36,14 @@
           </li>
           <li class="breadcrumb-item active">แก้ไขบุคลากร</li>
         </ol>
-
+        
+        <div style="display:none;" id="loadedPage" class="animate-bottom">
  <!-- DataTables Example edit -->
  <div class="container">
   <div class="card card-register mx-auto mt-5">
     <div class="card-header">แก้ไขบุคลากร</div>
     <div class="card-body">
-      <form action="/ManagerUser/editUser/<%= value.userId %>" method="POST" enctype="multipart/form-data">
+      <form action="/editUser/<%= value.userId %>" method="POST" enctype="multipart/form-data">
         <div class="form-group">
           <div class="form-row">
             <div class="col-md-6">
@@ -111,20 +114,23 @@
             </select>
           </div>
         </div>
+        <div class="form-group">'
+        <img width="200" src="/uploads/<%= value.userImage%>" alt="">
+        </div>
+        
         <div class="form-group">
           <img width="200" id="output"/>
         </div>
-        <div class="form-group">
-          <input value="" type="file" accept="image/*" name="avatar" id="avatar"  accept="image/png, image/jpeg" onchange="loadFile(event)">
+        <div class="form-group" id="uploadImage">
+          <input  type="file" accept="image/*" name="avatar" id="avatar"  accept="image/png, image/jpeg" onchange="loadFile(event)">
         </div>
-        
-        
         <button>แก้ไข</button>
       </form>
-
+    </div>
+    </div>
     </div>
   </div>
-</div>
+
 <!-- /.container-fluid edit-->
 
 
@@ -137,13 +143,13 @@
           </li>
           <li class="breadcrumb-item active">เพิ่มบุคลากร</li>
         </ol>
-
+        <div style="display:none;" id="loadedPage" class="animate-bottom">
          <!-- DataTables Example -->
          <div class="container">
             <div class="card card-register mx-auto mt-5">
               <div class="card-header">+เพิ่มบุคลากร</div>
               <div class="card-body">
-                <form action="/ManagerUser/adduser/user" method="POST" enctype="multipart/form-data">
+                <form action="/adduser" method="POST" enctype="multipart/form-data">
                   <div class="form-group">
                     <div class="form-row">
                       <div class="col-md-6">
@@ -217,6 +223,7 @@
                   <div class="form-group">
                     <img width="200" id="output"/>
                   </div>
+                  <!-- <img src="/uploads/defaultImage.png" alt=""> -->
                   <div class="form-group">
                     <input type="file" accept="image/*" name="avatar" id="avatar"  accept="image/png, image/jpeg" onchange="loadFile(event)">
                   </div>
@@ -227,6 +234,7 @@
               </div>
             </div>
           </div>
+        </div>
        <!-- /.container-fluid -->
  
        <% } %>

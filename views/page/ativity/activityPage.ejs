@@ -2,28 +2,23 @@
 <html lang="en">
 
 <head>
-
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
-
+  <% if(data.css === true) { %>
+    <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  
+    <!-- Page level plugin CSS-->
+    <link href="/vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
+  
+    <!-- Custom styles for this template-->
+    <link href="/css/sb-admin.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+  <% }else {%>
+    <%- include('../../component/admin/head')%>
+    <%  }%>
   <title>backend : สมาคมกู้ภัยจังหวัดลำปาง</title>
-
-  <!-- Custom fonts for this template-->
-  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-
-  <!-- Page level plugin CSS-->
-  <link href="vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
-
-  <!-- Custom styles for this template-->
-  <link href="css/sb-admin.css" rel="stylesheet">
-
 </head>
 
-<body id="page-top">
-
+<body id="page-top loadedPage"   onload="myFunction()">
+  <div id="loader"></div>
    <%- include('../../component/admin/navbar')%>
 
   <div id="wrapper">
@@ -47,7 +42,196 @@
         <button 
         onclick="javascript:window.location.href='/ManagerActivity/addactivity'"
         class="p-2 mb-3 btn btn-success btn-sm"><i class="fas fa-plus"></i> เพิ่มงานกิจกรรม</button>
-        <%- include ('../../component/admin/tableActivity')%>
+        <div style="display:none;" id="loadedPage" class="animate-bottom">
+          <% if(data.err === false ){  %>
+
+            <% } else{ %>
+          <div class="<%= data.cls %>" role="alert">
+            <%= data.msg %>
+          </div>
+          <%}%>
+
+            <div class="table-responsive">
+              <table class="table-sm table table-bordered"  width="100%" cellspacing="0">
+                <thead >
+                  <tr>
+                    <th>วัน/เดือน/ปี</th>
+                    <th>รายการ</th>
+                    <th>รหัส</th>
+                    <th>คนเข้าร่วม</th>
+                    <th>คะแนน</th>
+                    <th>สถานะ</th>
+                    <th>ตัวเลือก</th>
+                  </tr>
+                </thead>
+        
+                <tbody>
+                  <% listsActivity.map((value, index) => {  %>
+                    <% if(value.actCode != 'Complete') {%>
+                  <tr>
+                    <%  var dd = value.actDate.getDate() 
+                        var mm = value.actDate.getMonth() + 1
+                        var yyyy = value.actDate.getFullYear()
+                        if (dd < 10) {
+                          dd = '0' + dd;
+                        } 
+                        if (mm < 10) {
+                          mm = '0' + mm;
+                        } 
+                       var today = dd + '/' + mm + '/' + yyyy;
+                    %>
+                    <td><%= today %></td>
+                    <td><%= value.actName %></td>
+                    <% if(value.actCode != 'Complete') { %>
+                    <td><%= value.actCode %></td>
+                    <% }else{ %>
+                      <td style="text-decoration-line: line-through;"></td>
+                      <%}%>
+                    <td><%= peopleJoin[value.actId]  ? peopleJoin[value.actId] : '0' %></td>
+                    <td><%= value.actScore %></td>
+                    <td> 
+                      <% if(value.actCode != 'Complete') { %>
+                      <button class="btn btn-sm btn-success "
+                      onclick="javascript:return ConfirmDelete(<%=value.actId%>)"
+                      >ดำเนินการ</button class="btn btn-sm">
+                      <% }else{ %>
+                        <button class="btn btn-sm btn-outline-danger">ยกเลิกแล้ว</button>
+                        <%}%>
+                    <td>
+                      
+                        <button 
+                        onclick="javascript:window.location.href='/listJoin/<%= value.actId%>'"
+                        class="btn btn-sm btn-secondary "><i class="fas fa-search"></i></button>
+                        <button 
+                        onclick="javascript:window.location.href='/ManagerActivity/editactivity/<%= value.actId%>'"
+                        class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></button>
+                        <button 
+                        data-toggle="modal" data-target="#DeleteModal<%= index%>"
+                        class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                    </td>
+                  </tr>
+                  <%}%>
+                                 <!-- modal -->
+                                 <div class="modal fade" id="DeleteModal<%= index%>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                                  aria-hidden="true">
+                                  <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                      <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">ต้องการลบใช่ไหม ?</h5>
+                                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                          <span aria-hidden="true">×</span>
+                                        </button>
+                                      </div>
+                                      <div class="modal-body">เลือก"ลบ"เพื่อลบข้อมูลออกจากฐานข้อมูลทั้งหมด</div>
+                                      <div class="modal-footer">
+                                        <button class="btn btn-secondary" type="button" data-dismiss="modal">ยกเลิก</button>
+                                        <a class="btn btn-primary" href="/delactivity/<%= value.actId %>">ลบ</a>
+                                       
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <!-- End modal -->
+                  <% })%>
+                </tbody>
+              </table>    
+        </div>
+        
+        <hr>
+        <h3>เรียบร้อยแล้ว</h3>
+        
+        
+          <div class="table-responsive">
+            <table data-order='[[ 0, "DESC" ]]' class="table-sm table table-bordered" id="dataTable" width="100%" cellspacing="0">
+              <thead>
+                <tr>
+                  <th>วัน/เดือน/ปี</th>
+                  <th>รายการ</th>
+                  <th>คนเข้าร่วม</th>
+                  <th>คะแนน</th>
+                  <th>สถานะ</th>
+                  <th>ตัวเลือก</th>
+                </tr>
+              </thead>
+        
+              <tbody>
+                <% listsActivity.map((value, index) => {  %>
+                  <% if(value.actCode === 'Complete') {%>
+                <tr>
+                  <%  var dd = value.actDate.getDate() 
+                      var mm = value.actDate.getMonth() + 1
+                      var yyyy = value.actDate.getFullYear()
+                      if (dd < 10) {
+                        dd = '0' + dd;
+                      } 
+                      if (mm < 10) {
+                        mm = '0' + mm;
+                      } 
+                     var today = dd + '/' + mm + '/' + yyyy;
+                  %>
+                  <td><%= today %></td>
+                  <td><%= value.actName %></td>
+                  <td><%= peopleJoin[value.actId]  ? peopleJoin[value.actId] : '0' %></td>
+                  <td><%= value.actScore %></td>
+                  <td> 
+                    <% if(value.actCode != 'Complete') { %>
+                    <button class="btn btn-sm btn-success "
+                    onclick="javascript:return ConfirmDelete(<%=value.actId%>)"
+                    >ดำเนินการ</button class="btn btn-sm">
+                    <% }else{ %>
+                      <button class="btn btn-sm btn-outline-info">เสร็จแล้ว</button>
+                      <%}%>
+                  <td>
+                    
+                      <button 
+                      onclick="javascript:window.location.href='/listJoin/<%= value.actId%>'"
+                      class="btn btn-sm btn-secondary "><i class="fas fa-search"></i></button>
+                      <button 
+                      onclick="javascript:window.location.href='/ManagerActivity/editactivity/<%= value.actId%>'"
+                      class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></button>
+                      <button 
+                      data-toggle="modal" data-target="#DeleteModal<%= index%>"
+                      class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                  </td>
+                </tr>
+                <%}%>
+                               <!-- modal -->
+                               <div class="modal fade" id="DeleteModal<%= index%>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                                aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                  <div class="modal-content">
+                                    <div class="modal-header">
+                                      <h5 class="modal-title" id="exampleModalLabel">ต้องการลบใช่ไหม ?</h5>
+                                      <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">×</span>
+                                      </button>
+                                    </div>
+                                    <div class="modal-body">เลือก"ลบ"เพื่อลบข้อมูลออกจากฐานข้อมูลทั้งหมด</div>
+                                    <div class="modal-footer">
+                                      <button class="btn btn-secondary" type="button" data-dismiss="modal">ยกเลิก</button>
+                                      <a class="btn btn-primary" href="/ManagerActivity/delactivity/<%= value.actId %>">ลบ</a>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <!-- End modal -->
+                <% })%>
+              </tbody>
+            </table>       
+        </div>
+      </div>
+        
+        <script>
+          function ConfirmDelete(idAct) {
+              var x = confirm("ต้องการเปลี่ยนสถานะกิจกรรม?");
+              console.log(idAct);
+              
+              if (x)
+                  window.location.href = '/activityStatus/'+idAct;
+              else
+                  return false;
+          }
+        </script>
       <!-- /.container-fluid -->
 
       <!-- Sticky Footer -->

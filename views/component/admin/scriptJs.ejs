@@ -1,3 +1,47 @@
+
+
+
+<% if(data.css === true) { %>
+  <!-- Bootstrap core JavaScript-->
+<script src="/vendor/jquery/jquery.min.js"></script>
+<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+<!-- Page level plugin JavaScript-->
+<script src="/vendor/chart.js/Chart.min.js"></script>
+<script src="/vendor/datatables/jquery.dataTables.js"></script>
+<script src="/vendor/datatables/dataTables.bootstrap4.js"></script>
+
+<!-- Custom scripts for all pages-->
+<script src="/js/sb-admin.js"></script>
+
+<!-- Demo scripts for this page-->
+<script src="/js/demo/datatables-demo.js"></script>
+<script src="/js/demo/chart-bar-demo.js"></script>
+<script src="/js/demo/chart-pie-demo.js"></script>
+<script>
+var myVar;
+
+function myFunction() {
+  myVar = setTimeout(showPage, 100);
+}
+
+function showPage() {
+  document.getElementById("loader").style.display = "none";
+  document.getElementById("loadedPage").style.display = "block";
+}
+</script>
+<script>
+function disableF5(e) { if ((e.which || e.keyCode) == 116 || (e.which || e.keyCode) == 82) e.preventDefault(); };
+
+$(document).ready(function(){
+$(document).on("keydown", disableF5);
+});
+  </script>
+
+<% }else {%>
   <!-- Bootstrap core JavaScript-->
   <script src="vendor/jquery/jquery.min.js"></script>
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -11,9 +55,33 @@
   <script src="vendor/datatables/dataTables.bootstrap4.js"></script>
 
   <!-- Custom scripts for all pages-->
-  <script src="js/sb-admin.min.js"></script>
+  <script src="js/sb-admin.js"></script>
 
   <!-- Demo scripts for this page-->
   <script src="js/demo/datatables-demo.js"></script>
   <script src="js/demo/chart-bar-demo.js"></script>
   <script src="js/demo/chart-pie-demo.js"></script>
+
+  <script>
+    var myVar;
+    
+    function myFunction() {
+      myVar = setTimeout(showPage, 100);
+    }
+    
+    function showPage() {
+      document.getElementById("loader").style.display = "none";
+      document.getElementById("loadedPage").style.display = "block";
+    }
+    </script>
+
+<script>
+function disableF5(e) { if ((e.which || e.keyCode) == 116 || (e.which || e.keyCode) == 82) e.preventDefault(); };
+
+$(document).ready(function(){
+$(document).on("keydown", disableF5);
+});
+</script>
+
+
+<%  }%>

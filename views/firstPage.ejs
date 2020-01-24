@@ -7,7 +7,9 @@
     <link rel="stylesheet" href="/css/style.css">
     <title>Document</title>
   </head>
-  <body>
+  <body id="page-top loadedPage"   onload="myFunction()">
+    <div id="loader"></div>
+    <div style="display:none;" id="loadedPage" class="animate-bottom">
       <div class="bg">
       <img class="img-sponser" src="https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_%282019%29.png" alt="">
       <img class="img-sponser" src="https://i.pinimg.com/originals/a7/2b/b5/a72bb5bf31303bd5f2fcf20c95603150.png" alt="">
@@ -22,5 +24,19 @@
         <a href="#">Powered by Marutthep Rompho  Software Engineer LPRU</a>
     </footer> -->
 </div>
+</div>
   </body>
+  
+<script>
+  var myVar;
+  
+  function myFunction() {
+    myVar = setTimeout(showPage, 100);
+  }
+  
+  function showPage() {
+    document.getElementById("loader").style.display = "none";
+    document.getElementById("loadedPage").style.display = "block";
+  }
+  </script>
 </html>

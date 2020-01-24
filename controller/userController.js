@@ -9,6 +9,10 @@ const ManagerUser = (req, res) => {
     res.render("page/user/userPage", {
       listsUser: respon,
       data: {
+        css:false,
+        err:false,
+        msg : '',
+        cls : '',
         dashboard: false,
         managerUser: true,
         managerActivity: false,
@@ -45,10 +49,45 @@ const postUser = (req, res) => {
 
       const image = req.files != '' ? filenames : 'defaultImage.png'
       const sql = "INSERT INTO `user`(`userId`, `userPosition`, `userFname`, `userLname`, `userSex`, `userBirth`, `userPass`, `userIdCard`, `userAddress`, `userArea`, `userEmail`, `userTel`, `userStatus`, `userImage`) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)"
-      con.query(sql, [positionId, firstName, lastName, sex, date, pass, idCard, address, area, Email, tel, status, image], (err, respon) => {
-        if (err) throw err;
-        res.redirect('/ManagerUser')
+      const sqlCheck = "SELECT * FROM `user` WHERE userPosition= ?"
+      const sqlUser = "SELECT * FROM `user`"
+      con.query(sqlCheck,[positionId],(err,responCheck) => {
+          if(responCheck.length > 0 ){
+              con.query(sqlUser, (err, responUserAll) => {
+                res.render("page/user/userPage", {
+                  listsUser: responUserAll,
+                  data: {
+                    err:true,
+                    msg : 'ข้อมูลซ้ำกรุณาตรวจสอบ',
+                    cls : 'alert alert-danger',
+                    dashboard: false,
+                    managerUser: true,
+                    managerActivity: false,
+                    managerResource: false
+                  }
+                });
+              })
+          }else{
+            con.query(sql, [positionId, firstName, lastName, sex, date, pass, idCard, address, area, Email, tel, status, image], (err, respon) => {
+              con.query(sqlUser, (err, responUserAll) => {
+                res.render("page/user/userPage", {
+                  listsUser: responUserAll,
+                  data: {
+                    css:true,
+                    err:true,
+                    msg : 'เพิ่มบุคลากรเรียบร้อยแล้ว',
+                    cls : 'alert alert-success',
+                    dashboard: false,
+                    managerUser: true,
+                    managerActivity: false,
+                    managerResource: false
+                  }
+                });
+              })
+            })
+          }
       })
+
     })
 
   }
@@ -72,30 +111,89 @@ const editUser = async (req, res) => {
 
 const postEditUser =  (req, res) => {
   upload (req, res, (err) => {
+    console.log(req.filenames);
+  
     const Iduser = req.params.id
     const { firstName, lastName, area, positionId, sex, date, idCard, address, Email, tel, status } =  req.body
-    if (err) throw err
     var filenames =  req.files.map((file) => {
       return file.filename; // or file.originalname
     });
     const image = req.files != '' ? filenames : 'defaultImage.png'
     const sql =  "UPDATE `user` SET  `userPosition` = ? , `userFname` = ? , `userLname` = ?, `userSex` = ?, `userBirth` = ?, `userIdCard` = ?, `userAddress` = ? ,`userArea` = ? , `userEmail` = ?, `userTel` = ?, `userStatus` = ? , `userImage`= ? WHERE `user`.`userId` = ?;"
-    con.query(sql, [positionId, firstName, lastName, sex, date, idCard, address, area, Email, tel, status, image, Iduser], (err, respon) => {
-      if (err) throw err
-      res.redirect("/ManagerUser")
+    const sqlCheck = "SELECT * FROM `user` WHERE userPosition= ? AND userId = ?"
+    const sqlUser = "SELECT * FROM `user`"
+    con.query(sqlCheck,[positionId,Iduser],(err,responCheck) => {
+        if(responCheck.length > 0 ){
+          con.query(sql, [positionId, firstName, lastName, sex, date, idCard, address, area, Email, tel, status, image, Iduser], (err, respon) => {
+            con.query(sqlUser, (err, responUserAll) => {
+              res.render("page/user/userPage", {
+                listsUser: responUserAll,
+                data: {
+                  css:true,
+                  err:true,
+                  msg : 'แก้ไขบุคลากรเรียบร้อยแล้ว',
+                    cls : 'alert alert-success',
+                  dashboard: false,
+                  managerUser: true,
+                  managerActivity: false,
+                  managerResource: false
+                }
+              });
+            })
+          })
+        }else{
+          con.query(sqlUser, (err, responUserAll) => {
+            res.render("page/user/userPage", {
+              listsUser: responUserAll,
+              data: {
+                css:true,
+                err:true,
+                msg : 'ข้อมูลซ้ำกรุณาตรวจสอบ',
+                cls : 'alert alert-danger',
+                dashboard: false,
+                managerUser: true,
+                managerActivity: false,
+                managerResource: false
+              }
+            });
+          })
+
+        }
     })
+
   })
 
 }
 
 const delUser = async (req, res) => {
   const sql = await "DELETE FROM `user` WHERE `userId` = ?"
+  const sqlUser = "SELECT * FROM `user`"
   con.query(sql, [req.params.id], async (err, respon) => {
-    if (err) throw err
-    console.log('del Success');
-    res.redirect('/ManagerUser')
+    con.query(sqlUser, (err, responUserAll) => {
+      res.render("page/user/userPage", {
+        listsUser: responUserAll,
+        data: {
+          css:true,
+          err:true,
+          msg : 'ลบบุคลากรสำเร็จแล้ว',
+          cls : 'alert alert-success',
+          dashboard: false,
+          managerUser: true,
+          managerActivity: false,
+          managerResource: false
+        }
+      });
+    })
   })
 }
+
+const getArea = (req,res) => {
+  const sql = "SELECT `userArea` FROM `user`"
+  con.query(sql,(err,respon) => {
+    res.json(respon)
+  })
+}
+
 
 module.exports.ManagerUser = ManagerUser
 module.exports.adduserPage = adduser
@@ -103,3 +201,4 @@ module.exports.postUser = postUser
 module.exports.editUser = editUser
 module.exports.postEditUser = postEditUser
 module.exports.delUser = delUser
+module.exports.getArea = getArea

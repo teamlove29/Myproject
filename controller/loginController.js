@@ -38,15 +38,7 @@ const loginPost =  ("/login", async (req, res) => {
           req.session.Islogin = true
           req.session.token = token
           req.session.image = respon[0].userImage
-          respon[0].userStatus == 'user'
-            ? res.render("home", {
-              
-              data: {
-                name:req.session.username,
-                image:req.session.image,
-                loginStatus: true
-              }})
-            : res.redirect('/main')
+          respon[0].userStatus == 'user' ? res.redirect("/home") : res.redirect('/main')
         } else {
           res.render("page/auth/login", {
             data: {

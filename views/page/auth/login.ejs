@@ -8,14 +8,15 @@
     <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <!-- Custom styles for this template-->
     <link href="/css/sb-admin.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
     
     <title><%= data.pagename%></title>
     
 </head>
-<body>
+<body id="page-top loadedPage"   onload="myFunction()">
+    <div id="loader"></div>
 
-
-
+    <div style="display:none;" id="loadedPage" class="animate-bottom">
 
     <div class="container mt-5">
         <div class="row">
@@ -60,5 +61,19 @@
         </p>
 
     </div>
+</div>
 </body>
+
+<script>
+    var myVar;
+    
+    function myFunction() {
+      myVar = setTimeout(showPage, 100);
+    }
+    
+    function showPage() {
+      document.getElementById("loader").style.display = "none";
+      document.getElementById("loadedPage").style.display = "block";
+    }
+    </script>
 </html>

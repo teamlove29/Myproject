@@ -61,6 +61,9 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   display: block;
 }
 
+
+
+
 body {
   margin: 0;
   font-family: 'Prompt', sans-serif;
@@ -10904,6 +10907,7 @@ footer.sticky-footer .copyright {
     width: calc(100% - 225px);
   }
 }
+
 
 body.sidebar-toggled footer.sticky-footer {
   width: 100%;

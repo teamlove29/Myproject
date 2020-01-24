@@ -11,65 +11,13 @@
     </tr>
   </thead>
   <tbody>
+    <% listTopTen.map((value,index) => {   %>
     <tr>
-      <td>1</td>
-      <td scope="row">603410310137</td>
-      <td>นายอัษฎาวุฒิ ทาบรรหาญ</td>
-      <td>811</td>
+      <td><%= index +1%></td>
+      <td><%= value.userPosition %></td>
+      <td><%= value.userFname + ' ' + value.userLname%></td>
+      <td><%= value.userAllScore %></td>
     </tr>
-    <tr>
-      <td>2</td>
-      <td scope="row">603410310137</td>
-      <td>นางสาวสุดาพร ทับสีแก้ว</td>
-      <td>222</td>
-    </tr>
-    <tr>
-      <td>3</td>
-      <td scope="row">603410310137</td>
-      <td>นางสาวพิชญ์สินี เสมอ</td>
-      <td>205</td>
-    </tr>
-    <tr>
-      <td>4</td>
-      <td scope="row">603410310137</td>
-      <td>นางสาวพิชญ์สินี เสมอ</td>
-      <td>105</td>
-    </tr>
-    <tr>
-      <td>5</td>
-      <td scope="row">603410310137</td>
-      <td>นางสาวพิชญ์สินี เสมอ</td>
-      <td>89</td>
-    </tr>
-    <tr>
-      <td>6</td>
-      <td scope="row">603410310137</td>
-      <td>นางสาวพิชญ์สินี เสมอ</td>
-      <td>77</td>
-    </tr>
-    <tr>
-      <td>7</td>
-      <td scope="row">603410310137</td>
-      <td>นางสาวพิชญ์สินี เสมอ</td>
-      <td>60</td>
-    </tr>
-    <tr>
-      <td>8</td>
-      <td scope="row">603410310137</td>
-      <td>นางสาวพิชญ์สินี เสมอ</td>
-      <td>58</td>
-    </tr>
-    <tr>
-      <td>9</td>
-      <td scope="row">603410310137</td>
-      <td>นางสาวพิชญ์สินี เสมอ</td>
-      <td>15</td>
-    </tr>
-    <tr>
-      <td>10</td>
-      <td scope="row">603410310137</td>
-      <td>นางสาวพิชญ์สินี เสมอ</td>
-      <td>10</td>
-    </tr>
+    <%})%>
   </tbody>
 </table>

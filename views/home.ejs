@@ -15,9 +15,10 @@
 
     </style>
   </head>
-  <body>
+  <body id="page-top loadedPage"   onload="myFunction()">
+    <div id="loader"></div>
     <%- include ('./component/user/navbar')%>
-
+    <div style="display:none;" id="loadedPage" class="animate-bottom">
     <div class="text-center margin-20">
       <img
         class="img-fluid rounded "
@@ -73,6 +74,7 @@
         </table>
       </div>
     </div>
+  </div>
     <%- include ('./component/user/footer.ejs')%>
   </body>
   <script
@@ -108,6 +110,17 @@
 
 
 </script>
-
+  <script>
+    var myVar;
+    
+    function myFunction() {
+      myVar = setTimeout(showPage, 100);
+    }
+    
+    function showPage() {
+      document.getElementById("loader").style.display = "none";
+      document.getElementById("loadedPage").style.display = "block";
+    }
+    </script>
 
 </html>

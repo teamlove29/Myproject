@@ -8,13 +8,13 @@
   <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <!-- Custom styles for this template-->
   <link href="/css/sb-admin.css" rel="stylesheet">
-
-    <title>Document</title>
+  <link href="/css/style.css" rel="stylesheet">
+    <title>เพิ่มทรัพยากร</title>
 </head>
 
 
-<body id="page-top">
-
+<body id="page-top loadedPage"   onload="myFunction()">
+  <div id="loader"></div>
     <%- include('../../component/admin/navbar')%>
  
    <div id="wrapper">
@@ -39,6 +39,7 @@
         </ol>
 
  <!-- DataTables Example edit -->
+ <div style="display:none;" id="loadedPage" class="animate-bottom">
  <div class="container">
   <div class="card card-register mx-auto mt-5">
     <div class="card-header">แก้ไขทรัพยากร</div>
@@ -67,7 +68,7 @@
         </div>
         <button type="submit" class="btn btn-success">แก้ไข</button>
       </form>
-
+    </div>
     </div>
   </div>
 </div>
@@ -86,11 +87,12 @@
         </ol>
 
  <!-- DataTables Example add -->
+ <div style="display:none;" id="loadedPage" class="animate-bottom">
  <div class="container">
   <div class="card card-register mx-auto mt-5">
     <div class="card-header">+เพิ่มทรัพยากร</div>
     <div class="card-body">
-      <form action="/ManagerResource/addresource/resource" method="POST">
+      <form action="/addresource" method="POST">
         <div class="form-group">
           <div class="form-row">
             <div class="col-md-6">
@@ -115,7 +117,7 @@
         <button type="submit" class="btn btn-success">บันทึก</button>
         <button type="reset" class="btn btn-secondary">เคลียร์</button>
       </form>
-
+    </div>
     </div>
   </div>
 </div>

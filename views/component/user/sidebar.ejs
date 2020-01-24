@@ -20,16 +20,34 @@
     ลงทะเบียนกิจกรรม
   </button>
   <button 
-  onclick="javascript:window.location.href='/test'"
+  onclick="javascript:window.location.href='/history'"
   class="btn btn-secondary btn-block text-white pt-3 pb-3 text-center"
   >
   <i class="fas fa-history"></i>
     ประวัติเข้าร่วมกิจกรรม
   </button>
-  <button
-    onclick="javascript:window.location.href='/logout'"
-    class="btn btn-danger btn-block text-white pt-3 pb-3 text-center"
-  >
+  <a
+  class="btn btn-danger btn-block text-white pt-3 pb-3 text-center"
+  data-toggle="modal" data-target="#logoutModal"  class="text-danger nav-link" href="#">
   <i class="fas fa-sign-out-alt"></i>
-    ออกจากระบบ
-  </button>
+    ออกจากระบบ</a
+    >
+
+
+         <!-- Logout Modal-->
+         <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">ต้องการออกจากระบบ ?</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">×</span>
+                </button>
+              </div>
+              <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">ยกเลิก</button>
+                <a class="btn btn-danger" href="/logout">ออกจากระบบ</a>
+              </div>
+            </div>
+          </div>
+        </div>

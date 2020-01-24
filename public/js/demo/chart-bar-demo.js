@@ -7,12 +7,12 @@ var ctx = document.getElementById("myBarChart");
 var myLineChart = new Chart(ctx, {
   type: 'bar',
   data: {
-    labels: ["January", "February", "March", "April", "May", "June"],
+    labels: ["มกราคม", "กุมภาพันธ์", "มีนาคม ", "เมษายน ", "พฤษภาคม ", "มิถุนายน ", "กรกฎาคม ", "สิงหาคม ", "กันยายน ", "ตุลาคม ", "พฤศจิกายน ", "ธันวาคม "],
     datasets: [{
-      label: "Revenue",
+      label: "จำนวน",
       backgroundColor: "rgba(2,117,216,1)",
       borderColor: "rgba(2,117,216,1)",
-      data: [4215, 5312, 6251, 7841, 9821, 14984],
+      data: [43, 10, 15, 20, 25, 30,35, 50, 25, 30,35,10],
     }],
   },
   options: {
@@ -22,17 +22,17 @@ var myLineChart = new Chart(ctx, {
           unit: 'month'
         },
         gridLines: {
-          display: false
+          display: true
         },
         ticks: {
-          maxTicksLimit: 6
+          maxTicksLimit: 12
         }
       }],
       yAxes: [{
         ticks: {
           min: 0,
-          max: 15000,
-          maxTicksLimit: 5
+          max: 50,
+          maxTicksLimit: 6
         },
         gridLines: {
           display: true
@@ -40,7 +40,7 @@ var myLineChart = new Chart(ctx, {
       }],
     },
     legend: {
-      display: false
+      display: true
     }
   }
 });

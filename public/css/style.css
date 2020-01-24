@@ -7,6 +7,7 @@ html {
   height: 100%;
   margin: 0;
   padding: 0;
+  font-size: 15px;
   /* margin: auto; */
 }
 
@@ -117,7 +118,7 @@ footer {
     margin-top: 76px;
     position: absolute;
     bottom: 0px;
-    color: #ecb731;
+    color: black;
     background: #ffffff;
     width: 100%;
     text-align: right;
@@ -128,9 +129,15 @@ a{
     text-decoration: none;
     font-size: 14px;
     /* color: #ff0000; */
-    
+}
+.breadcrumb-item{
+  font-size: 14px;
 }
 
+
+.F14{
+  font-size: 14px;
+}
 
 .bg-blue1 {
   background-color: #e3f2fd;
@@ -141,4 +148,56 @@ a{
   padding: 10px;
   box-shadow: 0px 10px 10px grey;
   margin-top: 2rem;
+}
+
+
+/* Center the loader */
+#loader {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 1;
+  width: 150px;
+  height: 150px;
+  margin: -75px 0 0 -10px;
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 15px solid #3498db;
+  width: 100px;
+  height: 100px;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+}
+
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Add animation to "page content" */
+.animate-bottom {
+  position: relative;
+  -webkit-animation-name: animatebottom;
+  -webkit-animation-duration: 1s;
+  animation-name: animatebottom;
+  animation-duration: 0.5s
+}
+
+@-webkit-keyframes animatebottom {
+  from { bottom:-100px; opacity:0 } 
+  to { bottom:0px; opacity:1 }
+}
+/* เดิมๆ -100px = มาจากด้านล่าง  */
+@keyframes animatebottom { 
+  from{ bottom:0px; opacity:0 }  
+  to{ bottom:0; opacity:1 }
+}
+
+#loadedPage {
+  display: none;
 }

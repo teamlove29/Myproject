@@ -22,8 +22,11 @@
         <p class="lead">Page not found. You can
           <a href="javascript:history.back()">go back</a>
           to the previous page, or
-          <a href="index.html">return home</a>.</p>
-
+          <% if(data.admin === true) {%>
+          <a href="/main">return Main</a></p>
+            <% }else{ %>
+              <a href="/home">return Home</a></p>
+              <% } %>
       </div>
 </body>
 </html>
