@@ -34,9 +34,9 @@ module.exports = async (req, res, next) => {
 
 // redirect
 const checkAdmin = (req, res, next) => {
-    req.session.status === 'admin' ? next() : res.render('404',{ data:{admin:true,user:false}})}
+    req.session.status === 'admin' ? next() : res.render('404',{ data:{admin:false,user:true}})}
 const checkUser = (req, res, next) => { 
-    req.session.status === 'user' ? next() : res.render('404',{ data:{admin:false,user:true}})}
+    req.session.status === 'user' ? next() : res.render('404',{ data:{admin:true,user:false}})}
 
 
 module.exports.checkAdmin = checkAdmin

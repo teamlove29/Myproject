@@ -17,7 +17,7 @@
   <title>backend : สมาคมกู้ภัยจังหวัดลำปาง</title>
 </head>
 
-<body id="page-top loadedPage"   onload="myFunction()">
+<body id="page-top"  id="loadedPage" onload="myFunction()">
   <div id="loader"></div>
    <%- include('../../component/admin/navbar')%>
 
@@ -66,19 +66,26 @@
                 </thead>
         
                 <tbody>
+                    <% var free = 0
+                        var free2 = 0    
+                    %>
                   <% listsActivity.map((value, index) => {  %>
                     <% if(value.actCode != 'Complete') {%>
                   <tr>
-                    <%  var dd = value.actDate.getDate() 
+                    <%  
+                        free = free + 1
+                        var dd = value.actDate.getDate() 
                         var mm = value.actDate.getMonth() + 1
                         var yyyy = value.actDate.getFullYear()
                         if (dd < 10) {
                           dd = '0' + dd;
                         } 
                         if (mm < 10) {
-                          mm = '0' + mm;
+                          <!-- mm = '0' + mm; -->
                         } 
-                       var today = dd + '/' + mm + '/' + yyyy;
+                        const monthArray = ["","มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน","กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม"] 
+                        mm = monthArray[mm]
+                       var today = dd + ' ' + mm + ' ' + yyyy;
                     %>
                     <td><%= today %></td>
                     <td><%= value.actName %></td>
@@ -104,13 +111,15 @@
                         class="btn btn-sm btn-secondary "><i class="fas fa-search"></i></button>
                         <button 
                         onclick="javascript:window.location.href='/ManagerActivity/editactivity/<%= value.actId%>'"
-                        class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></button>
+                        class="btn btn-sm editIcon"><i class="fas fa-pen"></i></button>
                         <button 
                         data-toggle="modal" data-target="#DeleteModal<%= index%>"
-                        class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                        class="btn btn-sm deleteIcon"><i class="fas fa-trash"></i></button>
                     </td>
                   </tr>
+
                   <%}%>
+                  
                                  <!-- modal -->
                                  <div class="modal fade" id="DeleteModal<%= index%>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
                                   aria-hidden="true">
@@ -132,13 +141,20 @@
                                   </div>
                                 </div>
                                 <!-- End modal -->
-                  <% })%>
+                  <% }) %>
+                  <% if(free ===0) {%>
+                <tr>
+                  <td class="text-center" colspan="7">----- ไม่มีข้อมูล -----</td>
+              </tr>
+              <%}%>
                 </tbody>
               </table>    
         </div>
-        
-        <hr>
-        <h3>เรียบร้อยแล้ว</h3>
+        <ol class="breadcrumb mt-5" style="background-color: #6DB560;">
+          <li class="breadcrumb-item active text-white">กิจกรรมที่เรียบร้อยแล้ว</li>
+        </ol>
+
+
         
         
           <div class="table-responsive">
@@ -158,16 +174,21 @@
                 <% listsActivity.map((value, index) => {  %>
                   <% if(value.actCode === 'Complete') {%>
                 <tr>
-                  <%  var dd = value.actDate.getDate() 
+                  <%  
+                      free2 = free2 + 1
+                      var dd = value.actDate.getDate() 
                       var mm = value.actDate.getMonth() + 1
                       var yyyy = value.actDate.getFullYear()
                       if (dd < 10) {
                         dd = '0' + dd;
                       } 
                       if (mm < 10) {
-                        mm = '0' + mm;
+                        <!-- mm = '0' + mm; -->
                       } 
-                     var today = dd + '/' + mm + '/' + yyyy;
+
+                      const monthArray = ["","มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน","กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม"] 
+                      mm = monthArray[mm]
+                     var today = dd + ' ' + mm + ' ' + yyyy;
                   %>
                   <td><%= today %></td>
                   <td><%= value.actName %></td>
@@ -188,10 +209,10 @@
                       class="btn btn-sm btn-secondary "><i class="fas fa-search"></i></button>
                       <button 
                       onclick="javascript:window.location.href='/ManagerActivity/editactivity/<%= value.actId%>'"
-                      class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></button>
+                      class="btn btn-sm editIcon"><i class="fas fa-pen"></i></button>
                       <button 
                       data-toggle="modal" data-target="#DeleteModal<%= index%>"
-                      class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                      class="btn btn-sm deleteIcon"><i class="fas fa-trash"></i></button>
                   </td>
                 </tr>
                 <%}%>
@@ -216,6 +237,11 @@
                               </div>
                               <!-- End modal -->
                 <% })%>
+                <% if(free2 === 0) {%>
+                  <tr>
+                    <td class="text-center" colspan="7">----- ไม่มีข้อมูล -----</td>
+                </tr>
+                <%}%>
               </tbody>
             </table>       
         </div>

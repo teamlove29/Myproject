@@ -19,7 +19,7 @@
 
 </head>
 
-<body id="page-top loadedPage"   onload="myFunction()">
+<body id="page-top"  id="loadedPage" onload="myFunction()">
   <div id="loader"></div>
    <%- include('../../component/admin/navbar')%>
 
@@ -60,7 +60,7 @@
                       <th>รูป</th>
                       <th>รหัส</th>
                       <th>ชื่อ-นามสกุล</th>
-                      <th>พื้นที่ดูแล</th>
+                      <th>นามเรียกขาน</th>
                       <th>เพศ</th>
                       <th>สถานะ</th>
                       <th>ตัวเลือก</th>
@@ -72,16 +72,16 @@
                       <td class="align-middle"><img style="width: 100px;" src="/uploads/<%= value.userImage %>" alt=""></td>
                       <td class="align-middle"><%= value.userPosition%></td>
                       <td class="align-middle"><%= value.userFname +' '+ value.userLname%></td>
-                      <td class="align-middle">เกาะคา</td>
+                      <td class="align-middle"><%= value.userArea %></td>
                       <td class="align-middle"><%= value.userSex %></td>
                       <td class="align-middle"><%= value.userStatus %></td>
                       <td class="align-middle">
                         <button 
                         class="btn btn-sm btn-secondary"
-                        ><i class="fas fa-search"></i></button>
+                        ><i class="fas fa-user"></i></button>
                         <button onclick="javascript:window.location.href='/ManagerUser/edituser/<%= value.userId %>'"
-                          class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></button>
-                        <button data-toggle="modal" data-target="#DeleteModal<%= index%>" class="btn btn-sm btn-danger"><i
+                          class="btn btn-sm editIcon"><i class="fas fa-pen"></i></button>
+                        <button data-toggle="modal" data-target="#DeleteModal<%= index%>" class="btn btn-sm deleteIcon"><i
                             class="fas fa-trash"></i></button>
                       </td>
                     </tr>
@@ -116,7 +116,7 @@
                       
         
       <!-- /.container-fluid -->
-
+<div class="mt-5"></div>
       <!-- Sticky Footer -->
       <footer class="sticky-footer">
         <div class="container my-auto">

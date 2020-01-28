@@ -6,7 +6,7 @@
   <title>backend : สมาคมกู้ภัยจังหวัดลำปาง</title>
 </head>
 
-<body id="page-top loadedPage"   onload="myFunction()">
+<body id="page-top"  id="loadedPage" onload="myFunction()">
   <div id="loader"></div>
    <%- include('../../component/admin/navbar')%>
 
@@ -34,7 +34,7 @@
         class="p-2 mb-3 btn btn-success btn-sm"><i class="fas fa-plus"></i> เพิ่มทรัพยากร</button>
         <button 
         onclick="javascript:window.location.href='/historyAll'"
-        class="p-2 mb-3 btn btn-secondary btn-sm"><i class="fas fa-redo-alt"></i> ประวัติย้อนหลัง</button>
+        class="p-2 mb-3 btn btn-light btn-sm"><i class="fas fa-redo-alt"></i> ประวัติย้อนหลัง</button>
         <button 
         onclick="javascript:window.location.href='/historyOneDay'"
         class="p-2 mb-3 btn btn-secondary btn-sm"><i class="far fa-calendar-check"></i> ทรัพยากรที่ใช้แต่ละวัน</button>
@@ -48,7 +48,7 @@
 <h4>ทรัพยากรที่ใช้แต่ละวัน</h4>
 <div style="display:none;" id="loadedPage" class="animate-bottom">
 <div class="table-responsive">
-  <table class="table table-striped table-sm" width="100%" cellspacing="0">
+  <table class="table table-striped" width="100%" cellspacing="0">
       <thead>
           <tr>
               <th>วัน/เดือน/ปี</th>
@@ -61,17 +61,21 @@
       <tbody>
         <% if(listHitory != ''){ %>
           <% listHitory.map((value,index) => {  %>
-              <%  var dd = value.deRes_date.getDate() 
-              var mm = value.deRes_date.getMonth() + 1
-              var yyyy = value.deRes_date.getFullYear()
-              if (dd < 10) {
-                dd = '0' + dd;
-              } 
-              if (mm < 10) {
-                mm = '0' + mm;
-              } 
-             var today = dd + '/' + mm + '/' + yyyy;
-          %>
+            <%  
+            var dd = value.deRes_date.getDate() 
+            var mm = value.deRes_date.getMonth() + 1
+            var yyyy = value.deRes_date.getFullYear()
+            if (dd < 10) {
+              dd = '0' + dd;
+            } 
+            if (mm < 10) {
+              <!-- mm = '0' + mm; -->
+            } 
+
+            const monthArray = ["","มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน","กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม"] 
+            mm = monthArray[mm]
+           var today = dd + ' ' + mm + ' ' + yyyy;
+        %>
           <tr>
               <td><%= today %></td>
               <td><%= value.resName %></td>

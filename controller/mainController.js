@@ -12,6 +12,7 @@ const home =  (req, res) => {
       data:{
         image:req.session.image,
         name:req.session.username,
+        code:req.session.code
     }})
   })
 

@@ -14,7 +14,7 @@
 </head>
 
 
-<body id="page-top loadedPage"   onload="myFunction()">
+<body id="page-top"  id="loadedPage" onload="myFunction()">
   <div id="loader"></div>
 
     <%- include('../../component/admin/navbar')%>
@@ -62,8 +62,8 @@
         </div>
         <div class="form-group">
           <div class="form-label-group">
-            <input value="<%= value.userArea %>"  type="text" name="area" id="area" class="form-control" placeholder="พื้นที่ดูแล" required="required">
-            <label for="area">พื้นที่ดูแล</label>
+            <input value="<%= value.userArea %>"  type="text" name="area" id="area" class="form-control" placeholder="นามเรียกขาน" required="required">
+            <label for="area">นามเรียกขาน</label>
           </div>
         </div>
         <div class="form-group">
@@ -84,7 +84,7 @@
         </div>
         <div class="form-group">
           <div class="form-label-group">
-            <input value="<%= value.userIdCard %>" type="text" name="idCard" id="idCard" class="form-control" placeholder="บัตรประชาชน" required="required">
+            <input value="<%= value.userIdCard %>" type="text" name="idCard" id="idCard" class="form-control" placeholder="บัตรประชาชน" >
             <label for="idCard">บัตรประชาชน</label>
           </div>
         </div>
@@ -96,13 +96,13 @@
         </div>
         <div class="form-group">
           <div class="form-label-group">
-            <input value="<%= value.userEmail %>" type="email" name="Email" id="Email" class="form-control" placeholder="อีเมล์" required="required">
+            <input value="<%= value.userEmail %>" type="email" name="Email" id="Email" class="form-control" placeholder="อีเมล์" >
             <label for="Email">อีเมล์</label>
           </div>
         </div>
         <div class="form-group">
           <div class="form-label-group">
-            <input value="<%= value.userTel %>" type="text" name="tel" id="tel" class="form-control" placeholder="Email address" required="required">
+            <input value="<%= value.userTel %>" type="text" name="tel" id="tel" class="form-control" placeholder="Email address">
             <label for="tel">เบอร์โทร</label>
           </div>
         </div>
@@ -168,8 +168,8 @@
                   </div>
                   <div class="form-group">
                     <div class="form-label-group">
-                      <input type="text" name="area" id="area" class="form-control" placeholder="พื้นที่ดูแล" required="required">
-                      <label for="area">พื้นที่ดูแล</label>
+                      <input type="text" name="area" id="area" class="form-control" placeholder="นามเรียกขาน" required="required">
+                      <label for="area">นามเรียกขาน</label>
                     </div>
                   </div>
                   <div class="form-group">
@@ -190,7 +190,7 @@
                   </div>
                   <div class="form-group">
                     <div class="form-label-group">
-                      <input type="text" name="idCard" id="idCard" class="form-control" placeholder="บัตรประชาชน" required="required">
+                      <input type="text" name="idCard" id="idCard" class="form-control" placeholder="บัตรประชาชน" >
                       <label for="idCard">บัตรประชาชน</label>
                     </div>
                   </div>
@@ -202,13 +202,13 @@
                   </div>
                   <div class="form-group">
                     <div class="form-label-group">
-                      <input type="email" name="Email" id="Email" class="form-control" placeholder="อีเมล์" required="required">
+                      <input type="email" name="Email" id="Email" class="form-control" placeholder="อีเมล์" >
                       <label for="Email">อีเมล์</label>
                     </div>
                   </div>
                   <div class="form-group">
                     <div class="form-label-group">
-                      <input type="text" name="tel" id="tel" class="form-control" placeholder="tel" required="required">
+                      <input type="text" name="tel" id="tel" class="form-control" placeholder="tel">
                       <label for="tel">เบอร์โทร</label>
                     </div>
                   </div>
@@ -227,7 +227,7 @@
                   <div class="form-group">
                     <input type="file" accept="image/*" name="avatar" id="avatar"  accept="image/png, image/jpeg" onchange="loadFile(event)">
                   </div>
-                  
+                  <button class="btn btn-secondary">ลบรูป</button>
                   <button class="btn btn-success">ลงทะเบียน</button>
                 </form>
         

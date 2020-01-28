@@ -15,7 +15,7 @@
 
     </style>
   </head>
-  <body id="page-top loadedPage"   onload="myFunction()">
+  <body id="page-top"  id="loadedPage" onload="myFunction()">
     <div id="loader"></div>
     <%- include ('./component/user/navbar')%>
     <div style="display:none;" id="loadedPage" class="animate-bottom">
@@ -30,12 +30,12 @@
     <div class="container wrapper">
 
       <div class="row text-center mt-4">
-        <div class="col-3">
+        <div class=" col-sm-12 col-md-3">
           <%- include ('./component/user/sidebar')%>
         </div>
         <!-- end col-4 -->
 
-        <div class="col-8">
+        <div class=" col-sm-12 col-md-9">
           <%- include ('./component/user/tableHome')%>
         </div>
         <!-- end col-7 -->

@@ -9,7 +9,7 @@
 
 </head>
 
-<body id="page-top loadedPage"   onload="myFunction()">
+<body id="page-top"  id="loadedPage" onload="myFunction()">
   <div id="loader"></div>
 
    <%- include('../../component/admin/navbar')%>
@@ -40,7 +40,7 @@
         class="p-2 mb-3 btn btn-secondary btn-sm"><i class="fas fa-redo-alt"></i> ประวัติย้อนหลัง</button>
         <button 
         onclick="javascript:window.location.href='/historyOneDay'"
-        class="p-2 mb-3 btn btn-secondary btn-sm"><i class="far fa-calendar-check"></i> ทรัพยากรที่ใช้แต่ละวัน</button>
+        class="p-2 mb-3 btn btn-light btn-sm"><i class="far fa-calendar-check"></i> ทรัพยากรที่ใช้แต่ละวัน</button>
         <div class="float-right">
           <button
           onclick="javascript:window.location.href='/exportResource'"
@@ -51,7 +51,7 @@
 
         <div style="display:none;" id="loadedPage" class="animate-bottom">
 <div class="table-responsive">
-  <table data-order='[[ 0, "DESC" ]]' class="table table-striped table-sm" id="dataTable"  width="100%" cellspacing="0">
+  <table data-order='[[ 0, "DESC" ]]' class="table table-striped " id="dataTable"  width="100%" cellspacing="0">
       <thead>
           <tr>
             <th>วัน/เดือน/ปี</th>
@@ -69,6 +69,21 @@
              var day = date.slice(0,10).replace(/-/g,"-")
              var day = date.slice(0,10).replace(/,/g,"")
           %>
+          <%  
+          var dd = value.deRes_date.getDate() 
+          var mm = value.deRes_date.getMonth() + 1
+          var yyyy = value.deRes_date.getFullYear()
+          if (dd < 10) {
+            dd = '0' + dd;
+          } 
+          if (mm < 10) {
+            mm = '0' + mm;
+          } 
+
+          const monthArray = ["","มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน","กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม"] 
+          mm = monthArray[mm]
+         var today = dd + ' ' + mm + ' ' + yyyy;
+      %>
           <tr>
               <td><%= day %></td>
               <td><%= value.resName %></td>

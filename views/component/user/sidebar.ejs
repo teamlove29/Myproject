@@ -1,16 +1,13 @@
-<div class="bg-light pt-5 mb-2 p-2">
+<div class="bg-light pt-3 mb-2 p-2">
     <img
       width="150"
-      height="150"
+      height="200"
       class="rounded-circle"
       src="/uploads/<%= data.image %>"
       alt=""
     />
-    <p class="mt-2"><%= data.name%></p>
-    <p style="line-height: 10px">No.50104182</p>
-    <button class="btn btn-sm btn-secondary btn-block">
-      แก้ไขประวัติส่วนตัว
-    </button>
+    <p class="mt-2">คุณ: <%= data.name%></p>
+    <p style="line-height: 10px">รหัส: <%= data.code%></p>
   </div>
 
   <button 
@@ -21,10 +18,17 @@
   </button>
   <button 
   onclick="javascript:window.location.href='/history'"
-  class="btn btn-secondary btn-block text-white pt-3 pb-3 text-center"
+  class="btn btn-info btn-block text-white pt-3 pb-3 text-center"
   >
   <i class="fas fa-history"></i>
     ประวัติเข้าร่วมกิจกรรม
+  </button>
+  <button 
+  onclick="javascript:window.location.href='/CheckUser'"
+  class="btn btn-info btn-block text-white pt-3 pb-3 text-center"
+  >
+  <i class="fas fa-search"></i>
+    ค้นหาบุคลากร
   </button>
   <a
   class="btn btn-danger btn-block text-white pt-3 pb-3 text-center"

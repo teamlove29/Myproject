@@ -35,6 +35,7 @@ const loginPost =  ("/login", async (req, res) => {
           req.session.userId = respon[0].userId
           req.session.username = respon[0].userFname + ' ' + respon[0].userLname
           req.session.status = respon[0].userStatus
+          req.session.code = respon[0].userPosition
           req.session.Islogin = true
           req.session.token = token
           req.session.image = respon[0].userImage

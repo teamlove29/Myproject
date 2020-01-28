@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+          <!-- Custom fonts for this template-->
+  <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <!-- Custom styles for this template-->
+  <link href="/css/sb-admin.css" rel="stylesheet">
+  <link href="/css/style.css" rel="stylesheet">
+    <title>ลงทะเบียนกิจกรรม</title>
+</head>
+<body id="page-top"  id="loadedPage" onload="myFunction()">
+  <div id="loader"></div>
+  <div style="display:none;" id="loadedPage" class="animate-bottom">
+    <div class="container">
+        <div class="card card-register mx-auto mt-5">
+            <% if(data.err == true) { %>
+          <div class="<%= data.cls %>" role="alert">
+            <div class="form-inline">
+            <img class="mr-3 mb-2" width="150"  height="200" src="/uploads/<%= data.image %>" alt=""> 
+            ชื่อ : <%= data.name %>  <br>
+            รหัสประจำตำแหน่ง : <%= data.code %> <br>
+            พื้นที่ดูแล : <%= data.Area %>
+          </div>
+          </div>
+
+          <% }else { }%>
+          <div class="card-header text-center text-white" style="background-color: #73696a;">ค้นหาบุคลากร (รหัสประจำตำแหน่ง)</div>
+          <div class="card-body" style="background-color: #787977;">
+            <form class="form-inline" action="/PostCheckUser" method="POST">
+              <div class="form-group" style="margin: 0 auto;">
+                <div class="form-label-group">
+                  <input type="number" name="code" id="code" class="form-control " placeholder="รหัสประจำตำแหน่ง" required="required">
+                  <label for="code">รหัสประจำตำแหน่ง</label>
+                </div>
+                <button class="btn btn-success ml-3 pl-3 pr-3  pt-2 pb-2">ค้นหา</button>
+              </div>
+
+        
+              
+            </form>
+      
+          </div>
+        </div>
+      </div>
+      <p class="lead text-center mt-5">กลับหน้าหลัก
+        <a href="/home">คลิ๊ก</a>
+      </div>
+</body>
+<%- include('../../component/admin/scriptJs')%>
+</html>

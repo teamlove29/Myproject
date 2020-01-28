@@ -199,10 +199,13 @@ const posteditActivity = async (req, res) => {
 
 }
 const delActivity = async (req, res) => {
+
   const IdActivity = req.params.id
    const sqlSeeScorce = "SELECT `actScore` FROM `activity` WHERE actId = ?"
-  con.query(sqlSeeScorce,[IdActivity], (err,responSeeScore) => {
-    const ScoreActivityDel =  responSeeScore[0].actScore
+    con.query (sqlSeeScorce,[IdActivity],  (err,responSeeScore) => {
+      if(responSeeScore != ''){
+        var ScoreActivityDel =  responSeeScore[0].actScore
+      }
       const sql = "SELECT * FROM `activity` order BY actId DESC"
       con.query(sql, (err, respon2) => {
         const sqlnum = "SELECT activity.actId FROM `register` INNER JOIN `register_detail` INNER JOIN activity INNER JOIN user ON register.actId = activity.actId AND register.regId = register_detail.regId AND register_detail.userId = user.userId "
@@ -212,12 +215,12 @@ const delActivity = async (req, res) => {
             result[value.actId] ? result[value.actId]++ : result[value.actId] = 1
           })
           const sqlScore = "SELECT user.userAllscore,user.userId,user.userPosition,user.userFname,user.userLname,user.userArea FROM `register` INNER JOIN `register_detail` INNER JOIN activity INNER JOIN user ON register.actId =  activity.actId AND register.regId = register_detail.regId AND register_detail.userId = user.userId WHERE activity.actId = ?"
-          con.query(sqlScore,[IdActivity],(err,responScore) => {
+          con.query(sqlScore,[IdActivity], async(err,responScore) => {
             if(responScore.length>0){
               for(var i=0; i < responScore.length;i++){
-                const userId = responScore[i].userId
-                const scoreUser = responScore[i].userAllscore
-                const scoreReal = (scoreUser-ScoreActivityDel)
+                const userId = await responScore[i].userId
+                const scoreUser =await responScore[i].userAllscore
+                const scoreReal = await (scoreUser-ScoreActivityDel)
                 if(scoreReal < 0){10  
                   scoreReal = 0
                 }
@@ -226,45 +229,63 @@ const delActivity = async (req, res) => {
                 })
               }
               // หมดFor
-                const sql =  "DELETE FROM `activity` WHERE `activity`.`actId` = ?"
-                const sqlActivityAll = "SELECT * FROM `activity` order BY actId DESC" 
-                con.query(sql, [IdActivity], (err, respon) => {
-                  con.query(sqlActivityAll,(err,responActivityAll) => {
-                    res.render('page/ativity/activityPage', {
-                      peopleJoin: result,
-                      listsActivity: responActivityAll,
-                      data: {
-                        css:true,
-                        err:true,
-                        msg : 'ลบกิจกรรม เรียบร้อยแล้ว',
-                        cls : 'alert alert-success',
-                        dashboard: false,
-                        managerUser: false,
-                        managerActivity: true,
-                        managerResource: false
-                      }
+              const sql =  "DELETE FROM `activity` WHERE `activity`.`actId` = ?"
+              const sqlActivityAll = "SELECT * FROM `activity` order BY actId DESC" 
+              const sqlnum = "SELECT activity.actId FROM `register` INNER JOIN `register_detail` INNER JOIN activity INNER JOIN user ON register.actId = activity.actId AND register.regId = register_detail.regId AND register_detail.userId = user.userId "
+              con.query(sql, [IdActivity], (err, respon) => {
+                con.query(sqlActivityAll,(err,responActivityAll) => {
+                  con.query(sqlnum,async (err,responJoin) => {
+                    let result = {}
+                    await responJoin.map(value => {
+                      result[value.actId] ? result[value.actId]++ : result[value.actId] = 1
                     })
-                  })    
-              })
+            
+                      res.render('page/ativity/activityPage', {
+                        peopleJoin: result,
+                        listsActivity: responActivityAll,
+                        data: {
+                              css:true,
+                              err:true,
+                              msg : 'ลบกิจกรรม เรียบร้อยแล้ว',
+                              cls : 'alert alert-success',
+                          dashboard: false,
+                          managerUser: false,
+                          managerActivity: true,
+                          managerResource: false
+                        }
+                      })
+                  })
+            
+                              })    
+                          })
             }else{
-                const sql =  "DELETE FROM `activity` WHERE `activity`.`actId` = ?"
-                const sqlActivityAll = "SELECT * FROM `activity` order BY actId DESC" 
-                con.query(sql, [IdActivity], (err, respon) => {
-                  con.query(sqlActivityAll,(err,responActivityAll) => {
-                    res.render('page/ativity/activityPage', {
-                      peopleJoin: result,
-                      listsActivity: responActivityAll,
-                      data: {
-                        css:true,
-                        err:true,
-                        msg : 'ลบกิจกรรม เรียบร้อยแล้ว',
-                        cls : 'alert alert-success',
-                        dashboard: false,
-                        managerUser: false,
-                        managerActivity: true,
-                        managerResource: false
-                      }
-                    })
+  const sql =  "DELETE FROM `activity` WHERE `activity`.`actId` = ?"
+  const sqlActivityAll = "SELECT * FROM `activity` order BY actId DESC" 
+  const sqlnum = "SELECT activity.actId FROM `register` INNER JOIN `register_detail` INNER JOIN activity INNER JOIN user ON register.actId = activity.actId AND register.regId = register_detail.regId AND register_detail.userId = user.userId "
+  con.query(sql, [IdActivity], (err, respon) => {
+    con.query(sqlActivityAll,(err,responActivityAll) => {
+      con.query(sqlnum,async (err,responJoin) => {
+        let result = {}
+        await responJoin.map(value => {
+          result[value.actId] ? result[value.actId]++ : result[value.actId] = 1
+        })
+
+          res.render('page/ativity/activityPage', {
+            peopleJoin: result,
+            listsActivity: responActivityAll,
+            data: {
+                  css:true,
+                  err:true,
+                  msg : 'ลบกิจกรรม เรียบร้อยแล้ว',
+                  cls : 'alert alert-success',
+              dashboard: false,
+              managerUser: false,
+              managerActivity: true,
+              managerResource: false
+            }
+          })
+      })
+
                   })    
               })
             }

@@ -195,6 +195,55 @@ const getArea = (req,res) => {
 }
 
 
+const CheckUser = (req,res) => {
+  res.render('page/user/checkUser',{
+    data:{
+      err:false,
+        msg : '',
+          cls : '',
+    }
+  })
+}
+
+const PostCheckUser = (req,res) => {
+  const {code} = req.body
+const sql = "SELECT `userPosition`,`userFname`,`userLname`,`userArea`,`userImage` FROM `user` WHERE `userPosition` = ?"
+  con.query(sql,[code],(err,respon) => {
+    if(respon.length > 0) {
+      const name = respon[0].userFname + ' ' + respon[0].userLname 
+      const Area = respon[0].userArea
+      const image = respon[0].userImage
+      res.render('page/user/checkUser',{
+        data:{
+            err:true,
+            image:image,
+            name:name,
+            code:code ,
+            Area:Area,
+              cls : 'alert alert-success',
+        }
+      })
+    }else{
+      res.render('page/user/checkUser',{
+        data:{
+          err:true,
+            image:'ไม่พบบุคลากร',
+            name:'ไม่พบบุคลากร',
+            code:'ไม่พบบุคลากร' ,
+            Area:'ไม่พบบุคลากร',
+              cls : 'alert alert-warning',
+        }
+      })
+    }
+  })
+
+}
+
+const profile = (req,res) => {
+  console.log('ok');
+  
+}
+
 module.exports.ManagerUser = ManagerUser
 module.exports.adduserPage = adduser
 module.exports.postUser = postUser
@@ -202,3 +251,6 @@ module.exports.editUser = editUser
 module.exports.postEditUser = postEditUser
 module.exports.delUser = delUser
 module.exports.getArea = getArea
+module.exports.CheckUser = CheckUser
+module.exports.PostCheckUser = PostCheckUser
+module.exports.profile = profile
