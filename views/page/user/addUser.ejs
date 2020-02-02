@@ -114,7 +114,7 @@
             </select>
           </div>
         </div>
-        <div class="form-group">'
+        <div class="form-group" id="hideImage">
         <img width="200" src="/uploads/<%= value.userImage%>" alt="">
         </div>
         
@@ -261,11 +261,12 @@
  
  <%- include('../../component/admin/scriptJs')%>
  
-
+ 
  </body>
  <script>
   var loadFile = function(event) {
     var output = document.getElementById('output');
+    document.getElementById("hideImage").style.display = "none";
     output.src = URL.createObjectURL(event.target.files[0]);
   };
 </script>

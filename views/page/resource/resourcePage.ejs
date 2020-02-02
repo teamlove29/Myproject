@@ -67,7 +67,7 @@
           </div>
           <%}%>
 
-          <div id="msg" class="alert alert-warning" role="alert"></div>
+          <div id="msg" class="" role="alert"></div>
             <div class="table-responsive">
               <table  class="table table-bordered table-sm" id="dataTable" width="100%" cellspacing="0">
                 <thead>
@@ -191,18 +191,15 @@
       var numbers = /^[0-9]+$/;
       if (person.match(numbers) && person > 0) {
           txt = "เรียบร้อย";
-          console.log(txt);
+          window.location.href = '/AddAmount?resId=' + idres + '&Amount=' + person;
           
-          // console.log("ok " + idresId, idAct, total,person);
-          // window.location.href = '/returnExport?resId=' + idres + '&Amount=' + person;;
       }
       else {
           txt = "กรุณาใส่จำนวน หรือ จำนวนเกินกว่าที่เบิก";
-          console.log(txt);
-          
-          // console.log("No " + idresId, idAct,total, person);
+          window.location.href = '/AddAmount?resId=' + idres + '&Amount=' + person;
       }
-      document.getElementById("msg").innerHTML = txt;
+      // document.getElementById("msg").innerHTML = txt;
+      // idres.preventDefault();
   }
 
     

@@ -438,24 +438,29 @@ const ReturnExport = (req,res) => {
       const sqlcheckreturn = "SELECT DISTINCT  order.orderId, order.actId, order_detail.resId, resource.resName,order_detail.deRes_status, SUM(order_detail.deRes_amount) AS total FROM `order` INNER JOIN `order_detail` ON order.orderId =  order_detail.orderId INNER JOIN resource ON order_detail.resId = resource.resId WHERE order.actId = ? && order_detail.deRes_status = 'คืน' && resource.resId = ? GROUP BY resource.resName"
         con.query(sqlcheckreturn,[idAct,idresId],(err,responCheckRe) => {
           if(responCheckRe.length > 0){
-            const toInt = parseInt(Amount)
-            if(toInt + responCheckRe[0].total <= responCheckOrder[0].total){
-              const orderId = respon[0].orderId
-              sql = "INSERT INTO `order_detail` (`orderId`, `resId`, `deRes_amount`, `deRes_date`, `deRes_status`) VALUES (?, ?, ?, ?, 'คืน')"
-              con.query(sql,[orderId,idresId,Amount,new Date],(err,respon) => {
-                const sqlResource = "SELECT * FROM resource WHERE `resId` = ?"
-                con.query(sqlResource,[idresId],(err,responResoirce) => {
-                  const quantity = responResoirce[0].resAmount
-                  const sqlupdate = "UPDATE `resource` SET `resAmount` = ? WHERE `resource`.`resId` = ?"
-                  con.query(sqlupdate,[quantity+parseInt(Amount),idresId],(err,resUpdate) => {
-                    res.redirect('/listJoin/'+idAct)
-                  })
-                })
-               
-              })
-            }else{
+            if(Amount == 0){
               res.redirect('/listJoin/'+idAct)
+            }else{
+              const toInt = parseInt(Amount)
+              if(toInt + responCheckRe[0].total <= responCheckOrder[0].total){
+                const orderId = respon[0].orderId
+                sql = "INSERT INTO `order_detail` (`orderId`, `resId`, `deRes_amount`, `deRes_date`, `deRes_status`) VALUES (?, ?, ?, ?, 'คืน')"
+                con.query(sql,[orderId,idresId,Amount,new Date],(err,respon) => {
+                  const sqlResource = "SELECT * FROM resource WHERE `resId` = ?"
+                  con.query(sqlResource,[idresId],(err,responResoirce) => {
+                    const quantity = responResoirce[0].resAmount
+                    const sqlupdate = "UPDATE `resource` SET `resAmount` = ? WHERE `resource`.`resId` = ?"
+                    con.query(sqlupdate,[quantity+parseInt(Amount),idresId],(err,resUpdate) => {
+                      res.redirect('/listJoin/'+idAct)
+                    })
+                  })
+                 
+                })
+              }else{
+                res.redirect('/listJoin/'+idAct)
+              }
             }
+    
 
           }else{
             const orderId = respon[0].orderId
@@ -521,8 +526,59 @@ con.query(sql,(err,respon)=> {
     }
 })
 })
+}
 
 
+
+const AddAmount = (req,res) => {
+  const numbers = /^[0-9]+$/;
+  const {resId,Amount} = req.query
+  const sql = "SELECT resAmount FROM `resource` WHERE resId = ?"
+  if(Amount.match(numbers) && Amount > 0){
+    con.query(sql,[resId],(err,respon)=>{
+      const AmountSum = respon[0].resAmount + parseInt(Amount)
+      const sqlAmount = "UPDATE `resource` SET `resAmount` = ? WHERE `resId` = ?;"
+      con.query(sqlAmount,[AmountSum,resId],(err,responAmount) => {
+        const sqlAll = "SELECT * FROM `resource`"
+        con.query(sqlAll, (err, respon) => {
+          res.render('page/resource/resourcePage', {
+            listsResource: respon,
+            data: {
+              css:false,
+              err:true,
+              msg : 'เพิ่มจำนวน เรียบร้อยแล้ว',
+              cls : 'alert alert-success',
+              dashboard: false,
+              managerUser: false,
+              managerActivity: false,
+              managerResource: true
+            }
+          })
+        })
+      })
+    })
+  }else{
+    const sqlAll = "SELECT * FROM `resource`"
+    con.query(sqlAll, (err, respon) => {
+      res.render('page/resource/resourcePage', {
+        listsResource: respon,
+        data: {
+          css:false,
+          err:true,
+          msg : 'กรุณาใส่จำนวน หรือ จำนวนเกินกว่าที่เบิก',
+          cls : 'alert alert-warning',
+          dashboard: false,
+          managerUser: false,
+          managerActivity: false,
+          managerResource: true
+        }
+      })
+    })
+  }
+
+
+
+  
 }
 
 module.exports.resourcePage = resourcePage
@@ -536,3 +592,4 @@ module.exports.AddExport = AddExport
 module.exports.ReturnExport = ReturnExport
 module.exports.historyOneDay = historyOneDay
 module.exports.historyAll = historyAll
+module.exports.AddAmount = AddAmount

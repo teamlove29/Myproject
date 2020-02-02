@@ -111,19 +111,20 @@ const editUser = async (req, res) => {
 
 const postEditUser =  (req, res) => {
   upload (req, res, (err) => {
-    console.log(req.filenames);
-  
     const Iduser = req.params.id
     const { firstName, lastName, area, positionId, sex, date, idCard, address, Email, tel, status } =  req.body
     var filenames =  req.files.map((file) => {
       return file.filename; // or file.originalname
     });
-    const image = req.files != '' ? filenames : 'defaultImage.png'
+   
+
     const sql =  "UPDATE `user` SET  `userPosition` = ? , `userFname` = ? , `userLname` = ?, `userSex` = ?, `userBirth` = ?, `userIdCard` = ?, `userAddress` = ? ,`userArea` = ? , `userEmail` = ?, `userTel` = ?, `userStatus` = ? , `userImage`= ? WHERE `user`.`userId` = ?;"
     const sqlCheck = "SELECT * FROM `user` WHERE userPosition= ? AND userId = ?"
     const sqlUser = "SELECT * FROM `user`"
     con.query(sqlCheck,[positionId,Iduser],(err,responCheck) => {
         if(responCheck.length > 0 ){
+
+          const image = req.files != '' ? filenames : responCheck[0].userImage
           con.query(sql, [positionId, firstName, lastName, sex, date, idCard, address, area, Email, tel, status, image, Iduser], (err, respon) => {
             con.query(sqlUser, (err, responUserAll) => {
               res.render("page/user/userPage", {

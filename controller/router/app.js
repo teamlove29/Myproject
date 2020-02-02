@@ -49,6 +49,7 @@ router.post("/addExport", resourceControlloer.AddExport)
 router.get("/returnExport",authChecker,authChecker.checkAdmin, resourceControlloer.ReturnExport)
 router.get("/historyOneDay",authChecker,authChecker.checkAdmin, resourceControlloer.historyOneDay)
 router.get("/historyAll",authChecker,authChecker.checkAdmin, resourceControlloer.historyAll)
+router.get("/AddAmount",authChecker,authChecker.checkAdmin, resourceControlloer.AddAmount)
 
 //register
 router.get("/register",authChecker,authChecker.checkUser, registerController.registerPage)
