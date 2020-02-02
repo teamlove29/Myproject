@@ -119,9 +119,9 @@ const postEditUser =  (req, res) => {
    
 
     const sql =  "UPDATE `user` SET  `userPosition` = ? , `userFname` = ? , `userLname` = ?, `userSex` = ?, `userBirth` = ?, `userIdCard` = ?, `userAddress` = ? ,`userArea` = ? , `userEmail` = ?, `userTel` = ?, `userStatus` = ? , `userImage`= ? WHERE `user`.`userId` = ?;"
-    const sqlCheck = "SELECT * FROM `user` WHERE userPosition= ? AND userId = ?"
+    const sqlCheck = "SELECT * FROM `user` WHERE  userId = ?"
     const sqlUser = "SELECT * FROM `user`"
-    con.query(sqlCheck,[positionId,Iduser],(err,responCheck) => {
+    con.query(sqlCheck,[Iduser],(err,responCheck) => {
         if(responCheck.length > 0 ){
 
           const image = req.files != '' ? filenames : responCheck[0].userImage
