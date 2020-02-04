@@ -1,0 +1,20 @@
+var mysql = require("mysql");
+
+var con = mysql.createConnection({
+  host: "marutthep-dev-vm",
+  user: "root",
+  pass: "Qwerty00--",
+  database: "rescue_db"
+
+});
+
+con.connect(err => {
+  if (err) throw err;
+  console.log("Database: Connected!");
+});
+
+
+
+module.exports = con
+
+
