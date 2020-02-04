@@ -11466,7 +11466,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sInfo": "Showing _START_ to _END_ of _TOTAL_ entries",
+			"sInfo": "แสดง _START_ ถึง _END_ จากทั้งหมด _TOTAL_ ตาราง",
 	
 	
 			/**

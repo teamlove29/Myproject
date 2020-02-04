@@ -14,8 +14,10 @@ router.get("/", mainController.main)
 router.get("/home",authChecker,authChecker.checkUser, mainController.home)
 router.get("/CheckUser",authChecker, userController.CheckUser)
 router.post("/PostCheckUser",authChecker, userController.PostCheckUser)
+router.get("/changePassword",authChecker, userController.changePassword)
+router.post("/changePassword",authChecker, userController.changePasswordPost)
 //Login - Logout
-router.get("/login", authChecker,loginController.login)
+router.get("/login", authChecker,authChecker.stayLogin,loginController.login)
 router.post("/login",loginController.loginPost)
 router.get("/logout",loginController.logout)
 //Admin

@@ -61,7 +61,7 @@
                       <th>รหัส</th>
                       <th>ชื่อ-นามสกุล</th>
                       <th>นามเรียกขาน</th>
-                      <th>เพศ</th>
+                      <th>คะแนน</th>
                       <th>สถานะ</th>
                       <th>ตัวเลือก</th>
                     </tr>
@@ -73,10 +73,11 @@
                       <td class="align-middle"><%= value.userPosition%></td>
                       <td class="align-middle"><%= value.userFname +' '+ value.userLname%></td>
                       <td class="align-middle"><%= value.userArea %></td>
-                      <td class="align-middle"><%= value.userSex %></td>
+                      <td class="align-middle"><%= value.userAllScore %></td>
                       <td class="align-middle"><%= value.userStatus %></td>
                       <td class="align-middle">
                         <button 
+                        onclick="javascript:window.location.href='/profile/<%= value.userId %>'"
                         class="btn btn-sm btn-secondary"
                         ><i class="fas fa-user"></i></button>
                         <button onclick="javascript:window.location.href='/ManagerUser/edituser/<%= value.userId %>'"

@@ -33,6 +33,7 @@ const loginPost =  ("/login", async (req, res) => {
             ,status: respon[0].userStatus }, "SECRETKEY", {expiresIn: '1h'}
           );
           req.session.userId = respon[0].userId
+          req.session.userAllScore = respon[0].userAllScore
           req.session.username = respon[0].userFname + ' ' + respon[0].userLname
           req.session.status = respon[0].userStatus
           req.session.code = respon[0].userPosition

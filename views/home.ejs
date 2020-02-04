@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <%- include ('./component/user/head')%>
-    <title>Home</title>
+    <title>ระบบลงกิจกรรมอาสาสมัครกู้ภัยลำปาง</title>
     <style>
       .bgimg{
         background-image: url("https://previews.123rf.com/images/sanek13744/sanek137441806/sanek13744180600463/103581659-blockchain-technology-icon-seamless-pattern-background-business-concept-vector-illustration-cryptogr.jpg");
@@ -12,6 +12,14 @@
         position: relative;
         z-index: -1;
       }
+  
+    .card {
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+      max-width: 300px;
+      margin: auto;
+      text-align: center;
+    }
+    
 
     </style>
   </head>
@@ -22,8 +30,8 @@
     <div class="text-center margin-20">
       <img
         class="img-fluid rounded "
-        src="https://www.jtexpress.co.th/indexUploads/images/20200106/d8ba670b21a496fa1e4ef81f72c55306.jpg"
-        alt=""
+        src="/image/logoRescue.png"
+        alt="image"
       />
     </div>
 
@@ -42,34 +50,77 @@
       </div>
 
       <div id="text-box-sha" class="mb-5 text-center">
-        <h1 class="display-5 text-danger">ปฏิทินกิจกรรมที่กำลังจะถึง</h1>
+        <h1 class="display-5 text-danger">ปฏิทินกิจกรรม</h1>
         <p style="line-height: 5px" class="text-danger">
-          (ประจำเดือน : ธ.ค. 2562)
+          <% 
+          const nowDate = new Date();
+          var dd = nowDate.getDate() 
+          var mm = nowDate.getMonth() + 1
+          var yyyy = nowDate.getFullYear()+543
+          if (dd < 10) {
+            dd = '0' + dd;
+          } 
+          if (mm < 10) {
+            <!-- mm = '0' + mm; -->
+          } 
+
+          const monthArray = ["","มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน","กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม"] 
+          mm = monthArray[mm]
+          var today = mm + ' ' + yyyy; %>
+          %>
+          (ประจำเดือน : <%= today%> )
         </p>
         <table class="table table-borderless">
           <thead>
             <tr>
               <th scope="col">วันที่จัดกิจกรรม</th>
               <th scope="col">กิจกรรม</th>
+              <th scope="col"></th>
             </tr>
           </thead>
           <tbody>
+            <% listDateActivity.map((value,index) => { %>
+           <%  
+           var dd = value.actDate.getDate() 
+           var mm = value.actDate.getMonth() + 1
+           var yyyy = value.actDate.getFullYear()
+           if (dd < 10) {
+             dd = '0' + dd;
+           } 
+           if (mm < 10) {
+             <!-- mm = '0' + mm; -->
+           } 
+ 
+           const monthArray = ["","มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน","กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม"] 
+           mm = monthArray[mm]
+          var today = dd + ' ' + mm  %>
             <tr>
-              <td>12-13 ธ.ค</td>
-              <td>รายงานตัว</td>
+              <td><%= today %></td>
+              <td><%= value.actName %></td>
+              <td><button 
+                data-toggle="modal" data-target="#ModalShowActivity<%= index %>"
+                class="btn btn-sm btn-info">ดูรายละเอียด</button></td>
             </tr>
-            <tr>
-              <td>15 ธ.ค</td>
-              <td>วันที่สภาวิชาการให้ความเห็นชอบ</td>
-            </tr>
-            <tr>
-              <td>15 ธ.ค</td>
-              <td>วันที่สภาวิชาการให้ความเห็นชอบ</td>
-            </tr>
-            <tr>
-              <td>15 ธ.ค</td>
-              <td>วันที่สภาวิชาการให้ความเห็นชอบ</td>
-            </tr>
+
+<!-- Modal -->
+<div class="modal fade" id="ModalShowActivity<%= index %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+
+      <div class="modal-body">
+        <h4>กิจกรรม <%= value.actName %></h4>
+        <%= value.actDetail %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-sm btn-block" data-dismiss="modal">ปิดหน้าต่าง</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+            <% }) %>
+
           </tbody>
         </table>
       </div>

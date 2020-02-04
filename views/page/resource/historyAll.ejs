@@ -72,12 +72,12 @@
           <%  
           var dd = value.deRes_date.getDate() 
           var mm = value.deRes_date.getMonth() + 1
-          var yyyy = value.deRes_date.getFullYear()
+          var yyyy = value.deRes_date.getFullYear()+543
           if (dd < 10) {
             dd = '0' + dd;
           } 
           if (mm < 10) {
-            mm = '0' + mm;
+            <!-- mm = '0' + mm; -->
           } 
 
           const monthArray = ["","มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน","กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม"] 
@@ -85,7 +85,7 @@
          var today = dd + ' ' + mm + ' ' + yyyy;
       %>
           <tr>
-              <td><%= day %></td>
+              <td><%= today %></td>
               <td><%= value.resName %></td>
               <td><%= value.actName %></td>
               <td><%= value.total %></td>

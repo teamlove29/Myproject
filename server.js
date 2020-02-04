@@ -22,7 +22,7 @@ app.set("view engine", "ejs");
 // });
 
 io.on('connection', (socket) =>{
-  console.log('a user connected');
+  // console.log('a user connected');
   const sql = "SELECT `resAmount` FROM `resource` WHERE resId = ? "
   
   socket.on('updateAmount', (data) => { //รับค่า
@@ -34,8 +34,8 @@ io.on('connection', (socket) =>{
 })
 
 
-http.listen(3000, function(){
-  console.log('listening on *:3000');
+http.listen(80, function(){
+  console.log('listening on *:80');
 })
 
 

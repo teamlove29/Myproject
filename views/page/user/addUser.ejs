@@ -48,13 +48,13 @@
           <div class="form-row">
             <div class="col-md-6">
               <div class="form-label-group">
-                <input value="<%= value.userFname %>" type="text" name="firstName" id="firstName" class="form-control" placeholder="ชื่อ" required="required" autofocus="autofocus">
+                <input pattern="[a-zA-Zก-ุฯ-๙\s]*" value="<%= value.userFname %>" type="text" name="firstName" id="firstName" class="form-control" placeholder="ชื่อ" required="required" autofocus="autofocus">
                 <label for="firstName">ชื่อ</label>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-label-group">
-                <input value="<%= value.userLname %>" type="text" name="lastName" id="lastName" class="form-control" placeholder="นามสกุล" required="required">
+                <input pattern="[a-zA-Zก-ุฯ-๙\s]*" value="<%= value.userLname %>" type="text" name="lastName" id="lastName" class="form-control" placeholder="นามสกุล" required="required">
                 <label for="lastName">นามสกุล</label>
               </div>
             </div>
@@ -68,7 +68,7 @@
         </div>
         <div class="form-group">
           <div class="form-label-group">
-            <input value="<%= value.userPosition %>"  type="text" name="positionId" id="positionId" class="form-control" placeholder="รหัสประจำตำแหน่ง" required="required">
+            <input pattern="[0-9\s]*" value="<%= value.userPosition %>"  type="text" name="positionId" id="positionId" class="form-control" placeholder="รหัสประจำตำแหน่ง" required="required">
             <label for="positionId">รหัสประจำตำแหน่ง</label>
           </div>
         </div>
@@ -84,7 +84,7 @@
         </div>
         <div class="form-group">
           <div class="form-label-group">
-            <input value="<%= value.userIdCard %>" type="text" name="idCard" id="idCard" class="form-control" placeholder="บัตรประชาชน" >
+            <input pattern="[0-9\s]*" value="<%= value.userIdCard %>" type="text" name="idCard" id="idCard" class="form-control" placeholder="บัตรประชาชน" >
             <label for="idCard">บัตรประชาชน</label>
           </div>
         </div>
@@ -102,7 +102,7 @@
         </div>
         <div class="form-group">
           <div class="form-label-group">
-            <input value="<%= value.userTel %>" type="text" name="tel" id="tel" class="form-control" placeholder="Email address">
+            <input pattern="[0-9\s]*" value="<%= value.userTel %>" type="text" name="tel" id="tel" class="form-control" placeholder="Email address">
             <label for="tel">เบอร์โทร</label>
           </div>
         </div>
@@ -154,13 +154,13 @@
                     <div class="form-row">
                       <div class="col-md-6">
                         <div class="form-label-group">
-                          <input value="test" type="text" name="firstName" id="firstName" class="form-control" placeholder="ชื่อ" required="required" autofocus="autofocus">
+                          <input pattern="[a-zA-Zก-ุฯ-๙\s]*" value="test" type="text" name="firstName" id="firstName" class="form-control" placeholder="ชื่อ" required="required" autofocus="autofocus">
                           <label for="firstName">ชื่อ</label>
                         </div>
                       </div>
                       <div class="col-md-6">
                         <div class="form-label-group">
-                          <input type="text" name="lastName" id="lastName" class="form-control" placeholder="นามสกุล" required="required">
+                          <input pattern="[a-zA-Zก-ุฯ-๙\s]*" type="text" name="lastName" id="lastName" class="form-control" placeholder="นามสกุล" required="required">
                           <label for="lastName">นามสกุล</label>
                         </div>
                       </div>
@@ -174,7 +174,7 @@
                   </div>
                   <div class="form-group">
                     <div class="form-label-group">
-                      <input type="text" name="positionId" id="positionId" class="form-control" placeholder="รหัสประจำตำแหน่ง" required="required">
+                      <input  pattern="[0-9\s]*" type="text" name="positionId" id="positionId" class="form-control" placeholder="รหัสประจำตำแหน่ง" required="required">
                       <label for="positionId">รหัสประจำตำแหน่ง</label>
                     </div>
                   </div>
@@ -190,13 +190,13 @@
                   </div>
                   <div class="form-group">
                     <div class="form-label-group">
-                      <input type="text" name="idCard" id="idCard" class="form-control" placeholder="บัตรประชาชน" >
+                      <input  pattern="[0-9\s]*" type="text" name="idCard" id="idCard" class="form-control" placeholder="บัตรประชาชน" >
                       <label for="idCard">บัตรประชาชน</label>
                     </div>
                   </div>
                   <div class="form-group">
                     <div class="form-label-group">
-                        <input name="address" id="address" class="form-control" placeholder="ที่อยู่"></input>
+                        <input  name="address" id="address" class="form-control" placeholder="ที่อยู่"></input>
                       <label for="address">ที่อยู่</label>
                     </div>
                   </div>
@@ -208,7 +208,7 @@
                   </div>
                   <div class="form-group">
                     <div class="form-label-group">
-                      <input type="text" name="tel" id="tel" class="form-control" placeholder="tel">
+                      <input  pattern="[0-9\s]*" type="text" name="tel" id="tel" class="form-control" placeholder="tel">
                       <label for="tel">เบอร์โทร</label>
                     </div>
                   </div>
