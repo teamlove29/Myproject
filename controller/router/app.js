@@ -8,6 +8,8 @@ var backendController = require("../backendController")
 var resourceControlloer = require('../resourceController')
 var ActivityControlloer = require('../activityController')
 var registerController = require('../registerController')
+var report = require('../reportController')
+
 
 //User
 router.get("/", mainController.main)
@@ -58,7 +60,19 @@ router.get("/register",authChecker,authChecker.checkUser, registerController.reg
 router.post("/register", registerController.regiser)
 router.get("/history",authChecker,authChecker.checkUser, registerController.history)
 
+//report
+router.get("/report",authChecker,authChecker.checkAdmin, report.report)
+router.post("/reportUser",authChecker,authChecker.checkAdmin, report.reportUserpost)
+router.post("/reportActivity",authChecker,authChecker.checkAdmin, report.reportActivity)
+router.post("/reportHistory",authChecker,authChecker.checkAdmin, report.reportHistory)
+router.post("/reportHistoryOne",authChecker,authChecker.checkAdmin, report.reportHistoryOne)
+
 router.get("/Area", userController.getArea)
 router.get("/test", backendController.test)
 router.get("*",authChecker,backendController.notFound)
+
+
+  
+
+
 module.exports = router;

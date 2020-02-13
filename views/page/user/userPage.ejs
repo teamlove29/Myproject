@@ -2,7 +2,16 @@
 <html lang="en">
 
 <head>
-
+<style>
+      .card {
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+      max-width: 300px;
+      margin: auto;
+      text-align: center;
+    }
+    .pointer {cursor: pointer;}
+    
+  </style>
 <% if(data.css === true) { %>
   <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 
@@ -69,23 +78,48 @@
                   <tbody>
                     <% listsUser.map((value, index) => {  %>
                     <tr>
-                      <td class="align-middle"><img style="width: 100px;" src="/uploads/<%= value.userImage %>" alt=""></td>
+                      <td class="align-middle" 
+                      data-toggle="modal" data-target="#ModalShowImage<%= index%>"><a class="pointer">
+                        <img style="width: 100px;" src="/uploads/<%= value.userImage %>" alt="">
+                      </a></td>
                       <td class="align-middle"><%= value.userPosition%></td>
                       <td class="align-middle"><%= value.userFname +' '+ value.userLname%></td>
                       <td class="align-middle"><%= value.userArea %></td>
                       <td class="align-middle"><%= value.userAllScore %></td>
                       <td class="align-middle"><%= value.userStatus %></td>
                       <td class="align-middle">
-                        <button 
-                        onclick="javascript:window.location.href='/profile/<%= value.userId %>'"
-                        class="btn btn-sm btn-secondary"
-                        ><i class="fas fa-user"></i></button>
                         <button onclick="javascript:window.location.href='/ManagerUser/edituser/<%= value.userId %>'"
                           class="btn btn-sm editIcon"><i class="fas fa-pen"></i></button>
                         <button data-toggle="modal" data-target="#DeleteModal<%= index%>" class="btn btn-sm deleteIcon"><i
                             class="fas fa-trash"></i></button>
                       </td>
                     </tr>
+
+                    <!-- Modal -->
+<div class="modal fade" id="ModalShowImage<%= index %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">คุณ <%= value.userFname + ' ' + value.userLname%></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="card">
+          <img src="/uploads/<%= value.userImage %>" alt="image" style="width:100%">
+          <h4 class="mt-3"><%= value.userFname + ' ' + value.userLname%></h4>
+          <p class="mt-2">รหัส : <%= value.userPosition%></p>
+          <p class="title">นามเรียกขาน : <%= value.userArea %></p>
+          <p>คะแนน : <%= value.userAllScore %></p>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-sm btn-block" data-dismiss="modal">ปิดหน้าต่าง</button>
+      </div>
+    </div>
+  </div>
+</div>
         
                        <!-- modal -->
                        <div class="modal fade" id="DeleteModal<%= index%>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -101,7 +135,7 @@
                            <div class="modal-body">เลือก"ลบ"เพื่อลบข้อมูลออกจากฐานข้อมูลทั้งหมด</div>
                            <div class="modal-footer">
                              <button class="btn btn-secondary" type="button" data-dismiss="modal">ยกเลิก</button>
-                             <a class="btn btn-primary" href="/ManagerUser/deluser/<%= value.userId %>">ลบ</a>
+                             <a class="btn btn-danger" href="/ManagerUser/deluser/<%= value.userId %>">ลบ</a>
                            </div>
                          </div>
                        </div>

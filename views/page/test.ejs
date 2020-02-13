@@ -19,186 +19,64 @@
 
   <!-- Custom styles for this template-->
   <link href="css/sb-admin.css" rel="stylesheet">
-
+  <link href="css/search.css" rel="stylesheet">
+  <style>
+    table
+    {
+        width: 300px;
+        font: 17px Calibri;
+    }
+    table, th, td 
+    {
+        border: solid 1px #DDD;
+        border-collapse: collapse;
+        padding: 2px 3px;
+        text-align: center;
+    }
+</style>
 </head>
 
-<body id="page-top">
+<body id="page-top" >
 
-  <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
+  <div id="printDiv">
+      <h1>dasdasdกฟหกกหก</h1>
+    <table> 
+        <tr>
+            <th>Name</th>
+                <th>Age</th>
+                    <th>Jdsadaกฟหกฟหกฟหกob</th>
+        </tr>
+        <tr>
+            <td>Brian</td>
+                <td>41</td>
+                    <td>Blogger</td>
+        </tr>
+        <tr>
+            <td>Brian</td>
+                <td>41</td>
+                    <td>Blogger</td>
+        </tr>
+        <tr>
+            <td>Brian</td>
+                <td>41</td>
+                    <td>Blogger</td>
+        </tr>
+        <tr>
+            <td>Brian</td>
+                <td>41</td>
+                    <td>Blogger</td>
+        </tr>
+       
 
-    <a class="navbar-brand mr-1" href="/main">สมาคมกู้ภัยจังหวัดลำปาง</a>
+    </table>
+</div>
 
-    <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
-      <i class="fas fa-bars"></i>
-    </button>
+<center>
+    <button type="button" id="pdfDownloader">Download</button>
+    <!-- <a href="#" onclick="HTMLtoPDF()">dasdads</a> -->
+	<!-- <button class="btn btn-success" onclick="downloadDoc()">Download PDF</button> -->
+</center>
 
-
-    <!-- Navbar -->
-
-  </nav>
-
-
-
-
-
-  <div id="wrapper">
-
-<!-- toggled -->
-<ul class="sidebar  navbar-nav">
-  <li class="F14 nav-item active ">
-    <a class="nav-link" href="/main">
-      <i class="fas fa-fw fa-tachometer-alt"></i>
-      แผงควบคุม
-    </a>
-  </li>
-  <li class="nav-item ">
-      <a class="nav-link F14" href="/ManagerUser">
-        <i class="fas fa-users"></i>
-        จัดการบุคลากร</a>
-    </li>
-  <li class="F14 nav-item ">
-    <a class="nav-link" href="/ManagerActivity">
-      <i class="fas fa-fw fa-chart-area"></i>
-      จัดการงานกิจกรรม</a>
-  </li>
-  <li class="F14 nav-item ">
-    <a class="nav-link" href="/ManagerResource">
-      <i class="fas fa-box-open"></i>
-      จัดการทรัพยากร</a>
-  </li>
-  <li class="F14 nav-item ">
-    <a data-toggle="modal" data-target="#logoutModal"  class="text-danger nav-link" href="/ManagerResource">
-      <i class="text-danger fas fa-sign-out-alt"></i>
-      ออกจากระบบ</a>
-  </li>
-</ul>
-     <!-- Logout Modal-->
-     <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">ต้องการออกจากระบบ ?</h5>
-            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">×</span>
-            </button>
-          </div>
-          <div class="modal-footer">
-            <button class="btn btn-secondary" type="button" data-dismiss="modal">ยกเลิก</button>
-            <a class="btn btn-danger" href="/logout">ออกจากระบบ</a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div id="content-wrapper">
-
-      <div class="container-fluid">
-
-             <!-- Breadcrumbs-->
-             <ol class="breadcrumb">
-              <li class="breadcrumb-item">
-                <a href="/main">แผงควบคุม</a>
-              </li>
-              <li class="breadcrumb-item active">ภาพรวม</li>
-            </ol>
-
-
-            <div class="row">
-              <div class="col-xl-3 col-sm-6 mb-3">
-    
-                <div class="card mb-3 o-hidden" style="max-width: 540px;">
-                  <div class="row no-gutters">
-                    <div class="col-md-4 text-center pt-4 p-3" style="background: #6ccac9;color: white;">
-                      <i style="font-size: 60px;" class="fas fa-user"></i>
-                    </div>
-                    <div class="col-md-8 text-center" > 
-                      <div class="card-body">
-                        <h5 style="font-size: 30px;" class="card-title">5555</h5>
-                        <p class="card-text">บุคลากร</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-xl-3 col-sm-6 mb-3">
-                <div class="card mb-3 o-hidden" style="max-width: 540px;">
-                  <div class="row no-gutters">
-                    <div class="col-md-4 text-center pt-4 p-3" style="background: #f8d347;color: white;">
-                      <i style="font-size: 60px;" class="fas fa-indent"></i>
-                    </div>
-                    <div class="col-md-8 text-center">
-                      <div class="card-body">
-                        <h5 style="font-size: 30px;" class="card-title">1234</h5>
-                        <p class="card-text">กิจกรรม</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-xl-3 col-sm-6 mb-3">
-                <div class="card mb-3 o-hidden" style="max-width: 540px;">
-                  <div class="row no-gutters">
-                    <div class="col-md-4 text-center pt-4 pb-3" style="background: #57c8f2;color: white;">
-                      <i style="font-size: 60px;" class="fas fa-box-open"></i>
-                    </div>
-                    <div class="col-md-8 text-center">
-                      <div class="card-body">
-                        <h5 style="font-size: 30px;" class="card-title"> 7891</h5>
-                        <p class="card-text">ทรัพยากร</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-    
-            </div>
-        <!-- Area Chart Example-->
-<h1>dasdad</h1>
-<h1>dasdad</h1>
-<h1>dasdad</h1>
-<h1>dasdad</h1>
-<h1>dasdad</h1>
-<h1>dasdad</h1>
-<h1>dasdad</h1>
-<h1>dasdad</h1>
-<h1>dasdad</h1>
-<h1>dasdad</h1>
-<h1>dasdad</h1>
-<h1>dasdad</h1>
-<h1>dasdad</h1>
-<h1>dasdad</h1>
-<h1>dasdad</h1>
-<h1>dasdad</h1>
-<h1>dasdad</h1>
-<h1>dasdad</h1>
-<h1>dasdad</h1>
-<h1>dasdad</h1>
-<h1>dasdad</h1>
-<h1>dasdad</h1>
-<h1>dasdad</h1>
-      <!-- /.container-fluid -->
-
-      <!-- Sticky Footer -->
-      <footer class="sticky-footer">
-        <div class="container my-auto">
-          <div class="copyright text-center my-auto">
-            <span>Copyright © Your Website 2019</span>
-          </div>
-        </div>
-      </footer>
-
-    </div>
-    <!-- /.content-wrapper -->
-
-  </div>
-  <!-- /#wrapper -->
-
-  <!-- Scroll to Top Button-->
-  <a class="scroll-to-top rounded" href="#page-top">
-    <i class="fas fa-angle-up"></i>
-  </a>
-
-  <!-- Logout Modal-->
 
 
   <!-- Bootstrap core JavaScript-->
@@ -218,7 +96,40 @@
   <script src="js/demo/chart-area-demo.js"></script>
   <script src="js/demo/chart-bar-demo.js"></script>
   <script src="js/demo/chart-pie-demo.js"></script>
+  <script src="js/search.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.0.272/jspdf.debug.js"></script>
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js" integrity="sha384-NaWTHo/8YCBYJ59830LTz/P4aQZK1sS0SneOgAvhsIl3zBu8r9RevNg5lHCHAuQ/" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/jspdf@latest/dist/jspdf.min.js"></script> -->
+
+
+<script>
+$(document).ready(function(){
+
+//pdf 다운로드 	
+$("#pdfDownloader").click(function(){
+
+    html2canvas(document.getElementById("printDiv"), {
+        onrendered: function(canvas) {
+
+            var imgData = canvas.toDataURL('image/png');
+            console.log('Report Image URL: '+imgData);
+            var doc = new jsPDF('p', 'mm', [297, 210]); //210mm wide and 297mm high
+            
+            doc.addImage(imgData, 'PNG', 10, 10);
+            doc.save('sample.pdf');
+        }
+    });
+
+});
+
+
+})
+
+</script>
 
 </body>
+
 
 </html>

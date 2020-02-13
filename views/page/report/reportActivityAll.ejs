@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>report</title>
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    
+    <!-- Page level plugin CSS-->
+    <link href="vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
+  
+    <!-- Custom styles for this template-->
+    <link href="css/sb-admin.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/search.css" rel="stylesheet">
+</head>
+<body id="page-top"  id="loadedPage" onload="myFunction()">
+    <div id="loader"></div>
+
+    <div class="container mt-4 text-center" id="tabledata">
+    <h4>รายงานกิจกรรมทั้งหมด </h4>
+    <hr>
+
+    <div style="display:none;" id="loadedPage" class="animate-bottom">
+          <div class="table-responsive">
+            <table class="table-sm table table-bordered"  width="100%" cellspacing="0">
+              <thead >
+                <tr>
+                  <th>วัน/เดือน/ปี</th>
+                  <th>รายการ</th>
+                  <th>คนเข้าร่วม</th>
+                  <th>คะแนน</th>
+
+                </tr>
+              </thead>
+      
+              <tbody>
+                  <% var free = 0
+                      var free2 = 0    
+                  %>
+                <% listsActivity.map((value, index) => {  %>
+                  <% if(value.actCode != 'Complete') {%>
+                <tr>
+                  <%  
+                      free = free + 1
+                      var dd = value.actDate.getDate() 
+                      var mm = value.actDate.getMonth() + 1
+                      var yyyy = value.actDate.getFullYear()
+                      if (dd < 10) {
+                        dd = '0' + dd;
+                      } 
+                      if (mm < 10) {
+                        <!-- mm = '0' + mm; -->
+                      } 
+                      const monthArray = ["","มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน","กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม"] 
+                      mm = monthArray[mm]
+                     var today = dd + ' ' + mm + ' ' + yyyy;
+                  %>
+                  <td><%= today %></td>
+                  <td><%= value.actName %></td>
+                  <td><%= peopleJoin[value.actId]  ? peopleJoin[value.actId] : '0' %></td>
+                  <td><%= value.actScore %></td>
+   
+                </tr>
+
+                <%}%>
+
+                <% }) %>
+                <% if(free ===0) {%>
+              <tr>
+                <td class="text-center" colspan="7">----- ไม่มีข้อมูล -----</td>
+            </tr>
+            <%}%>
+              </tbody>
+            </table>    
+      </div>
+      <hr>
+      <h5 class="mb-3">กิจกรรมที่เรียบร้อยแล้ว</h5>
+
+
+      
+      
+        <div class="table-responsive">
+          <table data-order='[[ 0, "DESC" ]]' class="table-sm table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <thead>
+              <tr>
+                <th>วัน/เดือน/ปี</th>
+                <th>รายการ</th>
+                <th>คนเข้าร่วม</th>
+                <th>คะแนน</th>
+              </tr>
+            </thead>
+      
+            <tbody>
+              <% listsActivity.map((value, index) => {  %>
+                <% if(value.actCode === 'Complete') {%>
+              <tr>
+                <%  
+                    free2 = free2 + 1
+                    var dd = value.actDate.getDate() 
+                    var mm = value.actDate.getMonth() + 1
+                    var yyyy = value.actDate.getFullYear()
+                    if (dd < 10) {
+                      dd = '0' + dd;
+                    } 
+                    if (mm < 10) {
+                      <!-- mm = '0' + mm; -->
+                    } 
+
+                    const monthArray = ["","มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน","กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม"] 
+                    mm = monthArray[mm]
+                   var today = dd + ' ' + mm + ' ' + yyyy;
+                %>
+                <td><%= today %></td>
+                <td><%= value.actName %></td>
+                <td><%= peopleJoin[value.actId]  ? peopleJoin[value.actId] : '0' %></td>
+                <td><%= value.actScore %></td>
+              </tr>
+              <%}%>
+
+              <% })%>
+              <% if(free2 === 0) {%>
+                <tr>
+                  <td class="text-center" colspan="7">----- ไม่มีข้อมูล -----</td>
+              </tr>
+              <%}%>
+            </tbody>
+          </table>       
+      </div>
+    </div>
+
+
+
+
+
+    </div>
+    <div class="container mt-3">
+        <button class="btn btn-success" onclick="downloadDoc()">Download PDF</button>
+        <a class="btn btn-secondary" href="/report">กลับด้านเดิม</a>
+    </div>
+</body>
+  <!-- Bootstrap core JavaScript-->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Page level plugin JavaScript-->
+  <script src="vendor/chart.js/Chart.min.js"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="js/sb-admin.min.js"></script>
+  <script type="text/javascript" src="js/pdfmake.min.js"></script>
+  <script type="text/javascript" src="js/html2canvas.min.js"></script>
+  
+<script>
+    var myVar;
+    
+    function myFunction() {
+      myVar = setTimeout(showPage, 100);
+    }
+    
+    function showPage() {
+      document.getElementById("loader").style.display = "none";
+      document.getElementById("loadedPage").style.display = "block";
+    }
+    </script>
+
+<script type="text/javascript">
+	function downloadDoc(){
+
+html2canvas($("#tabledata")[0],{
+	onrendered:function(canvas){
+		var data=canvas.toDataURL();
+		var docDefinition={
+			content:[{
+				image:data,
+				width:500
+			}]
+		};
+		pdfMake.createPdf(docDefinition).download("reportUser.pdf");
+	}
+})
+
+
+
+	}
+
+
+</script>
+</html>

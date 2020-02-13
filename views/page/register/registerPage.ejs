@@ -24,7 +24,7 @@
             <form action="/register" method="POST">
               <div class="form-group">
                 <div class="form-label-group">
-                  <input type="text" name="code" id="code" class="form-control" placeholder="รหัสกิจกรรม" required="required">
+                  <input type="text" name="code" id="code" class="form-control" placeholder="รหัสกิจกรรม" required>
                   <label for="code">รหัสกิจกรรม</label>
                 </div>
               </div>
@@ -42,5 +42,35 @@
         <a href="/home">คลิ๊ก</a>
       </div>
 </body>
-<%- include('../../component/admin/scriptJs')%>
+  <!-- Bootstrap core JavaScript-->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Page level plugin JavaScript-->
+  <script src="vendor/chart.js/Chart.min.js"></script>
+  <script src="vendor/datatables/jquery.dataTables.js"></script>
+  <script src="vendor/datatables/dataTables.bootstrap4.js"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="js/sb-admin.js"></script>
+
+  <!-- Demo scripts for this page-->
+  <script src="js/demo/datatables-demo.js"></script>
+  <script src="js/demo/chart-pie-demo.js"></script>
+
+  <script>
+    var myVar;
+    
+    function myFunction() {
+      myVar = setTimeout(showPage, 100);
+    }
+    
+    function showPage() {
+      document.getElementById("loader").style.display = "none";
+      document.getElementById("loadedPage").style.display = "block";
+    }
+    </script>
 </html>

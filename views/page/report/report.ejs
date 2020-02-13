@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <% if(data.css === true) { %>
+      <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    
+      <!-- Page level plugin CSS-->
+      <link href="/vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
+    
+      <!-- Custom styles for this template-->
+      <link href="/css/sb-admin.css" rel="stylesheet">
+      <link href="/css/style.css" rel="stylesheet">
+      <link href="/css/search.css" rel="stylesheet">
+    <% }else {%>
+      <%- include('../../component/admin/head')%>
+      <%  }%>
+    <title>backend : สมาคมกู้ภัยจังหวัดลำปาง</title>
+  
+  
+  </head>
+
+
+ <body id="page-top"  id="loadedPage" onload="myFunction()">
+    <div id="loader"></div>
+
+  
+  
+     <%- include('../../component/admin/navbar')%>
+  
+    <div id="wrapper">
+  
+      <!-- Sidebar -->
+      <%- include('../../component/admin/sidebar')%>
+  
+      <div id="content-wrapper">
+       
+        <div class="container-fluid">
+  
+          <!-- Breadcrumbs-->
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a href="/main">แผงควบคุม</a>
+            </li>
+            <li class="breadcrumb-item active">รายงาน</li>
+          </ol>
+          <div style="display:none;" id="loadedPage" class="animate-bottom">
+    
+<form action="/reportUser" method="POST">
+  <div class="<%= data.cls %>" role="alert">
+    <%= data.msg %>
+  </div>
+
+  <p>รายงานบุคลากร</p>
+
+            <select class="form-control form-control-xs selectpicker w-50" name="reportUser" data-size="15" data-live-search="true" data-title="Location" id="state_list" data-width="100%">
+                <option value="All" selected>ทั้งหมด</option>
+                <% listUser.map(value => {   %>
+                <option value="<%= value.userId%>"><%= value.userPosition + ' ' + value.userFname + ' ' + value.userLname %></option>
+                <% }) %>
+              </select>
+
+<button class="btn btn-sm btn-success ml-2">ค้นหา</button>
+
+</form>
+<hr>
+<form action="/reportActivity" method="POST">
+  <p>รายงานกิจกรรม</p>
+            <select class="form-control form-control-xs selectpicker w-50" name="reportActivity" data-size="7" data-live-search="true" data-title="Location" id="state_list" data-width="100%">
+                <option value="All" selected>ทั้งหมด</option>
+                <% listActivity.map(value => {   %>
+                  <option value="<%= value.actId%>"><%= value.actName %></option>
+                  <% }) %>
+              </select>
+
+<button class="btn btn-sm btn-success ml-2">ค้นหา</button>
+
+</form>
+<hr>
+<form action="/reportHistory" method="POST">
+<% 
+var today = new Date();
+var dd = today.getDate() 
+var mm = today.getMonth() + 1
+var yyyy = today.getFullYear() + 543
+if (dd < 10) {
+  dd = '0' + dd;
+} 
+if (mm < 10) {
+  mm = '0' + mm;
+} 
+today = yyyy + '-' + mm + '-' + dd;
+var sixmo = yyyy + '-' + mm + '-' + dd;
+%>
+  <p>รายงานทรัพยากรย้อนหลัง</p>
+
+  <div class="row">
+    <div class="col-5">
+      <label for="start">วันเริ่มต้น:</label>
+      <input 
+      class="form-control"
+      type="date" id="start" name="start"
+      value="<%= today %>" min="2563-01-01" max="2563-12-31">
+    </div>
+    <div class="col-5">
+      <label for="end">วันสิ้นสุด:</label>
+      <input 
+      class="form-control"
+      type="date" id="end" name="end"
+      value="<%= today %>" min="2563-01-01" max="<%= today %>">
+    </div>
+    <div class="col-2">
+      <button class="btn btn-sm btn-success ml-2">ค้นหา</button>
+    </div>
+  </div>
+
+</form>
+
+
+<hr>
+<form action="/reportHistoryOne" method="POST">
+
+  <p>รายงานทรัพยากรล่าสุด</p>
+
+
+      <button class="btn btn-sm btn-success ml-2">ค้นหา</button>
+
+
+</form>
+
+  </div>
+  </div>
+        <!-- /.container-fluid -->
+  
+        <!-- Sticky Footer -->
+        
+  
+        <footer class="sticky-footer">
+          <div class="container my-auto">
+            <div class="copyright text-center my-auto">
+              <span>powered by Marutthep Rompho Sotfware lpru</span>
+            </div>
+          </div>
+        </footer>
+  
+      </div>
+      <!-- /.content-wrapper -->
+  
+    </div>
+    <!-- /#wrapper -->
+  
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+      <i class="fas fa-angle-up"></i>
+    </a>
+
+
+
+  <!-- Bootstrap core JavaScript-->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Page level plugin JavaScript-->
+  <script src="vendor/chart.js/Chart.min.js"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="js/sb-admin.min.js"></script>
+
+  <!-- Demo scripts for this page-->
+  <script src="js/demo/chart-area-demo.js"></script>
+  <script src="js/demo/chart-bar-demo.js"></script>
+  <script src="js/demo/chart-pie-demo.js"></script>
+  <script src="js/search.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.1/jspdf.debug.js" integrity="sha384-THVO/sM0mFD9h7dfSndI6TS0PgAGavwKvB5hAxRRvc0o9cPLohB0wb/PTA7LdUHs" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/jspdf@latest/dist/jspdf.min.js"></script>
+
+
+
+  <script>
+    var myVar;
+    
+    function myFunction() {
+      myVar = setTimeout(showPage, 100);
+    }
+    
+    function showPage() {
+      document.getElementById("loader").style.display = "none";
+      document.getElementById("loadedPage").style.display = "block";
+    }
+    </script>
+
+
+
+
+
+
+</body>
+</html>

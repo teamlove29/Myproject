@@ -17,27 +17,21 @@ app.use("/", route)
 // app.set('views', 'all-views');
 app.set("view engine", "ejs");
 
-// app.listen(3000, () => {
-//   console.log("PORT : 3000 START!");
-// });
-
 io.on('connection', (socket) =>{
-  // console.log('a user connected');
   const sql = "SELECT `resAmount` FROM `resource` WHERE resId = ? "
-  
   socket.on('updateAmount', (data) => { //รับค่า
     var num = data.split('/')[1]
   con.query(sql,[data],(err,respon) => {
+
     io.emit('updateAmount'+num,respon) // ส่งออกแบบ realTime 
   })
   })
 })
 
 
-http.listen(80, function(){
-  console.log('listening on *:80');
+http.listen(3000, function(){
+  console.log('listening on *:3000');
 })
-
 
 
 

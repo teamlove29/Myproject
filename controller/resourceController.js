@@ -497,12 +497,17 @@ const historyOneDay = (req,res) => {
   const year = date.getFullYear();
   // const newDate = '2020-1-19'
   const newDate = year+'-'+month+'-'+day
+  const monthArray = ["","มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน","กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม"] 
+  const mm = monthArray[month]
+  const plusYear = year+543
+  const DateShow = day+' '+mm+' '+ plusYear
   const sql = "SELECT resource.resName,activity.actName,Sum(order_detail.deRes_amount)AS total,order_detail.deRes_date,order_detail.deRes_status FROM order_detail INNER JOIN `order` ON order.orderId = order_detail.orderId INNER JOIN activity ON activity.actId = order.actId INNER JOIN resource ON resource.resId = order_detail.resId WHERE order_detail.deRes_date = ? GROUP BY resource.resName,order_detail.deRes_status,activity.actName ORDER BY activity.actName ASC"
   con.query(sql,[newDate],(err,respon)=> {
     if(err) throw err
     res.render('page/resource/historyOneDay',{
       listHitory:respon,
       data: {
+        DateShow:DateShow,
         dashboard: false,
         managerUser: false,
         managerActivity: false,

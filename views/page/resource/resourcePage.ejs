@@ -12,6 +12,7 @@
     <!-- Custom styles for this template-->
     <link href="/css/sb-admin.css" rel="stylesheet">
     <link href="/css/style.css" rel="stylesheet">
+
   <% }else {%>
     <%- include('../../component/admin/head')%>
     <%  }%>
@@ -36,7 +37,7 @@
         <!-- Breadcrumbs-->
         <ol class="breadcrumb">
           <li class="breadcrumb-item">
-            <a href="/ManagerResource">จัดการรัพยากร</a>
+            <a href="/ManagerResource">จัดการทรัพยากร</a>
           </li>
           <li class="breadcrumb-item active">ภาพรวม</li>
         </ol>
@@ -112,7 +113,7 @@
                           <div class="modal-body">เลือก"ลบ"เพื่อลบข้อมูลออกจากฐานข้อมูลทั้งหมด</div>
                           <div class="modal-footer">
                             <button class="btn btn-secondary" type="button" data-dismiss="modal">ยกเลิก</button>
-                            <a class="btn btn-primary" href="/delresource/<%= value.resId %>">ลบ</a>
+                            <a class="btn btn-danger" href="/delresource/<%= value.resId %>">ลบ</a>
                           </div>
                         </div>
                       </div>
@@ -204,4 +205,5 @@
 
     
   </script>
+
 </html>

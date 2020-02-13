@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('../../component/admin/head')%>
+</head>
+<body id="page-top"  id="loadedPage" onload="myFunction()">
+    <div id="loader"></div>
+    <div class="container mt-4 " id="HTMLtoPDF">
+    <h4 class="text-center">รายงานบุคลากรทั้งหมด</h4> <a class="btn btn-secondary" href="/report"> < กลับด้านเดิม</a>
+
+    <div class="table-responsive mt-3">
+      <table class="table-sm table table-bordered text-center"  width="100%" >
+        <thead >
+          <tr>
+            <th>รูป</th>
+            <th>รหัส</th>
+            <th>ชื่อ-นามสกุล</th>
+            <th>นามเรียกขาน</th>
+            <th>เพศ</th>
+            <th>คะแนน</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% userAll.map((value, index) => {  %>
+          <tr>
+            <td class="align-middle" 
+            data-toggle="modal" data-target="#ModalShowImage<%= index%>"><a class="pointer">
+              <img style="width: 100px;" src="/uploads/<%= value.userImage %>" alt="">
+            </a></td>
+            <td class="align-middle"><%= value.userPosition%></td>
+            <td class="align-middle"><%= value.userFname +' '+ value.userLname%></td>
+            <td class="align-middle"><%= value.userArea %></td>
+            <td class="align-middle"><%= value.userSex %></td>
+            <td class="align-middle"><%= value.userAllScore %></td>
+          </tr>
+
+
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+    </div>
+    <div class="container mt-3">
+      <a href="#" onclick="HTMLtoPDF()">ดาวโหลดไฟล์ PDF</a>
+      <a class="btn btn-secondary" href="/report">กลับด้านเดิม</a>
+  </div>
+  
+</body>
+<%- include('../../component/admin/scriptJs')%>
+
+<script type="text/javascript" src="js/jspdf.js"></script>
+<script type="text/javascript" src="js/pdfFromHTML.js"></script>
+
+<script>
+    var myVar;
+    
+    function myFunction() {
+      myVar = setTimeout(showPage, 100);
+    }
+    
+    function showPage() {
+      document.getElementById("loader").style.display = "none";
+      document.getElementById("loadedPage").style.display = "block";
+    }
+    </script>
+
+<script type="text/javascript">
+	function downloadDoc(){
+
+html2canvas($("#tabledata")[0],{
+	onrendered:function(canvas){
+		var data=canvas.toDataURL();
+		var docDefinition={
+			content:[{
+				image:data,
+				width:500
+			}]
+		};
+		pdfMake.createPdf(docDefinition).download("reportUser.pdf");
+	}
+})
+
+
+
+	}
+
+
+</script>
+</html>
