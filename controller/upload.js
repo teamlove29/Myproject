@@ -5,7 +5,7 @@ var Storage = multer.diskStorage({
       if (!file.mimetype.match(/\/(jpg|jpeg|png)$/)) { // ตรวจสอบชนิดไฟล์
         return callback(new Error('เฉพาะไฟล์รูปภาพเท่านั้น!'), false)
     }
-        callback(null, "public/uploads");
+    callback(null, "public/uploads");
     },
     filename: (req, file, callback) => {
       let extArr = file.originalname.split('.')[1]

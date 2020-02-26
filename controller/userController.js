@@ -38,7 +38,10 @@ const adduser = (req, res) => {
 const postUser = (req, res) => {
   upload(req, res, (err) => {
     const { firstName, lastName, area, positionId, sex, date, idCard, address, Email, tel, status } = req.body
-    if (err) throw err
+    if (upload.MulterError) {
+
+      // ไม่ผ่านเงื่อนไขการอัพโหลดไฟล์
+    }
     var filenames = req.files.map((file) => {
       return file.filename; // or file.originalname
     });
@@ -127,7 +130,7 @@ const postEditUser = (req, res) => {
       if (responCheck.length > 0) {
         const image = req.files != '' ? filenames : responCheck[0].userImage
 
-        if (image == filenames) {
+        if (image == filenames && responCheck[0].userImage != 'defaultImage.png') {
           const fileImageName = 'public/uploads/' + responCheck[0].userImage
           fs.unlink(fileImageName, (err) => {
             if (err) throw err;
@@ -178,9 +181,20 @@ const postEditUser = (req, res) => {
 }
 
 const delUser = async (req, res) => {
+  const imageUser = "SELECT * FROM `user` WHERE `userId` = ?"
   const sql = await "DELETE FROM `user` WHERE `userId` = ?"
   const sqlUser = "SELECT * FROM `user`"
+  
+  con.query(imageUser,[req.params.id],(err,responImage) => {
+    if (responImage[0].userImage != 'defaultImage.png') {
+      const fileImageName = 'public/uploads/' + responImage[0].userImage
+      fs.unlink(fileImageName, (err) => {
+        if (err) throw err;
+      });
+    }
+  })
   con.query(sql, [req.params.id], async (err, respon) => {
+
     con.query(sqlUser, (err, responUserAll) => {
       res.render("page/user/userPage", {
         listsUser: responUserAll,
@@ -341,9 +355,20 @@ const changePasswordPost = (req, res) => {
 
 
   })
-
-
 }
+
+const testUser = (req,res) => {
+  const sql = "SELECT * FROM `user`"
+  con.query(sql,(err,respon) => {
+    if (err)
+    {
+        res.send("Please enter valid ISA");
+    }
+    // respon = JSON.stringify(respon);
+      res.send(respon);
+  })
+}
+
 
 module.exports.ManagerUser = ManagerUser
 module.exports.adduserPage = adduser
@@ -357,3 +382,4 @@ module.exports.PostCheckUser = PostCheckUser
 module.exports.profile = profile
 module.exports.changePassword = changePassword
 module.exports.changePasswordPost = changePasswordPost
+module.exports.testUser = testUser

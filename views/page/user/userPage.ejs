@@ -11,6 +11,42 @@
     }
     .pointer {cursor: pointer;}
     
+
+    .loader {
+    position: fixed;
+    z-index: 99;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* background: white; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loader > img {
+    width: 100px;
+}
+
+.loader.hidden {
+    animation: fadeOut 0.5s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes fadeOut {
+    100% {
+        opacity: 0;
+        visibility: hidden;
+    }
+}
+
+.thumb {
+    height: 100px;
+    border: 1px solid black;
+    margin: 10px;
+}
+
   </style>
 <% if(data.css === true) { %>
   <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -24,12 +60,18 @@
 <% }else {%>
   <%- include('../../component/admin/head')%>
   <%  }%>
-  <title>backend : สมาคมกู้ภัยจังหวัดลำปาง</title>
+  
 
 </head>
 
-<body id="page-top"  id="loadedPage" onload="myFunction()">
+<body id="page-top" id="loadedPage">
   <div id="loader"></div>
+  <!-- <div class="loader">
+    <img
+      src="https://pixelpapa.com/wp-content/uploads/2018/11/32.gif"
+      alt="Loading..."
+    />
+  </div> -->
    <%- include('../../component/admin/navbar')%>
 
   <div id="wrapper">
@@ -54,7 +96,9 @@
         onclick="javascript:window.location.href='/ManagerUser/adduser'"
         class="p-2 mb-3 btn btn-success btn-sm"
         ><i class="fas fa-plus"></i> เพิ่มบุคลากร</button>
-        <div style="display:none;" id="loadedPage" class="animate-bottom">
+
+        
+
           <% if(data.err === false ){  %>
 
             <% } else{ %>
@@ -62,6 +106,7 @@
             <%= data.msg %>
           </div>
           <%}%>
+          <div style="display:none;"" id="loadedPage" class="animate-bottom"><!-- None -->
               <div class="table-responsive">
                 <table data-order='[[ 1, "asc" ]]' class="table-sm table table-bordered text-center" id="dataTable" width="100%" cellspacing="0">
                   <thead>
@@ -147,7 +192,7 @@
                 </table>
               </div>
         </div>
-        
+      </div>
                       
         
       <!-- /.container-fluid -->
@@ -172,27 +217,10 @@
     <i class="fas fa-angle-up"></i>
   </a>
 
-  <!-- Logout Modal-->
-  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">×</span>
-          </button>
-        </div>
-        <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-        <div class="modal-footer">
-          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-          <a class="btn btn-primary" href="/logout">Logout</a>
-        </div>
-      </div>
-    </div>
-  </div>
 
 
 
 </body>
+
 <%- include('../../component/admin/scriptJs')%>
 </html>

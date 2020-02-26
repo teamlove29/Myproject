@@ -29,15 +29,17 @@
           <% }else { }%>
           <div class="card-header text-center text-white" style="background-color: #73696a;">ค้นหาบุคลากร (รหัสประจำตำแหน่ง)</div>
           <div class="card-body" style="background-color: #787977;">
-            <form class="form-inline" action="/PostCheckUser" method="POST">
+            <form class="" action="/PostCheckUser" method="POST">
               <div class="form-group" style="margin: 0 auto;">
                 <div class="form-label-group">
-                  <input type="number" name="code" id="code" class="form-control " placeholder="รหัสประจำตำแหน่ง" required="required">
+                  <input 
+                  pattern="\d*" minlength="8" maxlength="8"
+                  type="text" name="code" id="code" class="form-control " placeholder="รหัสประจำตำแหน่ง" required="required">
                   <label for="code">รหัสประจำตำแหน่ง</label>
                 </div>
-                <button class="btn btn-success ml-3 pl-3 pr-3  pt-2 pb-2">ค้นหา</button>
               </div>
-
+              
+              <button class="btn btn-success mt-3 float-right">ค้นหา</button>
         
               
             </form>

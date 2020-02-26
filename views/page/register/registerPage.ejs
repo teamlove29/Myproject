@@ -24,12 +24,15 @@
             <form action="/register" method="POST">
               <div class="form-group">
                 <div class="form-label-group">
-                  <input type="text" name="code" id="code" class="form-control" placeholder="รหัสกิจกรรม" required>
+                  <input 
+                  minlength="10"
+                  maxlength="10"
+                  type="text" name="code" id="code" class="form-control" placeholder="รหัสกิจกรรม" required>
                   <label for="code">รหัสกิจกรรม</label>
                 </div>
               </div>
 
-              <button class="btn btn-success">ลงทะเบียนกิจกรรม</button>
+              <button class="btn btn-success float-right">ลงทะเบียนกิจกรรม</button>
               
             </form>
       

@@ -10,7 +10,7 @@
   <link href="/css/sb-admin.css" rel="stylesheet">
   <link href="/css/style.css" rel="stylesheet">
 
-    <title>Document</title>
+    <title>เพิ่มบุคลากร</title>
 </head>
 
 
@@ -68,7 +68,10 @@
         </div>
         <div class="form-group">
           <div class="form-label-group">
-            <input pattern="[0-9\s]*" value="<%= value.userPosition %>"  type="text" name="positionId" id="positionId" class="form-control" placeholder="รหัสประจำตำแหน่ง" required="required">
+            <input
+            minlength="8"
+            maxlength="8"
+            pattern="[0-9\s]*" value="<%= value.userPosition %>"  type="text" name="positionId" id="positionId" class="form-control" placeholder="รหัสประจำตำแหน่ง" required="required">
             <label for="positionId">รหัสประจำตำแหน่ง</label>
           </div>
         </div>
@@ -84,7 +87,10 @@
         </div>
         <div class="form-group">
           <div class="form-label-group">
-            <input pattern="[0-9\s]*" value="<%= value.userIdCard %>" type="text" name="idCard" id="idCard" class="form-control" placeholder="บัตรประชาชน" >
+            <input 
+            minlength="13"
+            maxlength="13"
+            pattern="[0-9\s]*" value="<%= value.userIdCard %>" type="text" name="idCard" id="idCard" class="form-control" placeholder="บัตรประชาชน" >
             <label for="idCard">บัตรประชาชน</label>
           </div>
         </div>
@@ -102,7 +108,10 @@
         </div>
         <div class="form-group">
           <div class="form-label-group">
-            <input pattern="[0-9\s]*" value="<%= value.userTel %>" type="text" name="tel" id="tel" class="form-control" placeholder="Email address">
+            <input
+            minlength="10"
+            maxlength="10"
+            pattern="[0-9\s]*" value="<%= value.userTel %>" type="text" name="tel" id="tel" class="form-control" placeholder="Email address">
             <label for="tel">เบอร์โทร</label>
           </div>
         </div>
@@ -154,7 +163,10 @@
                     <div class="form-row">
                       <div class="col-md-6">
                         <div class="form-label-group">
-                          <input pattern="[a-zA-Zก-ุฯ-๙\s]*" value="test" type="text" name="firstName" id="firstName" class="form-control" placeholder="ชื่อ" required="required" autofocus="autofocus">
+                          <input 
+                          minlength="3"
+                          maxlength="25"
+                          pattern="[a-zA-Zก-ุฯ-๙\s]*" value="test" type="text" name="firstName" id="firstName" class="form-control" placeholder="ชื่อ" required="required" autofocus="autofocus">
                           <label for="firstName">ชื่อ</label>
                         </div>
                       </div>
@@ -174,7 +186,10 @@
                   </div>
                   <div class="form-group">
                     <div class="form-label-group">
-                      <input  pattern="[0-9\s]*" type="text" name="positionId" id="positionId" class="form-control" placeholder="รหัสประจำตำแหน่ง" required="required">
+                      <input 
+                      minlength="8"
+                      maxlength="8"
+                      pattern="[0-9\s]*" type="text" name="positionId" id="positionId" class="form-control" placeholder="รหัสประจำตำแหน่ง" required="required">
                       <label for="positionId">รหัสประจำตำแหน่ง</label>
                     </div>
                   </div>
@@ -190,7 +205,10 @@
                   </div>
                   <div class="form-group">
                     <div class="form-label-group">
-                      <input  pattern="[0-9\s]*" type="text" name="idCard" id="idCard" class="form-control" placeholder="บัตรประชาชน" >
+                      <input 
+                      minlength="13"
+                      maxlength="13"
+                      pattern="[0-9\s]*" type="text" name="idCard" id="idCard" class="form-control" placeholder="บัตรประชาชน" >
                       <label for="idCard">บัตรประชาชน</label>
                     </div>
                   </div>
@@ -208,7 +226,10 @@
                   </div>
                   <div class="form-group">
                     <div class="form-label-group">
-                      <input  pattern="[0-9\s]*" type="text" name="tel" id="tel" class="form-control" placeholder="tel">
+                      <input  
+                      minlength="10"
+                      maxlength="10"
+                      pattern="[0-9\s]*" type="text" name="tel" id="tel" class="form-control" placeholder="tel">
                       <label for="tel">เบอร์โทร</label>
                     </div>
                   </div>
@@ -225,7 +246,7 @@
                   </div>
                   <!-- <img src="/uploads/defaultImage.png" alt=""> -->
                   <div class="form-group">
-                    <input type="file" accept="image/*" name="avatar" id="avatar"  accept="image/png, image/jpeg" onchange="loadFile(event)">
+                    <input type="file" accept="image/*" name="avatar" id="avatar"  accept="image/*" onchange="loadFile(event)">
                   </div>
                   <button class="btn btn-success">ลงทะเบียน</button>
                 </form>
@@ -269,4 +290,5 @@
     output.src = URL.createObjectURL(event.target.files[0]);
   };
 </script>
+
 </html>

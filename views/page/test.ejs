@@ -1,135 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
 
-<head>
+    <title>SB Admin - Charts</title>
 
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
+    <style>
+.loader {
+    position: fixed;
+    z-index: 99;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
-  <title>SB Admin - Charts</title>
+.loader > img {
+    width: 100px;
+}
 
-  <!-- Custom fonts for this template-->
-  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+.loader.hidden {
+    animation: fadeOut 1s;
+    animation-fill-mode: forwards;
+}
 
-  <!-- Page level plugin CSS-->
-  <link href="vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
-
-  <!-- Custom styles for this template-->
-  <link href="css/sb-admin.css" rel="stylesheet">
-  <link href="css/search.css" rel="stylesheet">
-  <style>
-    table
-    {
-        width: 300px;
-        font: 17px Calibri;
+@keyframes fadeOut {
+    100% {
+        opacity: 0;
+        visibility: hidden;
     }
-    table, th, td 
-    {
-        border: solid 1px #DDD;
-        border-collapse: collapse;
-        padding: 2px 3px;
-        text-align: center;
+}
+
+.thumb {
+    height: 100px;
+    border: 1px solid black;
+    margin: 10px;
+}
+
+/* 
+      .fade-out {
+        animation: fadeOut 1s;
+      }
+      @keyframes fadeOut {
+        100% {
+        opacity: 0;
+        visibility: hidden;
     }
-</style>
-</head>
+      } */
+    </style>
+  </head>
 
-<body id="page-top" >
-
-  <div id="printDiv">
-      <h1>dasdasdกฟหกกหก</h1>
-    <table> 
-        <tr>
-            <th>Name</th>
-                <th>Age</th>
-                    <th>Jdsadaกฟหกฟหกฟหกob</th>
-        </tr>
-        <tr>
-            <td>Brian</td>
-                <td>41</td>
-                    <td>Blogger</td>
-        </tr>
-        <tr>
-            <td>Brian</td>
-                <td>41</td>
-                    <td>Blogger</td>
-        </tr>
-        <tr>
-            <td>Brian</td>
-                <td>41</td>
-                    <td>Blogger</td>
-        </tr>
-        <tr>
-            <td>Brian</td>
-                <td>41</td>
-                    <td>Blogger</td>
-        </tr>
-       
-
-    </table>
-</div>
-
-<center>
-    <button type="button" id="pdfDownloader">Download</button>
-    <!-- <a href="#" onclick="HTMLtoPDF()">dasdads</a> -->
-	<!-- <button class="btn btn-success" onclick="downloadDoc()">Download PDF</button> -->
-</center>
+  <body>
 
 
+    <div class="loader">
+      <img
+        src="https://pixelpapa.com/wp-content/uploads/2018/11/32.gif"
+        alt="Loading..."
+      />
+    </div>
+    <h2 id="title">Custom Loader - dcode</h2>
+    <img
+      src="https://i.pinimg.com/originals/0e/dc/ed/0edced50c651e9380b43d1336aff2a05.jpg"
+      class="thumb"
+    />
+    <img
+      src="https://i.pinimg.com/originals/0e/dc/ed/0edced50c651e9380b43d1336aff2a05.jpg"
+      class="thumb"
+    />
+    <img
+      src="https://i.pinimg.com/originals/0e/dc/ed/0edced50c651e9380b43d1336aff2a05.jpg"
+      class="thumb"
+    />
 
-  <!-- Bootstrap core JavaScript-->
-  <script src="vendor/jquery/jquery.min.js"></script>
-  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script>
+      window.addEventListener("load", function() {
+        const loader = document.querySelector(".loader");
+        setTimeout(() => {
+            loader.className += " hidden"; // class "loader hidden"
+        }, 1000)
+        
+          
 
-  <!-- Core plugin JavaScript-->
-  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
-  <!-- Page level plugin JavaScript-->
-  <script src="vendor/chart.js/Chart.min.js"></script>
-
-  <!-- Custom scripts for all pages-->
-  <script src="js/sb-admin.min.js"></script>
-
-  <!-- Demo scripts for this page-->
-  <script src="js/demo/chart-area-demo.js"></script>
-  <script src="js/demo/chart-bar-demo.js"></script>
-  <script src="js/demo/chart-pie-demo.js"></script>
-  <script src="js/search.js"></script>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.0.272/jspdf.debug.js"></script>
-  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js" integrity="sha384-NaWTHo/8YCBYJ59830LTz/P4aQZK1sS0SneOgAvhsIl3zBu8r9RevNg5lHCHAuQ/" crossorigin="anonymous"></script>
-  <script src="https://unpkg.com/jspdf@latest/dist/jspdf.min.js"></script> -->
-
-
-<script>
-$(document).ready(function(){
-
-//pdf 다운로드 	
-$("#pdfDownloader").click(function(){
-
-    html2canvas(document.getElementById("printDiv"), {
-        onrendered: function(canvas) {
-
-            var imgData = canvas.toDataURL('image/png');
-            console.log('Report Image URL: '+imgData);
-            var doc = new jsPDF('p', 'mm', [297, 210]); //210mm wide and 297mm high
-            
-            doc.addImage(imgData, 'PNG', 10, 10);
-            doc.save('sample.pdf');
-        }
-    });
-
-});
-
-
-})
-
-</script>
-
-</body>
-
-
+      });
+    </script>
+  </body>
 </html>

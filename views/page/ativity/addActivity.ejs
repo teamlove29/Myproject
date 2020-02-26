@@ -49,7 +49,10 @@
         <div class="form-row">
           <div class="col-md-6">
             <div class="form-label-group">
-              <input value="<%= value.actName %>" type="text" name="name" id="name" class="form-control" placeholder="ชื่อกิจกรรม" required="required" autofocus="autofocus">
+              <input 
+              maxlength="30"
+              pattern="[a-zA-Zก-ุฯ-๙\s]*"
+              value="<%= value.actName %>" type="text" name="name" id="name" class="form-control" placeholder="ชื่อกิจกรรม" required="required" autofocus="autofocus">
               <label for="name">ชื่อกิจกรรม</label>
             </div>
           </div>
@@ -69,7 +72,9 @@
       </div>
       <div class="form-group">
         <div class="form-label-group">
-          <textarea type="textarea" name="detail" id="detail" class="form-control" placeholder="รายละเอียดกิจกรรม" required="required"><%= value.actDetail %></textarea>
+          <textarea 
+          maxlength="255"
+          type="textarea" name="detail" id="detail" class="form-control" placeholder="รายละเอียดกิจกรรม" required="required"><%= value.actDetail %></textarea>
         </div>
       </div>
       <button type="submit" class="btn btn-success">แก้ไข</button>
@@ -101,13 +106,29 @@
           <div class="form-row">
             <div class="col-md-6">
               <div class="form-label-group">
-                <input value="" type="text" name="name" id="name" class="form-control" placeholder="ชื่อกิจกรรม" required="required" autofocus="autofocus">
+                <input 
+                maxlength="30"
+                pattern="[a-zA-Zก-ุฯ-๙\s]*"
+                value="" type="text" name="name" id="name" class="form-control" placeholder="ชื่อกิจกรรม" required="required" autofocus="autofocus">
                 <label for="name">ชื่อกิจกรรม</label>
               </div>
             </div>
+            <% 
+var today = new Date();
+var dd = today.getDate() 
+var mm = today.getMonth() + 1
+var yyyy = today.getFullYear() + 543
+if (dd < 10) {
+  dd = '0' + dd;
+} 
+if (mm < 10) {
+  mm = '0' + mm;
+} 
+today = yyyy + '-' + mm + '-' + dd;
+%>
             <div class="col-md-6">
               <div class="form-label-group">
-                <input value="" type="date" name="date" id="date" class="form-control" placeholder="วันที่จัดกิจจกรม" required="required">
+                <input value="<%= today %>" type="date" name="date" id="date" class="form-control" placeholder="วันที่จัดกิจจกรม" required="required">
                 <label for="date">วันที่จัดกิจจกรม</label>
               </div>
             </div>
@@ -121,7 +142,9 @@
         </div>
         <div class="form-group">
           <div class="form-label-group">
-            <textarea value="" type="textarea" name="detail" id="detail" class="form-control" placeholder="รายละเอียดกิจกรรม" required="required"></textarea>
+            <textarea 
+            maxlength="255"
+            value="" type="textarea" name="detail" id="detail" class="form-control" placeholder="รายละเอียดกิจกรรม" required="required"></textarea>
           </div>
         </div>
         <button type="submit" class="btn btn-success">บันทึก</button>

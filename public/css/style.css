@@ -181,6 +181,7 @@ a{
   animation: spin 2s linear infinite;
 }
 
+
 @-webkit-keyframes spin {
   0% { -webkit-transform: rotate(0deg); }
   100% { -webkit-transform: rotate(360deg); }
@@ -197,7 +198,7 @@ a{
   -webkit-animation-name: animatebottom;
   -webkit-animation-duration: 1s;
   animation-name: animatebottom;
-  animation-duration: 0.5s
+  animation-duration: 0.8s
 }
 
 @-webkit-keyframes animatebottom {
@@ -205,6 +206,7 @@ a{
   to { bottom:0px; opacity:1 }
 }
 /* เดิมๆ -100px = มาจากด้านล่าง  */
+
 @keyframes animatebottom { 
   from{ bottom:0px; opacity:0 }  
   to{ bottom:0; opacity:1 }

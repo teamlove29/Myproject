@@ -21,6 +21,25 @@
 <script src="/js/demo/datatables-demo.js"></script>
 <script src="/js/demo/chart-bar-demo.js"></script>
 <script src="/js/demo/chart-pie-demo.js"></script>
+<!-- <script>
+
+  $(document).ready(function() {
+    loadsec();
+  });
+  
+  </script> -->
+  
+  <script>
+    window.addEventListener("load", function() {
+      const loader = document.querySelector(".loader");
+      setTimeout(() => {
+          loader.className += " hidden"; // class "loader hidden"
+      }, 10)
+      
+        
+
+    });
+  </script>
 <script>
 var myVar;
 
@@ -28,10 +47,20 @@ function myFunction() {
   myVar = setTimeout(showPage, 100);
 }
 
+
 function showPage() {
   document.getElementById("loader").style.display = "none";
   document.getElementById("loadedPage").style.display = "block";
 }
+
+
+$(document).ready(function() { // พอ DOM โหลดเสร็จ -> รัน document.ready -> พอรูป และ Element อื่น ๆโหลดเสร็จ -> รัน window.onload 
+    setTimeout(() => {
+      document.getElementById("loader").style.display = "none";
+    document.getElementById("loadedPage").style.display = "block";
+    }, 1000)
+    
+});
 </script>
 <script>
 function disableF5(e) { if ((e.which || e.keyCode) == 116 || (e.which || e.keyCode) == 82) e.preventDefault(); };
@@ -61,17 +90,50 @@ $(document).on("keydown", disableF5);
   <script src="js/demo/datatables-demo.js"></script>
   <script src="js/demo/chart-pie-demo.js"></script>
 
+<!-- <script>
+
+$(document).ready(function() {
+  loadsec();
+});
+
+</script> -->
+
+<script>
+  window.addEventListener("load", function() {
+    const loader = document.querySelector(".loader");
+    setTimeout(() => {
+        loader.className += " hidden"; // class "loader hidden"
+    }, 10)
+    
+      
+
+  });
+</script>
   <script>
     var myVar;
     
     function myFunction() {
       myVar = setTimeout(showPage, 100);
     }
-    
+
+
+
     function showPage() {
       document.getElementById("loader").style.display = "none";
       document.getElementById("loadedPage").style.display = "block";
     }
+
+
+  $(document).ready(function() { // พอ DOM โหลดเสร็จ -> รัน document.ready -> พอรูป และ Element อื่น ๆโหลดเสร็จ -> รัน window.onload 
+    setTimeout(() => {
+      document.getElementById("loader").style.display = "none";
+    document.getElementById("loadedPage").style.display = "block";
+    }, 1000)
+    
+});
+
+
+
     </script>
 
 <script>
