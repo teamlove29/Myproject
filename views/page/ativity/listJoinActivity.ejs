@@ -20,6 +20,18 @@
   <!-- Custom styles for this template-->
   <link href="/css/sb-admin.css" rel="stylesheet">
   <link href="/css/style.css" rel="stylesheet">
+  <style>
+
+.mystyle {
+  width: 100%;
+  padding: 15px;
+  margin-bottom: 20px;
+  background-color: #ffeeba;
+  color: #856404;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+  </style>
 </head>
 
 <body id="page-top"  id="loadedPage" onload="myFunction()">
@@ -121,12 +133,12 @@
                       <td><%= value.resName %></td>
                       <td><%= value.total %></td>
                       <% if(index < listResouceRe.length) { %>
-                      <td><%= value.resName == listResouceRe[index].resName ? listResouceRe[index].total : ''  %></td>
+                      <td><%= value.resName == listResouceRe[index].resName ? listResouceRe[index].total : '0'  %></td>
                       <% }else{ %>
                           <td></td>
                           <%}%>
                       <td>
-                          <button onclick="return ConfirReturn(<%= value.resId %>,<%= value.actId %>,<%= value.total %>)"
+                          <button onclick="return ConfirReturn(<%= value.resId %>,<%= value.actId %>,<%= value.total %>, <%= value.resName == listResouceRe[index].resName ? listResouceRe[index].total : '0'  %> %>)"
                               class="btn btn-sm btn-info">คืน
                       </td>
                   </tr>
@@ -192,20 +204,23 @@
           return false;
   }
 
-  function ConfirReturn(idresId, idAct, total) {
+  function ConfirReturn(idresId, idAct, total,returnResource) {
       var txt;
       var person = prompt("กรุณาใส่จำนวนที่้องการคืน:", "0");
       var numbers = /^[0-9]+$/;
-      if (person.match(numbers) && person <= total) {
+      var sum = total-returnResource
+      if (person.match(numbers) && person <= sum) {
           txt = "เรียบร้อย";
           // console.log("ok " + idresId, idAct, total,person);
           window.location.href = '/returnExport?idresId=' + idresId + '&idAct=' + idAct + '&Amount=' + person;
       }
       else {
           txt = "กรุณาใส่จำนวน หรือ จำนวนเกินกว่าที่เบิก";
-          // console.log("No " + idresId, idAct,total, person);
+
+          // console.log("No " + idresId, idAct,total,person,sum);
       }
-      // document.getElementById("msg").innerHTML = txt;
+      document.getElementById("msg").innerHTML = txt;
+      document.getElementById("msg").classList.add("mystyle");
   }
 </script>
 </html>

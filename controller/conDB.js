@@ -3,8 +3,8 @@ var mysql = require("mysql");
 var con = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "",
-  database: "test"
+  password: "Qwerty00--",
+  database: "rescue_db"
 });
 
 con.connect(err => {
@@ -15,5 +15,8 @@ con.connect(err => {
 
 
 module.exports = con
+
+
+
 
 
