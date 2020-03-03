@@ -132,13 +132,24 @@
                       <td><%= index+1 %></td>
                       <td><%= value.resName %></td>
                       <td><%= value.total %></td>
-                      <% if(index < listResouceRe.length) { %>
-                      <td><%= value.resName == listResouceRe[index].resName ? listResouceRe[index].total : '0'  %></td>
+                      <% if(index < listResouceRe.length) { 
+                        var resturnRe
+                        %>
+                        <!-- <h1><%= index%></h1>
+                        <h1><%= listResouceRe.length%></h1>
+                        <h1><%= index < listResouceRe.length ? 'ture' : 'false' %></h1> -->
+                      <td><%= value.resName == listResouceRe[index].resName  ? listResouceRe[index].total : '0'  %></td>
+                         %>
+                          <% resturnRe = [value.resName == listResouceRe[index].resName  ? listResouceRe[index].total : 0] %>
                       <% }else{ %>
-                          <td></td>
+                          <td>
+                            0
+                            <% resturnRe = [0]%>
+                          </td>
                           <%}%>
+      
                       <td>
-                          <button onclick="return ConfirReturn(<%= value.resId %>,<%= value.actId %>,<%= value.total %>, <%= value.resName == listResouceRe[index].resName ? listResouceRe[index].total : '0'  %> %>)"
+                          <button onclick="return ConfirReturn(<%= value.resId %>,<%= value.actId %>,<%= value.total %>, <%= resturnRe %>)"
                               class="btn btn-sm btn-info">คืน
                       </td>
                   </tr>
@@ -216,7 +227,8 @@
       }
       else {
           txt = "กรุณาใส่จำนวน หรือ จำนวนเกินกว่าที่เบิก";
-
+        console.log(sum);
+        
           // console.log("No " + idresId, idAct,total,person,sum);
       }
       document.getElementById("msg").innerHTML = txt;

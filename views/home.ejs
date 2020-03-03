@@ -23,7 +23,7 @@
 
     </style>
   </head>
-  <body id="page-top"  id="loadedPage" onload="myFunction()">
+  <body id="page-top"  id="loadedPage">
     <div id="loader"></div>
     <%- include ('./component/user/navbar')%>
     <div style="display:none;" id="loadedPage" class="animate-bottom">
@@ -164,14 +164,17 @@
   <script>
     var myVar;
     
-    function myFunction() {
-      myVar = setTimeout(showPage, 100);
-    }
+
     
-    function showPage() {
+    $(document).ready(function() { // พอ DOM โหลดเสร็จ -> รัน document.ready -> พอรูป และ Element อื่น ๆโหลดเสร็จ -> รัน window.onload 
+    setTimeout(() => {
       document.getElementById("loader").style.display = "none";
-      document.getElementById("loadedPage").style.display = "block";
-    }
+    document.getElementById("loadedPage").style.display = "block";
+    }, 100)
+    
+});
+
+
     </script>
 
 </html>

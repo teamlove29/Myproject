@@ -13,6 +13,52 @@
 </head>
 <body id="page-top"  id="loadedPage" onload="myFunction()">
   <div id="loader"></div>
+
+<!-- navbar -->
+<nav class="navbar navbar-dark bg-navbar navbar-expand-lg " id="navbar">
+  <div class="container">
+    <a class="navbar-brand my-auto" href="/home">
+      <img
+        src="/image/logo.png"
+        width="30"
+        height="30"
+        class="d-inline-block align-top"
+        alt=""
+      />
+    </a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-target="#navbarNav"
+      aria-controls="navbarNav"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav navbar-white">
+        <li class="nav-item active">
+          <a class="nav-link" href="/home"
+            >หน้าแรก <span class="sr-only">(current)</span></a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/CheckUser">ค้นหาบุคลากร</a>
+        </li>
+      </ul>
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link color-me" href="#">ติดต่อสอบถาม</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- navbar -->
+
   <div style="display:none;" id="loadedPage" class="animate-bottom">
     <div class="container">
         <div class="card card-register mx-auto mt-5">
@@ -39,7 +85,7 @@
                 </div>
               </div>
               
-              <button class="btn btn-success mt-3 float-right">ค้นหา</button>
+              <button class="btn btn-success mt-3 btn-block">ค้นหา</button>
         
               
             </form>
