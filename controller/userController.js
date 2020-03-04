@@ -44,7 +44,7 @@ const postUser = (req, res) => {
     }
     var filenames = req.files.map((file) => {
       return file.filename; // or file.originalname
-    });
+    }); //หันเอาคำตั้งแต่ 8-10
     const day = date.slice(8, 10)
     const month = date.slice(5, 7)
     const year = date.slice(2, 4)
@@ -124,9 +124,11 @@ const postEditUser = (req, res) => {
 
 
     const sql = "UPDATE `user` SET  `userPosition` = ? , `userFname` = ? , `userLname` = ?, `userSex` = ?, `userBirth` = ?, `userIdCard` = ?, `userAddress` = ? ,`userArea` = ? , `userEmail` = ?, `userTel` = ?, `userStatus` = ? , `userImage`= ? WHERE `user`.`userId` = ?;"
-    const sqlCheck = "SELECT * FROM `user` WHERE  userId = ?"
+    const sqlCheck = "SELECT * FROM `user` WHERE  userId = ? && userPosition = ? "
     const sqlUser = "SELECT * FROM `user`"
-    con.query(sqlCheck, [Iduser], (err, responCheck) => {
+    const newPosition = "SELECT * FROM `user` WHERE userPosition = ? "
+    const newPositionUser = "SELECT * FROM `user` WHERE  userId = ? "
+    con.query(sqlCheck, [Iduser,positionId], (err, responCheck) => {
       if (responCheck.length > 0) {
         const image = req.files != '' ? filenames : responCheck[0].userImage
 
@@ -157,22 +159,57 @@ const postEditUser = (req, res) => {
           })
         })
       } else {
-        con.query(sqlUser, (err, responUserAll) => {
-          res.render("page/user/userPage", {
-            listsUser: responUserAll,
-            data: {
-              css: true,
-              err: true,
-              msg: 'ข้อมูลซ้ำกรุณาตรวจสอบ',
-              cls: 'alert alert-danger',
-              dashboard: false,
-              managerUser: true,
-              managerActivity: false,
-              managerResource: false
-            }
-          });
-        })
+        con.query(newPosition,[positionId],(err,resNewPosition) => {
+          if(resNewPosition.length > 0){
+            con.query(sqlUser, (err, responUserAll) => {
+              res.render("page/user/userPage", {
+                listsUser: responUserAll,
+                data: {
+                  css: true,
+                  err: true,
+                  msg: 'รหัสนี้มีบุคลากรใช้แล้ว',
+                  cls: 'alert alert-danger',
+                  dashboard: false,
+                  managerUser: true,
+                  managerActivity: false,
+                  managerResource: false
+                }
+              });
+            })
+          }else{  
 
+            con.query(newPositionUser,[Iduser], (err,resNewPositionUser) => {
+              const image = req.files != '' ? filenames : resNewPositionUser[0].userImage
+              if (image == filenames && resNewPositionUser[0].userImage != 'defaultImage.png') {
+                const fileImageName = 'public/uploads/' + resNewPositionUser[0].userImage
+                fs.unlink(fileImageName, (err) => {
+                  if (err) throw err;
+                });
+              }
+              if (resNewPositionUser[0].userImage == '') {
+                image = 'defaultImage.png'
+              }
+              con.query(sql, [positionId, firstName, lastName, sex, date, idCard, address, area, Email, tel, status, image, Iduser], (err, respon) => {
+                con.query(sqlUser, (err, responUserAll) => {
+                  res.render("page/user/userPage", {
+                    listsUser: responUserAll,
+                    data: {
+                      css: true,
+                      err: true,
+                      msg: 'แก้ไขบุคลากรเรียบร้อยแล้ว',
+                      cls: 'alert alert-success',
+                      dashboard: false,
+                      managerUser: true,
+                      managerActivity: false,
+                      managerResource: false
+                    }
+                  });
+                })
+              })
+            })
+
+          }
+        })
       }
     })
 

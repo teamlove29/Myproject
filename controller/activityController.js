@@ -308,6 +308,8 @@ const listJoin = (req, res) => {
       con.query(sqlReturn, [IdActivity], (err, responReturn) => {
         const sqlActivity = "SELECT * FROM `activity` WHERE `actId` = ?"
         con.query(sqlActivity, [IdActivity], (err, responActivity) => {
+          // console.table(responRe);
+          // console.table(responReturn);
           res.render('page/ativity/listJoinActivity', {
             nameActivity: responActivity,
             listResouceRe: responReturn,

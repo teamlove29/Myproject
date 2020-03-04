@@ -80,8 +80,8 @@
               <td><%= today %></td>
               <td><%= value.resName %></td>
               <td><%= value.actName %></td>
-              <td><%= value.total %></td>
-              <td><%= value.deRes_status %></td>
+              <td class="<%= value.deRes_status == 'เบิก' ? 'text-danger'  : 'text-success' %>" > <%= value.deRes_status == 'เบิก' ?    '-'  : '+' %> <%= value.total %></td>
+              <td class="<%= value.deRes_status == 'เบิก' ? 'text-danger'  : 'text-success' %>" ><%= value.deRes_status %></td>
           </tr>
 <% }) }else{ %>
   <tr>
