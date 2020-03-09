@@ -58,7 +58,9 @@
             </div>
             <div class="col-md-6">
               <div class="form-label-group">
-                <input value="<%= value.resAmount %>" type="number" name="amount" id="amount" class="form-control" placeholder="วันที่จัดกิจจกรม" required="required">
+                <input 
+                min="0"
+                value="<%= value.resAmount %>" type="number" name="amount" id="amount" class="form-control" placeholder="วันที่จัดกิจจกรม" required="required">
                 <label for="amount">จำนวน</label>
               </div>
             </div>
@@ -112,7 +114,9 @@
             </div>
             <div class="col-md-6">
               <div class="form-label-group">
-                <input value="" type="number" name="amount" id="amount" class="form-control" placeholder="วันที่จัดกิจจกรม" required="required">
+                <input
+                min="0"
+                value="" type="number" name="amount" id="amount" class="form-control" placeholder="วันที่จัดกิจจกรม" required="required">
                 <label for="amount">จำนวน</label>
               </div>
             </div>

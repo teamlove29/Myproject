@@ -265,22 +265,84 @@ const AddExport = async (req, res, next) => {
       });
     });
   } else {
-    if (Array.isArray(item_quantity)) {
+    
 
-       const resultArray = item_quantity.filter(value => {
-              return value < 0;
-            });
-            if (resultArray != "") {
-              const sql = "SELECT * FROM `resource` WHERE resAmount != 0";
-              const sqlact = "SELECT * FROM `activity` WHERE actCode != 'Complete' ";
-              con.query(sql, (err, respon1) => {
-                con.query(sqlact, (err, respon2) => {
-                  res.render("page/resource/exportResource", {
-                    activity: respon2,
-                    listsResource: respon1,
+            if(Array.isArray(item_quantity) != true){
+
+              console.log("แบบเดี่ยว");
+              const sqlOne = "SELECT * FROM `resource` WHERE resId = ? ";
+              con.query(sqlOne, [item_name], (err, responOne) => {
+                const sum = responOne[0].resAmount - item_quantity;
+                if (sum < 0) {
+                  const sql = "SELECT * FROM `resource`";
+                  con.query(sql, (err, respon1) => {
+                    const sqlact ="SELECT * FROM `activity` WHERE actCode != 'Complete' ";
+                    con.query(sqlact, (err, respon2) => {
+                      res.render("page/resource/exportResource", {
+                        activity: respon2,
+                        listsResource: respon1,
+                        data: {
+                          msg: "เกิดข้อผิดพลาด! โปรดตรวจสอบทรัพยาคงเหลือก่อนทำการเบิก",
+                          cls: "alert alert-danger",
+                          dashboard: false,
+                          managerUser: false,
+                          managerActivity: false,
+                          managerResource: true
+                        }
+                      });
+                    });
+                  });
+
+                } else {
+                  //แบบ เดี่ยว
+                  const sqlcheck = "SELECT * FROM `order` WHERE actId = ? ";
+                  con.query(sqlcheck, [name], (err, responcheck) => {
+                    if (responcheck.length > 0) {
+                      const { orderId } = responcheck[0];
+                      const sqlAddDetail =
+                        "INSERT INTO `order_detail` (`orderId`, `resId`, `deRes_amount`, `deRes_date`, `deRes_status`) VALUES (?, ?, ?, ?, ?)";
+                      con.query(sqlAddDetail,[orderId, item_name, item_quantity, new Date(), "เบิก"],(err, responAddDetail) => {
+                          const sqlUpdate ="UPDATE `resource` SET `resAmount` = ? WHERE `resource`.`resId` = ?";
+                          con.query(sqlUpdate,[responOne[0].resAmount - item_quantity, item_name],(err, resUpdate) => {
+                              // res.redirect("/ManagerResource")
+                            }
+                          );
+                        }
+                      );
+                    } else {
+                      const sqlAddOrder ="INSERT INTO `order` (`orderId`, `actId`) VALUES (NULL, ?);";
+                      con.query(sqlAddOrder, [name], (err, responAddOrder) => {
+                        con.query(sqlcheck, [name], (err, responcheck) => {
+                          const { orderId } = responcheck[0];
+                          const sqlAddDetail ="INSERT INTO `order_detail` (`orderId`, `resId`, `deRes_amount`, `deRes_date`, `deRes_status`) VALUES (?, ?, ?, ?, ?);";
+                          con.query(sqlAddDetail,[orderId, item_name, item_quantity, new Date(), "เบิก"],(err, responAddDetail) => {
+                              const sqlUpdate ="UPDATE `resource` SET `resAmount` = ? WHERE `resource`.`resId` = ?";
+                              con.query(
+                                sqlUpdate,
+                                [responOne[0].resAmount - item_quantity, item_name],
+                                (err, resUpdate) => {
+                                  // res.redirect("/ManagerResource")
+                                }
+                              );
+                            }
+                          );
+                        });
+                      });
+                    }
+                  });
+                }
+              });
+
+              setTimeout(() => {
+                const sql = "SELECT * FROM `resource`";
+                con.query(sql, (err, respon) => {
+                  res.render("page/resource/resourcePage", {
+                    listsResource: respon,
                     data: {
-                      msg: "เกิดข้อผิดพลาด! ตัวเลขไม่สามารถติดลบได้",
-                      cls: "alert alert-danger",
+                      css: false,
+                      err: true,
+                      msg: "เบิกทรัพยากร เรียบร้อยแล้ว",
+                      cls: "alert alert-success",
                       dashboard: false,
                       managerUser: false,
                       managerActivity: false,
@@ -288,20 +350,58 @@ const AddExport = async (req, res, next) => {
                     }
                   });
                 });
+              }, 200)
+              
+            }else{
+
+              const resultArray = item_quantity.filter(value => {
+                return value < 0;
               });
-              // console.log('resultArray จ้า');
-              return false;
-            }
-      
-    }
+              if (resultArray != "") {
+                const sql = "SELECT * FROM `resource` WHERE resAmount != 0";
+                const sqlact = "SELECT * FROM `activity` WHERE actCode != 'Complete' ";
+                con.query(sql, (err, respon1) => {
+                  con.query(sqlact, (err, respon2) => {
+                    res.render("page/resource/exportResource", {
+                      activity: respon2,
+                      listsResource: respon1,
+                      data: {
+                        msg: "เกิดข้อผิดพลาด! ตัวเลขไม่สามารถติดลบได้",
+                        cls: "alert alert-danger",
+                        dashboard: false,
+                        managerUser: false,
+                        managerActivity: false,
+                        managerResource: true
+                      }
+                    });
+                  });
+                });
+                // console.log('resultArray จ้า');
+                return false
+              }
+              //หาค่าเกินของแบบกลุ่ม
+              var Wong
+         
+                for (let i = 0; i < item_name.length; i++) {  
+                  const sql =  "SELECT * FROM `resource` WHERE resId = ? ";
+                   const test55 = await con.query(sql,[item_name[i]], async (err,responRes)  => { 
+                    const sumtestArray = responRes[0].resAmount - item_quantity[i];
 
-    for (let i = 0; i < item_name.length; i++) {
-      const sql = "SELECT * FROM `resource` WHERE resId = ? ";
-      con.query(sql, [item_name[i]], (err, responRes) => {
-        if (Array.isArray(item_quantity)) {
-          const sum = responRes[0].resAmount - item_quantity[i];
-
-          if (sum < 0) {
+                    if(sumtestArray < 0){
+                      console.log(item_name[i] ,sumtestArray ,' : yes');
+                        Wong =  'noo'
+                    }
+                    
+                    
+                  })
+                }
+  
+              
+       
+         setTimeout(() => {
+          if(Wong == 'noo'){
+            console.log('noo');
+            
             const sql = "SELECT * FROM `resource` WHERE resAmount != 0";
             con.query(sql, (err, respon1) => {
               const sqlact =
@@ -321,201 +421,171 @@ const AddExport = async (req, res, next) => {
                   }
                 });
               });
+              
             });
-          } else {
-            console.log("this");
-
-            //แบบ กลุ่ม
-            const sqlcheck = "SELECT * FROM `order` WHERE actId = ? ";
-            con.query(sqlcheck, [name], (err, responcheck) => {
-              if (responcheck.length > 0) {
-                const { orderId } = responcheck[0];
-                const sqlAddDetail =
-                  "INSERT INTO `order_detail` (`orderId`, `resId`, `deRes_amount`, `deRes_date`, `deRes_status`) VALUES (?, ?, ?, ?, ?)";
-                con.query(
-                  sqlAddDetail,
-                  [orderId, item_name[i], item_quantity[i], new Date(), "เบิก"],
-                  (err, responAddDetail) => {
-                    const sqlUpdate =
-                      "UPDATE `resource` SET `resAmount` = ? WHERE `resource`.`resId` = ?";
-                    con.query(
-                      sqlUpdate,
-                      [responRes[0].resAmount - item_quantity[i], item_name[i]],
-                      (err, resUpdate) => {
-                        // res.redirect("/ManagerResource")
-                        const sqlGo = "SELECT * FROM `resource`";
-                        con.query(sqlGo, (err, respon) => {
-                          if (err) throw err;
-                          // res.render('page/resource/resourcePage', {
-                          //   listsResource: respon,
-                          //   data: {
-                          //     dashboard: false,
-                          //     managerUser: false,
-                          //     managerActivity: false,
-                          //     managerResource: true
-                          //   }
-                          // })
+            return false
+          }else{
+            console.log('yes');
+            for (let i = 0; i < item_name.length; i++) {
+              const sql = "SELECT * FROM `resource` WHERE resId = ? ";
+              con.query(sql, [item_name[i]], (err, responRes) => {
+                if (Array.isArray(item_quantity)) {
+                  const sum = responRes[0].resAmount - item_quantity[i];
+                  if (sum < 0) {
+                    const sql = "SELECT * FROM `resource` WHERE resAmount != 0";
+                    con.query(sql, (err, respon1) => {
+                      const sqlact =
+                        "SELECT * FROM `activity` WHERE actCode != 'Complete' ";
+                      con.query(sqlact, (err, respon2) => {
+                        res.render("page/resource/exportResource", {
+                          activity: respon2,
+                          listsResource: respon1,
+                          data: {
+                            msg:
+                              "เกิดข้อผิดพลาด! โปรดตรวจสอบทรัพยาคงเหลือก่อนทำการเบิก",
+                            cls: "alert alert-danger",
+                            dashboard: false,
+                            managerUser: false,
+                            managerActivity: false,
+                            managerResource: true
+                          }
                         });
-                      }
-                    );
-                  }
-                );
-              } else {
-                const sqlAddOrder =
-                  "INSERT INTO `order` (`orderId`, `actId`) VALUES (NULL, ?);";
-                con.query(sqlAddOrder, [name], (err, responAddOrder) => {
-                  con.query(sqlcheck, [name], (err, responcheck) => {
-                    const { orderId } = responcheck[0];
-                    const sqlAddDetail =
-                      "INSERT INTO `order_detail` (`orderId`, `resId`, `deRes_amount`, `deRes_date`, `deRes_status`) VALUES (?, ?, ?, ?, ?);";
-                    con.query(
-                      sqlAddDetail,
-                      [
-                        orderId,
-                        item_name[i],
-                        item_quantity[i],
-                        new Date(),
-                        "เบิก"
-                      ],
-                      (err, responAddDetail) => {
-                        const sqlUpdate =
-                          "UPDATE `resource` SET `resAmount` = ? WHERE `resource`.`resId` = ?";
+                      });
+                      
+                    });
+                    return false
+                  } else {
+                    console.log("แบบกลุ่ม");
+        
+                    //แบบ กลุ่ม
+                    const sqlcheck = "SELECT * FROM `order` WHERE actId = ? ";
+                    con.query(sqlcheck, [name], (err, responcheck) => {
+                      if (responcheck.length > 0) {
+                        const { orderId } = responcheck[0];
+                        const sqlAddDetail =
+                          "INSERT INTO `order_detail` (`orderId`, `resId`, `deRes_amount`, `deRes_date`, `deRes_status`) VALUES (?, ?, ?, ?, ?)";
                         con.query(
-                          sqlUpdate,
-                          [
-                            responRes[0].resAmount - item_quantity[i],
-                            item_name[i]
-                          ],
-                          (err, resUpdate) => {
-                            // res.redirect("/ManagerResource")
-                            const sqlGo = "SELECT * FROM `resource`";
-                            con.query(sqlGo, (err, respon) => {
-                              if (err) throw err;
-                              // res.render('page/resource/resourcePage', {
-                              //   listsResource: respon,
-                              //   data: {
-                              //     dashboard: false,
-                              //     managerUser: false,
-                              //     managerActivity: false,
-                              //     managerResource: true
-                              //   }
-                              // })
-                            });
+                          sqlAddDetail,
+                          [orderId, item_name[i], item_quantity[i], new Date(), "เบิก"],
+                          (err, responAddDetail) => {
+                            const sqlUpdate =
+                              "UPDATE `resource` SET `resAmount` = ? WHERE `resource`.`resId` = ?";
+                            con.query(
+                              sqlUpdate,
+                              [responRes[0].resAmount - item_quantity[i], item_name[i]],
+                              (err, resUpdate) => {
+                                // res.redirect("/ManagerResource")
+                                const sqlGo = "SELECT * FROM `resource`";
+                                con.query(sqlGo, (err, respon) => {
+                                  if (err) throw err;
+                                  // res.render('page/resource/resourcePage', {
+                                  //   listsResource: respon,
+                                  //   data: {
+                                  //     dashboard: false,
+                                  //     managerUser: false,
+                                  //     managerActivity: false,
+                                  //     managerResource: true
+                                  //   }
+                                  // })
+                                });
+                              }
+                            );
                           }
                         );
+                      } else {
+                        const sqlAddOrder =
+                          "INSERT INTO `order` (`orderId`, `actId`) VALUES (NULL, ?);";
+                        con.query(sqlAddOrder, [name], (err, responAddOrder) => {
+                          con.query(sqlcheck, [name], (err, responcheck) => {
+                            const { orderId } = responcheck[0];
+                            const sqlAddDetail ="INSERT INTO `order_detail` (`orderId`, `resId`, `deRes_amount`, `deRes_date`, `deRes_status`) VALUES (?, ?, ?, ?, ?);";
+                            con.query(sqlAddDetail,[orderId,item_name[i],item_quantity[i],new Date(),"เบิก"],(err, responAddDetail) => {
+                                const sqlUpdate ="UPDATE `resource` SET `resAmount` = ? WHERE `resource`.`resId` = ?";
+                                con.query(
+                                  sqlUpdate,
+                                  [
+                                    responRes[0].resAmount - item_quantity[i],
+                                    item_name[i]
+                                  ],
+                                  (err, resUpdate) => {
+                                    // res.redirect("/ManagerResource")
+                                    const sqlGo = "SELECT * FROM `resource`";
+                                    con.query(sqlGo, (err, respon) => {
+                                      if (err) throw err;
+                                      // res.render('page/resource/resourcePage', {
+                                      //   listsResource: respon,
+                                      //   data: {
+                                      //     dashboard: false,
+                                      //     managerUser: false,
+                                      //     managerActivity: false,
+                                      //     managerResource: true
+                                      //   }
+                                      // })
+                                    });
+                                  }
+                                );
+                              }
+                            );
+                          });
+                        });
                       }
-                    );
-                  });
-                });
-              }
-            });
-          }
-        }
-      });
-    }
-
-    if (Array.isArray(item_name)) {
-    } else {
-      const sqlOne = "SELECT * FROM `resource` WHERE resId = ? ";
-      con.query(sqlOne, [item_name], (err, responOne) => {
-        const sum = responOne[0].resAmount - item_quantity;
-        if (sum < 0) {
-          const sql = "SELECT * FROM `resource`";
-          con.query(sql, (err, respon1) => {
-            const sqlact =
-              "SELECT * FROM `activity` WHERE actCode != 'Complete' ";
-            con.query(sqlact, (err, respon2) => {
-              res.render("page/resource/exportResource", {
-                activity: respon2,
-                listsResource: respon1,
-                data: {
-                  msg: "เกิดข้อผิดพลาด! โปรดตรวจสอบทรัพยาคงเหลือก่อนทำการเบิก",
-                  cls: "alert alert-danger",
-                  dashboard: false,
-                  managerUser: false,
-                  managerActivity: false,
-                  managerResource: true
+                    });
+                  }
                 }
-              });
-            });
-          });
-        } else {
-          //แบบ เดี่ยว
-          console.log("this");
-
-          const sqlcheck = "SELECT * FROM `order` WHERE actId = ? ";
-          con.query(sqlcheck, [name], (err, responcheck) => {
-            if (responcheck.length > 0) {
-              // console.log('this');
-              const { orderId } = responcheck[0];
-              const sqlAddDetail =
-                "INSERT INTO `order_detail` (`orderId`, `resId`, `deRes_amount`, `deRes_date`, `deRes_status`) VALUES (?, ?, ?, ?, ?)";
-              con.query(
-                sqlAddDetail,
-                [orderId, item_name, item_quantity, new Date(), "เบิก"],
-                (err, responAddDetail) => {
-                  const sqlUpdate =
-                    "UPDATE `resource` SET `resAmount` = ? WHERE `resource`.`resId` = ?";
-                  con.query(
-                    sqlUpdate,
-                    [responOne[0].resAmount - item_quantity, item_name],
-                    (err, resUpdate) => {
-                      // res.redirect("/ManagerResource")
-                    }
-                  );
-                }
-              );
-            } else {
-              // console.log('this2');
-              const sqlAddOrder =
-                "INSERT INTO `order` (`orderId`, `actId`) VALUES (NULL, ?);";
-              con.query(sqlAddOrder, [name], (err, responAddOrder) => {
-                con.query(sqlcheck, [name], (err, responcheck) => {
-                  const { orderId } = responcheck[0];
-                  const sqlAddDetail =
-                    "INSERT INTO `order_detail` (`orderId`, `resId`, `deRes_amount`, `deRes_date`, `deRes_status`) VALUES (?, ?, ?, ?, ?);";
-                  con.query(
-                    sqlAddDetail,
-                    [orderId, item_name, item_quantity, new Date(), "เบิก"],
-                    (err, responAddDetail) => {
-                      const sqlUpdate =
-                        "UPDATE `resource` SET `resAmount` = ? WHERE `resource`.`resId` = ?";
-                      con.query(
-                        sqlUpdate,
-                        [responOne[0].resAmount - item_quantity, item_name],
-                        (err, resUpdate) => {
-                          // res.redirect("/ManagerResource")
-                        }
-                      );
-                    }
-                  );
-                });
               });
             }
-          });
-        }
-      });
-    }
+      
+setTimeout(() => {
+  const sql = "SELECT * FROM `resource`";
+  con.query(sql, (err, respon) => {
+    res.render("page/resource/resourcePage", {
+      listsResource: respon,
+      data: {
+        css: false,
+        err: true,
+        msg: "เบิกทรัพยากร เรียบร้อยแล้ว",
+        cls: "alert alert-success",
+        dashboard: false,
+        managerUser: false,
+        managerActivity: false,
+        managerResource: true
+      }
+    });
+  });
+}, 300)
+
+
+          }
+           
+         }, 300)
+              
+      
+ 
+        //  const sql = "SELECT * FROM `resource`";
+        //  con.query(sql, (err, respon) => {
+        //    res.render("page/resource/resourcePage", {
+        //      listsResource: respon,
+        //      data: {
+        //        css: false,
+        //        err: true,
+        //        msg: "เบิกทรัพยากร เรียบร้อยแล้ว",
+        //        cls: "alert alert-success",
+        //        dashboard: false,
+        //        managerUser: false,
+        //        managerActivity: false,
+        //        managerResource: true
+        //      }
+        //    });
+        //  });
+
+
+
   }
 
-  setTimeout(() => {
-    const sql = "SELECT * FROM `resource`";
-    con.query(sql, (err, respon) => {
-      res.render("page/resource/resourcePage", {
-        listsResource: respon,
-        data: {
-          css: false,
-          err: true,
-          msg: "เบิกทรัพยากร เรียบร้อยแล้ว",
-          cls: "alert alert-success",
-          dashboard: false,
-          managerUser: false,
-          managerActivity: false,
-          managerResource: true
-        }
-      });
-    });
-  }, 200);
+
+  }
+
+
 };
 
 // SELECT DISTINCT  order.orderId, order.actId, order_detail.resId, resource.resName,order_detail.deRes_status, SUM(order_detail.deRes_amount) AS total FROM `order` INNER JOIN `order_detail` ON order.orderId =  order_detail.orderId INNER JOIN resource ON order_detail.resId = resource.resId WHERE order.actId = 2 && order_detail.deRes_status = 'เบิก' GROUP BY resource.resName

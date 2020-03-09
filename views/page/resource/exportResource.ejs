@@ -49,7 +49,7 @@
             <div class="card-header">เบิกทรัพยากร</div>
             <div class="card-body">
 
-              <form action="/addExport" method="post" id="insert_form">
+              <form name="frm_test" action="/addExport" method="post" id="insert_form" onsubmit="doSubmit(this)">
                 <div class="table-repsonsive">
                   <h5>กิจกรรม</h5>
                   <hr>
@@ -81,13 +81,15 @@
                           <option value="<%= value.resId %>"><%= value.resName %></option><% }) %>
                         </select>
                       </td>
-                      <td><input type="number" name="item_quantity" class="form-control item_quantity" required /></td>
+                      <td><input 
+                        min="0"
+                        type="number" name="item_quantity" class="form-control item_quantity" required /></td>
                       <td id="txt0"></td>
                       <td>
                     </tr>
                   </table>
                   <div align="center">
-                    <button type="submit" class="btn btn-success btn-sm">บันทึก</button>
+                    <button type="submit" class="btn btn-success btn-sm" id="btnbtn">บันทึก</button>
                   </div>
 
                 </div>
@@ -146,7 +148,13 @@
     <%- include('../../component/admin/scriptJs')%>
 
 </body>
+<script type="text/javascript">
 
+  function doSubmit(form) {
+    document.getElementById("btnbtn").style.display = "none";
+    
+  };
+  </script>
 <script>
 
   var loop = 1
