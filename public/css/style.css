@@ -162,6 +162,9 @@ a{
   margin-top: 2rem;
 }
 
+.bg-red{
+  background-color: #ff6c60;
+}
 
 /* Center the loader */
 #loader {

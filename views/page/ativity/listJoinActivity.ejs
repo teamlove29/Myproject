@@ -221,7 +221,7 @@
       var person = prompt("กรุณาใส่จำนวนที่้องการคืน:", "0");
       var numbers = /^[0-9]+$/;
       var sum = total-returnResource
-      if (person.match(numbers) && person <= sum) {
+      if (person.match(numbers) && person <= sum && person < 0) {
           txt = "เรียบร้อย";
           // console.log("ok " + idresId, idAct, total,person);
           window.location.href = '/returnExport?idresId=' + idresId + '&idAct=' + idAct + '&Amount=' + person;

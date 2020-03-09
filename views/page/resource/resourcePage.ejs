@@ -70,7 +70,7 @@
 
           <div id="msg" class="" role="alert"></div>
             <div class="table-responsive">
-              <table  class="table table-bordered table-sm" id="dataTable" width="100%" cellspacing="0">
+              <table  data-order='[[ 1, "DESC" ]]' class="table table-bordered table-sm " id="dataTable" width="100%" cellspacing="0">
                 <thead>
                   <tr>
                     <th>รายการ</th>
@@ -80,9 +80,9 @@
                 </thead>
                 <tbody>
                   <% listsResource.map((value,index) => { %>
-                  <tr>
-                    <td><%= value.resName %></td>
-                    <td><%= value.resAmount %></td>
+                  <tr >
+                    <td class="<%= value.resAmount == 0 ? 'bg-red text-white' : '' %>"><%= value.resName %></td>
+                    <td class="<%= value.resAmount == 0 ? 'bg-red text-white' : '' %>"><%= value.resAmount %></td>
                     <td>
                       <button 
                       onclick="return ConfirmPlus(<%= value.resId %>)"
