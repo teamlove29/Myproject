@@ -150,7 +150,7 @@ const posteditActivity = async (req, res) => {
                 data: {
                   css:true,
                   err:true,
-                  msg : 'เพิ่มกิจกรรม เรียบร้อยแล้ว',
+                  msg : 'แก้ไขกิจกรรม เรียบร้อยแล้ว',
                   cls : 'alert alert-success',
                   dashboard: false,
                   managerUser: false,

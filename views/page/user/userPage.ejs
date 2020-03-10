@@ -47,6 +47,18 @@
     margin: 10px;
 }
 
+
+
+.mystyle {
+  width: 100%;
+  padding: 15px;
+  margin-bottom: 20px;
+  background-color: #ffeeba;
+  color: #856404;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
   </style>
 <% if(data.css === true) { %>
   <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -96,16 +108,21 @@
         onclick="javascript:window.location.href='/ManagerUser/adduser'"
         class="p-2 mb-3 btn btn-success btn-sm"
         ><i class="fas fa-plus"></i> เพิ่มบุคลากร</button>
-
+        <button 
+        onclick="ConfirmReset()"
+        class="p-2 mb-3 btn btn-secondary btn-sm"><i class="fas fa-redo-alt"></i> รีเซทรหัสผ่าน</button>
+  
         
 
           <% if(data.err === false ){  %>
 
             <% } else{ %>
           <div class="<%= data.cls %>" role="alert">
-            <%= data.msg %>
+            <%= data.msg %> <%= data.pass != '' ? data.pass : '' %> 
           </div>
           <%}%>
+          <div id="msg" class="" role="alert">
+          </div>
           <div style="display:none;"" id="loadedPage" class="animate-bottom"><!-- None -->
               <div class="table-responsive">
                 <table data-order='[[ 1, "asc" ]]' class="table-sm table table-bordered text-center" id="dataTable" width="100%" cellspacing="0">
@@ -223,4 +240,28 @@
 </body>
 
 <%- include('../../component/admin/scriptJs')%>
+
+<script>
+
+
+  function ConfirmReset() {
+      var txt;
+      var person = prompt("กรุณาใส่รหัสประจำตัวที่ต้องการรีเซท:", "0");
+      var numbers = /^[0-9]+$/;
+      if (person.match(numbers)) {
+          // txt = "เรียบร้อย";
+          // console.log("ok " , person);
+          window.location.href = '/resetPass?position=' + person;
+
+      }
+      else {
+          txt = "กรุณากรอกเป็นตัวเลขเท่านั้น";
+        // console.log('no', person);
+        document.getElementById("msg").innerHTML = txt;
+      document.getElementById("msg").classList.add("mystyle");
+          // console.log("No " + idresId, idAct,total,person,sum);
+      }
+    
+  }
+</script>
 </html>
