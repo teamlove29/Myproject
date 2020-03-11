@@ -221,7 +221,7 @@ const delUser = async (req, res) => {
   const imageUser = "SELECT * FROM `user` WHERE `userId` = ?"
   const sql = await "DELETE FROM `user` WHERE `userId` = ?"
   const sqlUser = "SELECT * FROM `user`"
-  
+  // เข้าไปตรวจสอบรูป และลบรูปออกจากระบบ ถ้าเปนdefaultImage ไม่ต้องลบ
   con.query(imageUser,[req.params.id],(err,responImage) => {
     if (responImage[0].userImage != 'defaultImage.png') {
       const fileImageName = 'public/uploads/' + responImage[0].userImage

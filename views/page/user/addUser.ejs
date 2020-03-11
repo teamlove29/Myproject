@@ -48,13 +48,19 @@
           <div class="form-row">
             <div class="col-md-6">
               <div class="form-label-group">
-                <input pattern="[a-zA-Zก-ุฯ-๙\s]*" value="<%= value.userFname %>" type="text" name="firstName" id="firstName" class="form-control" placeholder="ชื่อ" required="required" autofocus="autofocus">
+                <input
+                minlength="3"
+                maxlength="25"
+                pattern="[a-zA-Zก-ุฯ-๙\s]*" value="<%= value.userFname %>" type="text" name="firstName" id="firstName" class="form-control" placeholder="ชื่อ" required="required" autofocus="autofocus">
                 <label for="firstName">ชื่อ</label>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-label-group">
-                <input pattern="[a-zA-Zก-ุฯ-๙\s]*" value="<%= value.userLname %>" type="text" name="lastName" id="lastName" class="form-control" placeholder="นามสกุล" required="required">
+                <input 
+                minlength="3"
+                maxlength="25"
+                pattern="[a-zA-Zก-ุฯ-๙\s]*" value="<%= value.userLname %>" type="text" name="lastName" id="lastName" class="form-control" placeholder="นามสกุล" required="required">
                 <label for="lastName">นามสกุล</label>
               </div>
             </div>
@@ -62,7 +68,9 @@
         </div>
         <div class="form-group">
           <div class="form-label-group">
-            <input value="<%= value.userArea %>"  type="text" name="area" id="area" class="form-control" placeholder="นามเรียกขาน" required="required">
+            <input 
+            pattern="[a-zA-Zก-ุฯ-๙\s0-9]*"
+            value="<%= value.userArea %>"  type="text" name="area" id="area" class="form-control" placeholder="นามเรียกขาน" required="required">
             <label for="area">นามเรียกขาน</label>
           </div>
         </div>
@@ -171,7 +179,10 @@
                       </div>
                       <div class="col-md-6">
                         <div class="form-label-group">
-                          <input pattern="[a-zA-Zก-ุฯ-๙\s]*" type="text" name="lastName" id="lastName" class="form-control" placeholder="นามสกุล" required="required">
+                          <input 
+                          minlength="3"
+                          maxlength="25"
+                          pattern="[a-zA-Zก-ุฯ-๙\s]*" type="text" name="lastName" id="lastName" class="form-control" placeholder="นามสกุล" required="required">
                           <label for="lastName">นามสกุล</label>
                         </div>
                       </div>
@@ -179,7 +190,7 @@
                   </div>
                   <div class="form-group">
                     <div class="form-label-group">
-                      <input type="text" name="area" id="area" class="form-control" placeholder="นามเรียกขาน" required="required">
+                      <input pattern="[a-zA-Zก-ุฯ-๙\s0-9]*" type="text" name="area" id="area" class="form-control" placeholder="นามเรียกขาน" required="required">
                       <label for="area">นามเรียกขาน</label>
                     </div>
                   </div>
