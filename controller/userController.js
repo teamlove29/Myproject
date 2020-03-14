@@ -36,26 +36,27 @@ const adduser = (req, res) => {
 };
 
 const postUser = (req, res) => {
-  upload(req, res, (err) => {
+  upload(req, res, (err) => { //อัพรูป
     const { firstName, lastName, area, positionId, sex, date, idCard, address, Email, tel, status } = req.body
-    if (upload.MulterError) {
-
-      // ไม่ผ่านเงื่อนไขการอัพโหลดไฟล์
-    }
+//     if (upload.MulterError) {
+//       // ไม่ผ่านเงื่อนไขการอัพโหลดไฟล์ 
+//     }
     var filenames = req.files.map((file) => {
       return file.filename; // or file.originalname
     }); //หันเอาคำตั้งแต่ 8-10
+    
+    // กรณีใส่รูปมาที่ไม่ใช่ไฟล์ jpg png จะเปลี่ยนเปนค่าว่าง
     const day = date.slice(8, 10)
     const month = date.slice(5, 7)
     const year = date.slice(2, 4)
-    const pass = day + month + year
+    const pass = day + month + year //กำหนดวันเกิด
 
     const image = req.files != '' ? filenames : 'defaultImage.png'
     const sql = "INSERT INTO `user`(`userId`, `userPosition`, `userFname`, `userLname`, `userSex`, `userBirth`, `userPass`, `userIdCard`, `userAddress`, `userArea`, `userEmail`, `userTel`, `userStatus`, `userImage`) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)"
     const sqlCheck = "SELECT * FROM `user` WHERE userPosition= ?"
     const sqlUser = "SELECT * FROM `user`"
     con.query(sqlCheck, [positionId], (err, responCheck) => {
-      if (responCheck.length > 0) {
+      if (responCheck.length > 0) { //เช็คซ้ำ
         con.query(sqlUser, (err, responUserAll) => {
           res.render("page/user/userPage", {
             listsUser: responUserAll,
@@ -130,6 +131,7 @@ const postEditUser = (req, res) => {
     const newPositionUser = "SELECT * FROM `user` WHERE  userId = ? "
     con.query(sqlCheck, [Iduser,positionId], (err, responCheck) => {
       if (responCheck.length > 0) {
+        //ถ้ามีรหัสอยู่แล้ว 
         const image = req.files != '' ? filenames : responCheck[0].userImage
 
         if (image == filenames && responCheck[0].userImage != 'defaultImage.png') {
@@ -137,10 +139,10 @@ const postEditUser = (req, res) => {
           fs.unlink(fileImageName, (err) => {
             if (err) throw err;
           });
-        }
+        } //เช็ครูป
         if (responCheck[0].userImage == '') {
           image = 'defaultImage.png'
-        }
+        } 
         con.query(sql, [positionId, firstName, lastName, sex, date, idCard, address, area, Email, tel, status, image, Iduser], (err, respon) => {
           con.query(sqlUser, (err, responUserAll) => {
             res.render("page/user/userPage", {
@@ -159,7 +161,9 @@ const postEditUser = (req, res) => {
           })
         })
       } else {
+
         con.query(newPosition,[positionId],(err,resNewPosition) => {
+          // กรณีเปลี่ยนรหัสแล้วซ้ำกัน
           if(resNewPosition.length > 0){
             con.query(sqlUser, (err, responUserAll) => {
               res.render("page/user/userPage", {
@@ -177,7 +181,7 @@ const postEditUser = (req, res) => {
               });
             })
           }else{  
-
+            //ถ้าไม่ซ้ำก็อัพโหลดรูปและแก้ไข
             con.query(newPositionUser,[Iduser], (err,resNewPositionUser) => {
               const image = req.files != '' ? filenames : resNewPositionUser[0].userImage
               if (image == filenames && resNewPositionUser[0].userImage != 'defaultImage.png') {

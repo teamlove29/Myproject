@@ -139,23 +139,38 @@ const reportHistory =  async (req,res) => {
 
             
     }else{
-        const arr1 = start.split('-');
-        const yyyy = parseInt(arr1[0])-543
-        const mm = arr1[1]
-        const dd = arr1[2]
-        const startDay = yyyy + '-' + mm + '-' + dd
+
+      const datestart = new Date(start)
+      const daystart = datestart.getDate()
+      const monthstart = datestart.getMonth()+1
+      const yearstart = datestart.getFullYear();
+      const yystrat = yearstart-543
+      const startDay = yystrat + '-' + monthstart + '-' + daystart
+
+      const dateend = new Date(end)
+      const dayend = dateend.getDate()
+      const monthend = dateend.getMonth()+1
+      const yearend = dateend.getFullYear();
+      const yyend = yearstart-543
+      const endDay = yyend + '-' + monthend + '-' + dayend
+
+        // const arr1 = start.split('-');
+        // const yyyy = parseInt(arr1[0])-543
+        // const mm = arr1[1]
+        // const dd = arr1[2]
+        // const startDay = yyyy + '-' + mm + '-' + dd
     
-        const arr2 = end.split('-');
-        const yyyy2 = parseInt(arr2[0])-543
-        const mm2 = arr2[1]
-        const dd2 = arr2[2]
-        const endDay = yyyy2 + '-' + mm2 + '-' + dd2
+        // const arr2 = end.split('-');
+        // const yyyy2 = parseInt(arr2[0])-543
+        // const mm2 = arr2[1]
+        // const dd2 = arr2[2]
+        // const endDay = yyyy2 + '-' + mm2 + '-' + dd2
     
         const monthArray = ["","มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน","กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม"] 
-        const mmstart = monthArray[mm.slice(1)]
-        const mmend = monthArray[mm2.slice(1)]
-        const toListStart =  dd + ' ' + mmstart + ' ' + yyyy
-        const toListEnd =  dd2 + ' ' + mmend + ' ' + yyyy2
+        const mmstart = monthArray[monthstart]
+        const mmend = monthArray[monthend]
+        const toListStart =  daystart + ' ' + mmstart + ' ' + yearstart
+        const toListEnd =  dayend + ' ' + mmend + ' ' + yearend
         const sql = "SELECT resource.resName,activity.actName,Sum(order_detail.deRes_amount)AS total,order_detail.deRes_date,order_detail.deRes_status FROM `order_detail` INNER JOIN `order` ON order.orderId = order_detail.orderId INNER JOIN `activity` ON activity.actId = order.actId INNER JOIN `resource` ON resource.resId = order_detail.resId WHERE order_detail.deRes_date BETWEEN ? AND ? GROUP BY resource.resName,order_detail.deRes_status,activity.actName ORDER BY order_detail.deRes_date DESC"
         con.query(sql,[startDay,endDay],(err,respon)=> {
           res.render('page/report/reportHistoryAll',{

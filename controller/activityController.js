@@ -48,11 +48,12 @@ const PostaddActivity = (req, res) => {
   const code = generateRandomCode(10)
   const sql = "INSERT INTO `activity` (`actId`, `actName`, `actCode`, `actDetail`, `actScore`, `actDate`) VALUES (NULL, ?, ?, ?,?,?)"
   con.query(sql, [name, code, detail, score, date], (err, respon) => {
-    const sql = "SELECT * FROM `activity` order BY actId DESC"
-    con.query(sql, (err, respon2) => {
+    const sqlac = "SELECT * FROM `activity` order BY actId DESC"
+    con.query(sqlac, (err, respon2) => {
       const sqlnum = "SELECT activity.actId FROM `register` INNER JOIN `register_detail` INNER JOIN activity INNER JOIN user ON register.actId = activity.actId AND register.regId = register_detail.regId AND register_detail.userId = user.userId "
       con.query(sqlnum, async (err, respon) => {
         let result = {}
+        //หาจำนวนคนเข้าร่วมกิจกรรม
         await respon.map(value => {
           result[value.actId] ? result[value.actId]++ : result[value.actId] = 1
         })
@@ -101,27 +102,32 @@ const posteditActivity = async (req, res) => {
   const sqlscoreUser = "SELECT user.userAllscore,user.userId,user.userPosition,user.userFname,user.userLname,user.userArea FROM `register` INNER JOIN `register_detail` INNER JOIN activity INNER JOIN user ON register.actId =  activity.actId AND register.regId = register_detail.regId AND register_detail.userId = user.userId WHERE activity.actId = ?"
   const sqlUpDateScore = "UPDATE `user` SET `userAllScore` = ? WHERE `user`.`userId` = ?"
 
-
+    // ดึงค่าคะแนนของกิจกรรมก่อนแก้ไข
     con.query(sqlscoreAct,[IdActivity],(err,responScoreAct) => {
       const ScoreAct =  responScoreAct[0].actScore
+      //เอาค่าคะแนนชอง User จากกิจกรรมที่ต้องการแก้
       con.query(sqlscoreUser,[IdActivity],async (err,responUser) => {
+        //ถ้า user มากกว่า 0
         if(responUser.length > 0){
           for(var i=0; i < responUser.length;i++){
             let userId = responUser[i].userId
             let scoreUser = responUser[i].userAllscore
             let scoreReal 
-
+            //ถ้าคะแนนเดิม เท่ากับ คะแนนที่แก้
             if(ScoreAct == score){
               scoreReal = scoreUser
             }
+            //ถ้าคะแนนกิจกรรมเดิม น้อยกว่า คะแนนที่แก้
             if(ScoreAct < score){
               const total = score-ScoreAct
               scoreReal = scoreUser + total
             }
+            //ถ้าคะแนนกิจกรรม มากกว่า คะแนนที่แก้
             if(ScoreAct > score){
               const total = ScoreAct-score
               scoreReal = scoreUser - total
             }
+            //ถ้าคะแนนที่คำนวนมาแล้ว น้อยกว่า 0 ให้มันเป็น 0
             if(scoreReal < 0){
               scoreReal = 0
             }
@@ -131,14 +137,18 @@ const posteditActivity = async (req, res) => {
             // console.log('คะแนนUser : ',scoreUser);
             // console.log('รวม : ',scoreReal);
 
+            //อัพเดทคะแนนทั้งหมด
             con.query(sqlUpDateScore,[scoreReal,userId],(err,responReal) => {
 
             })
         }
+        //แก้ไขกิจกรรม
         con.query(sql, [name, detail, date, score, IdActivity], (err, respon) => { 
           const sql2 = "SELECT * FROM `activity` order BY actId DESC"
+          //ค่ากิจกรรม
           con.query(sql2, (err, respon2) => {
             const sqlnum = "SELECT activity.actId FROM `register` INNER JOIN `register_detail` INNER JOIN activity INNER JOIN user ON register.actId = activity.actId AND register.regId = register_detail.regId AND register_detail.userId = user.userId "
+            //นับจำนวนคนเข้าร่วมกิจกรรม
             con.query(sqlnum, async (err, respon) => {
               let result = {}
               await respon.map(value => {
@@ -201,8 +211,10 @@ const posteditActivity = async (req, res) => {
 const delActivity = async (req, res) => {
 
   const IdActivity = req.params.id
+  //ดึงคะแนนจากกิจกรรม
    const sqlSeeScorce = "SELECT `actScore` FROM `activity` WHERE actId = ?"
     con.query (sqlSeeScorce,[IdActivity],  (err,responSeeScore) => {
+      //ถ้าคะแนนไม่เท่ากับว่าง ดึงคะแนนใส่ตัวแปล
       if(responSeeScore != ''){
         var ScoreActivityDel =  responSeeScore[0].actScore
       }
@@ -210,10 +222,12 @@ const delActivity = async (req, res) => {
       con.query(sql, (err, respon2) => {
         const sqlnum = "SELECT activity.actId FROM `register` INNER JOIN `register_detail` INNER JOIN activity INNER JOIN user ON register.actId = activity.actId AND register.regId = register_detail.regId AND register_detail.userId = user.userId "
         con.query(sqlnum, async (err, respon) => {
+          //นับจำนวนคนเข้าร่วมกิจกรรม แต่ละกิจกรรม
           let result = {}
           await respon.map(value => {
             result[value.actId] ? result[value.actId]++ : result[value.actId] = 1
           })
+          //เอาคะแนนของกิจกรรม ไปลบกับคะแนนของคนที่เคยลงกิจกรรม
           const sqlScore = "SELECT user.userAllscore,user.userId,user.userPosition,user.userFname,user.userLname,user.userArea FROM `register` INNER JOIN `register_detail` INNER JOIN activity INNER JOIN user ON register.actId =  activity.actId AND register.regId = register_detail.regId AND register_detail.userId = user.userId WHERE activity.actId = ?"
           con.query(sqlScore,[IdActivity], async(err,responScore) => {
             if(responScore.length>0){
@@ -221,9 +235,10 @@ const delActivity = async (req, res) => {
                 const userId = await responScore[i].userId
                 const scoreUser =await responScore[i].userAllscore
                 const scoreReal = await (scoreUser-ScoreActivityDel)
-                if(scoreReal < 0){10  
+                if(scoreReal < 0){ 
                   scoreReal = 0
                 }
+                //อัพเดทคะแนนของ user
                 const sqlUpDateScore = "UPDATE `user` SET `userAllScore` = ? WHERE `user`.`userId` = ?"
                 con.query(sqlUpDateScore,[scoreReal,userId],(err,responReal) => {
                 })
