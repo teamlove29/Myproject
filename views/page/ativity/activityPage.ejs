@@ -206,35 +206,10 @@
                       <button 
                       onclick="javascript:window.location.href='/listJoin/<%= value.actId%>'"
                       class="btn btn-sm btn-secondary "><i class="fas fa-search"></i></button>
-                      <button 
-                      onclick="javascript:window.location.href='/ManagerActivity/editactivity/<%= value.actId%>'"
-                      class="btn btn-sm editIcon"><i class="fas fa-pen"></i></button>
-                      <button 
-                      data-toggle="modal" data-target="#DeleteModal<%= index%>"
-                      class="btn btn-sm deleteIcon"><i class="fas fa-trash"></i></button>
                   </td>
                 </tr>
                 <%}%>
-                               <!-- modal -->
-                               <div class="modal fade" id="DeleteModal<%= index%>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-                                aria-hidden="true">
-                                <div class="modal-dialog" role="document">
-                                  <div class="modal-content">
-                                    <div class="modal-header">
-                                      <h5 class="modal-title" id="exampleModalLabel">ต้องการลบใช่ไหม ?</h5>
-                                      <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">×</span>
-                                      </button>
-                                    </div>
-                                    <div class="modal-body">เลือก"ลบ"เพื่อลบข้อมูลออกจากฐานข้อมูลทั้งหมด</div>
-                                    <div class="modal-footer">
-                                      <button class="btn btn-secondary" type="button" data-dismiss="modal">ยกเลิก</button>
-                                      <a class="btn btn-primary" href="/ManagerActivity/delactivity/<%= value.actId %>">ลบ</a>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                              <!-- End modal -->
+                   
                 <% })%>
                 <% if(free2 === 0) {%>
                   <tr>

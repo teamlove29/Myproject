@@ -14,6 +14,7 @@ const home = (req, res) => {
   const strat = nowYear + '-' + nowMonth + '-' + '01'
   const end = nowYear + '-' + nowMonth + '-' + '31'
 con.query(sqlDate,[strat,end],(err,responDate) => {
+ // const sqlMyUser = "SELECT * FROM `user` WHERE idUser = ? " 
   con.query(sql, (err, respon) => {
     res.render("home", {
       listDateActivity:responDate,
@@ -35,3 +36,5 @@ con.query(sqlDate,[strat,end],(err,responDate) => {
 
 module.exports.main = main
 module.exports.home = home
+
+//หน้าหลักของ User

@@ -403,7 +403,7 @@ const resetPass = (req,res) => {
   const {position} = req.query
   const sqlCheck = "SELECT * FROM `user` WHERE userPosition  = ?"
   const sqlUser = "SELECT * FROM `user`"
-  con.query(sqlCheck,[position],(err,rescheck) => {
+  con.query(sqlCheck,[position],async (err,rescheck) => {
     if(rescheck.length > 0){
       const generateRandomCode = (() => {
         const USABLE_CHARACTERS = "abcdefghijklmnopqrstuvwxyz0123456789".split("");
@@ -413,9 +413,11 @@ const resetPass = (req,res) => {
           }).join("");
         }
       })();
-      const code = generateRandomCode(10)
+      const code = await generateRandomCode(10)
       const sql = "UPDATE `user` SET  `userPass` = ?  WHERE `user`.`userPosition` = ?;"
-    con.query(sql,[code,position], (err,res2) => {
+      
+    con.query(sql,[code,position], (err,res2) => {  
+      console.log(code);
       con.query(sqlUser, (err, responUserAll) => {
         res.render("page/user/userPage", {
           listsUser: responUserAll,
@@ -430,9 +432,9 @@ const resetPass = (req,res) => {
             managerActivity: false,
             managerResource: false
           }
-        });
+        }); 
       })
-    })
+    }) 
     }else{
       con.query(sqlUser, (err, responUserAll) => {
         res.render("page/user/userPage", {

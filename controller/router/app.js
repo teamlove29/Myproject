@@ -18,7 +18,7 @@ router.get("/CheckUser",authChecker, userController.CheckUser)
 router.post("/PostCheckUser",authChecker, userController.PostCheckUser)
 router.get("/changePassword",authChecker, userController.changePassword)
 router.post("/changePassword",authChecker, userController.changePasswordPost)
-router.get("/resetPass", userController.resetPass)
+router.get("/resetPass" ,userController.resetPass)
 // router.post("/testUser", userController.testUser)
 //Login - Logout
 router.get("/login", authChecker,authChecker.stayLogin,loginController.login)
