@@ -145,14 +145,14 @@ const reportHistory =  async (req,res) => {
       const monthstart = datestart.getMonth()+1
       const yearstart = datestart.getFullYear();
       const yystrat = yearstart-543
-      const startDay = yystrat + '-' + monthstart + '-' + daystart
+      const startDay = yystrat + '-' + monthstart + '-' + daystart+ " " + '00:00:00'
 
       const dateend = new Date(end)
       const dayend = dateend.getDate()
       const monthend = dateend.getMonth()+1
       const yearend = dateend.getFullYear();
       const yyend = yearstart-543
-      const endDay = yyend + '-' + monthend + '-' + dayend
+      const endDay = yyend + '-' + monthend + '-' + dayend+ " " + '23:59:59'
 
         // const arr1 = start.split('-');
         // const yyyy = parseInt(arr1[0])-543
@@ -171,7 +171,7 @@ const reportHistory =  async (req,res) => {
         const mmend = monthArray[monthend]
         const toListStart =  daystart + ' ' + mmstart + ' ' + yearstart
         const toListEnd =  dayend + ' ' + mmend + ' ' + yearend
-        const sql = "SELECT resource.resName,activity.actName,Sum(order_detail.deRes_amount)AS total,order_detail.deRes_date,order_detail.deRes_status FROM `order_detail` INNER JOIN `order` ON order.orderId = order_detail.orderId INNER JOIN `activity` ON activity.actId = order.actId INNER JOIN `resource` ON resource.resId = order_detail.resId WHERE order_detail.deRes_date BETWEEN ? AND ? GROUP BY resource.resName,order_detail.deRes_status,activity.actName ORDER BY order_detail.deRes_date DESC"
+        const sql = "SELECT resource.resName,activity.actName,order_detail.deRes_amount as total,order_detail.deRes_date,order_detail.deRes_status FROM `order_detail` INNER JOIN `order` ON order.orderId = order_detail.orderId INNER JOIN `activity` ON activity.actId = order.actId INNER JOIN `resource` ON resource.resId = order_detail.resId WHERE order_detail.deRes_date BETWEEN ? AND ? ORDER BY order_detail.deRes_date DESC"
         con.query(sql,[startDay,endDay],(err,respon)=> {
           res.render('page/report/reportHistoryAll',{
             listHitoryAll:respon,
@@ -195,9 +195,10 @@ const reportHistoryOne =  (req,res) => {
     const mm = monthArray[month]
     const plusYear = year+543
     const DateShow = day+' '+mm+' '+ plusYear
-    const newDate = year+'-'+month+'-'+day
-    const sql = "SELECT resource.resName,activity.actName,Sum(order_detail.deRes_amount)AS total,order_detail.deRes_date,order_detail.deRes_status FROM order_detail INNER JOIN `order` ON order.orderId = order_detail.orderId INNER JOIN activity ON activity.actId = order.actId INNER JOIN resource ON resource.resId = order_detail.resId WHERE order_detail.deRes_date = ? GROUP BY resource.resName,order_detail.deRes_status,activity.actName ORDER BY activity.actName ASC"
-    con.query(sql,[newDate],(err,respon)=> {
+    const newDate = year+'-'+month+'-'+day+ " " + '00:00:00'
+    const newDate2 = year + "-" + month + "-" + day+ " " + '23:59:59'
+    const sql = "SELECT resource.resName,activity.actName,order_detail.deRes_amount as total,order_detail.deRes_date,order_detail.deRes_status FROM order_detail INNER JOIN `order` ON order.orderId = order_detail.orderId INNER JOIN activity ON activity.actId = order.actId INNER JOIN resource ON resource.resId = order_detail.resId WHERE order_detail.deRes_date between ? AND ? ORDER BY order_detail.deRes_date DESC"
+    con.query(sql,[newDate,newDate2],(err,respon)=> {
       if(err) throw err
       res.render('page/report/reportHistoryOne',{
         listHitory:respon,

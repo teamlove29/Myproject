@@ -18,7 +18,17 @@
     <%  }%>
   <title>backend : สมาคมกู้ภัยจังหวัดลำปาง</title>
 
-
+<style>
+  .mystyle {
+  width: 100%;
+  padding: 15px;
+  margin-bottom: 20px;
+  background-color: #ffeeba;
+  color: #856404;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+</style>
 </head>
 
 <body id="page-top"  id="loadedPage" onload="myFunction()">
@@ -69,6 +79,7 @@
           <%}%>
 
           <div id="msg" class="" role="alert"></div>
+          
             <div class="table-responsive">
               <table  data-order='[[ 1, "DESC" ]]' class="table table-bordered table-sm " id="dataTable" width="100%" cellspacing="0">
                 <thead>
@@ -191,15 +202,20 @@
       var person = prompt("กรุณาใส่จำนวนที่ต้องการเพิ่ม:", "0");
       var numbers = /^[0-9]+$/;
       if (person.match(numbers) && person > 0) {
-          txt = "เรียบร้อย";
-          window.location.href = '/AddAmount?resId=' + idres + '&Amount=' + person;
+          txt = "กำลังประมวลผล";
+          $.post("/AddAmount", { resId:idres, Amount:person } ); 
+          // window.location.href = '/AddAmount?resId=' + idres + '&Amount=' + person;
+          setTimeout(() => {
+            location.href="/ManagerResource"
+          }, 500);
           
       }
       else {
           txt = "กรุณาใส่จำนวน หรือ จำนวนเกินกว่าที่เบิก";
-          window.location.href = '/AddAmount?resId=' + idres + '&Amount=' + person;
+          // window.location.href = '/AddAmount?resId=' + idres + '&Amount=' + person;
       }
-      // document.getElementById("msg").innerHTML = txt;
+      document.getElementById("msg").innerHTML = txt;
+      document.getElementById("msg").classList.add("mystyle");
       // idres.preventDefault();
   }
 

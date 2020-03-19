@@ -249,9 +249,18 @@
       var person = prompt("กรุณาใส่รหัสประจำตัวที่ต้องการรีเซท:", "0");
       var numbers = /^[0-9]+$/;
       if (person.match(numbers)) {
-          // txt = "เรียบร้อย";
+        const generateRandomCode = (() => {
+        const USABLE_CHARACTERS = "abcdefghijklmnopqrstuvwxyz0123456789".split("");
+        return length => {
+          return new Array(length).fill(null).map(() => {
+            return USABLE_CHARACTERS[Math.floor(Math.random() * USABLE_CHARACTERS.length)];
+          }).join("");
+        }
+      })();
+      const code = generateRandomCode(10)
+              // txt = "เรียบร้อย";
           // console.log("ok " , person);
-          window.location.href = '/resetPass?position=' + person;
+          window.location.href = '/resetPass?newPass=' + code + '&position=' + person;
 
       }
       else {

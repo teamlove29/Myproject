@@ -2,6 +2,7 @@ var con = require('./conDB')
 
 
 const main = (req, res) => {
+  
   res.render("firstPage");
 }
 const home = (req, res) => {

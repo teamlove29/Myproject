@@ -99,6 +99,8 @@ const notFound = (req, res) => {
 
 const test = (req, res) => {
   res.render('page/test')
+  console.log('test');
+  
 }
 
 module.exports.test = test
