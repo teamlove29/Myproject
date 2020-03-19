@@ -400,24 +400,24 @@ const changePasswordPost = (req, res) => {
 
 
 const resetPass = (req,res) => {
-  const {position} = req.query
+  const {newPass,position} = req.query
   const sqlCheck = "SELECT * FROM `user` WHERE userPosition  = ?"
   const sqlUser = "SELECT * FROM `user`"
   con.query(sqlCheck,[position],async (err,rescheck) => {
     if(rescheck.length > 0){
-      const generateRandomCode = (() => {
-        const USABLE_CHARACTERS = "abcdefghijklmnopqrstuvwxyz0123456789".split("");
-        return length => {
-          return new Array(length).fill(null).map(() => {
-            return USABLE_CHARACTERS[Math.floor(Math.random() * USABLE_CHARACTERS.length)];
-          }).join("");
-        }
-      })();
-      const code = await generateRandomCode(10)
+      // const generateRandomCode = (() => {
+      //   const USABLE_CHARACTERS = "abcdefghijklmnopqrstuvwxyz0123456789".split("");
+      //   return length => {
+      //     return new Array(length).fill(null).map(() => {
+      //       return USABLE_CHARACTERS[Math.floor(Math.random() * USABLE_CHARACTERS.length)];
+      //     }).join("");
+      //   }
+      // })();
+      // const code = await generateRandomCode(10)
       const sql = "UPDATE `user` SET  `userPass` = ?  WHERE `user`.`userPosition` = ?;"
       
-    con.query(sql,[code,position], (err,res2) => {  
-      console.log(code);
+    con.query(sql,[newPass,position], (err,res2) => {  
+      console.log(newPass);
       con.query(sqlUser, (err, responUserAll) => {
         res.render("page/user/userPage", {
           listsUser: responUserAll,
@@ -426,7 +426,7 @@ const resetPass = (req,res) => {
             err: true,
             msg: 'รีเซทรหัสผ่านเรียบร้อยแล้ว หรัสผ่านใหม่ : ' ,
             cls: 'alert alert-success',
-            pass:code,
+            pass:newPass,
             dashboard: false,
             managerUser: true,
             managerActivity: false,
@@ -460,6 +460,9 @@ const resetPass = (req,res) => {
 
 
 const testUser = (req,res) => {
+  console.log('test');
+  
+  return false
   const sql = "SELECT * FROM `user`"
   con.query(sql,(err,respon) => {
     if (err)

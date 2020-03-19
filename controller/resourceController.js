@@ -193,7 +193,7 @@ const delResource = async (req, res) => {
 const exportResouce = (req, res) => {
   const sql = "SELECT * FROM `resource` WHERE resAmount != 0";
   con.query(sql, (err, respon1) => {
-    const sqlact = "SELECT * FROM `activity` WHERE actCode != 'Complete' ";
+    const sqlact = "SELECT * FROM `activity` WHERE actCode != 'Complete' ORDER BY actId DESC";
     con.query(sqlact, (err, respon2) => {
       if (err) throw err;
       res.render("page/resource/exportResource", {
@@ -217,7 +217,7 @@ const AddExport = async (req, res, next) => {
 
   if (item_quantity < 0) {
     const sql = "SELECT * FROM `resource` WHERE resAmount != 0";
-    const sqlact = "SELECT * FROM `activity` WHERE actCode != 'Complete' ";
+    const sqlact = "SELECT * FROM `activity` WHERE actCode != 'Complete' ORDER BY actId DESC";
     con.query(sql, (err, respon1) => {
       con.query(sqlact, (err, respon2) => {
         res.render("page/resource/exportResource", {
@@ -247,7 +247,7 @@ const AddExport = async (req, res, next) => {
   if (result.length > 1) {
     const sql = "SELECT * FROM resource WHERE resAmount != 0";
     con.query(sql, (err, respon1) => {
-      const sqlact = "SELECT * FROM activity WHERE actCode != 'Complete' ";
+      const sqlact = "SELECT * FROM `activity` WHERE actCode != 'Complete' ORDER BY actId DESC ";
       con.query(sqlact, (err, respon2) => {
         if (err) throw err;
         res.render("page/resource/exportResource", {
@@ -276,7 +276,7 @@ const AddExport = async (req, res, next) => {
                 if (sum < 0) {
                   const sql = "SELECT * FROM `resource`";
                   con.query(sql, (err, respon1) => {
-                    const sqlact ="SELECT * FROM `activity` WHERE actCode != 'Complete' ";
+                    const sqlact ="SELECT * FROM `activity` WHERE actCode != 'Complete' ORDER BY actId DESC";
                     con.query(sqlact, (err, respon2) => {
                       res.render("page/resource/exportResource", {
                         activity: respon2,
@@ -612,12 +612,10 @@ const ReturnExport = (req, res) => {
         const sqlcheckreturn =
           "SELECT DISTINCT  order.orderId, order.actId, order_detail.resId, resource.resName,order_detail.deRes_status, SUM(order_detail.deRes_amount) AS total FROM `order` INNER JOIN `order_detail` ON order.orderId =  order_detail.orderId INNER JOIN resource ON order_detail.resId = resource.resId WHERE order.actId = ? && order_detail.deRes_status = 'คืน' && resource.resId = ? GROUP BY resource.resName";
         con.query(sqlcheckreturn, [idAct, idresId], (err, responCheckRe) => {
-          if (responCheckRe.length > 0) {
             if (Amount == 0) {
               res.redirect("/listJoin/" + idAct);
             } else {
               const toInt = parseInt(Amount);
-              if (toInt + responCheckRe[0].total <= responCheckOrder[0].total) {
                 const orderId = respon[0].orderId;
                 sql =
                   "INSERT INTO `order_detail` (`orderId`, `resId`, `deRes_amount`, `deRes_date`, `deRes_status`) VALUES (?, ?, ?, ?, 'คืน')";
@@ -641,34 +639,10 @@ const ReturnExport = (req, res) => {
                     });
                   }
                 );
-              } else {
-                res.redirect("/listJoin/" + idAct);
-              }
+          
             }
-          } else {
-            const orderId = respon[0].orderId;
-            sql =
-              "INSERT INTO `order_detail` (`orderId`, `resId`, `deRes_amount`, `deRes_date`, `deRes_status`) VALUES (?, ?, ?, ?, 'คืน')";
-            con.query(
-              sql,
-              [orderId, idresId, Amount, new Date()],
-              (err, respon) => {
-                const sqlResource = "SELECT * FROM resource WHERE `resId` = ?";
-                con.query(sqlResource, [idresId], (err, responResoirce) => {
-                  const quantity = responResoirce[0].resAmount;
-                  const sqlupdate =
-                    "UPDATE `resource` SET `resAmount` = ? WHERE `resource`.`resId` = ?";
-                  con.query(
-                    sqlupdate,
-                    [quantity + parseInt(Amount), idresId],
-                    (err, resUpdate) => {
-                      res.redirect("/listJoin/" + idAct);
-                    }
-                  );
-                });
-              }
-            );
-          }
+          
+ 
         });
       });
     }
@@ -681,7 +655,8 @@ const historyOneDay = (req, res) => {
   const month = date.getMonth() + 1;
   const year = date.getFullYear();
   // const newDate = '2020-1-19'
-  const newDate = year + "-" + month + "-" + day;
+  const newDate = year + "-" + month + "-" + day+ " " + '00:00:00';
+  const newDate2 = year + "-" + month + "-" + day+ " " + '23:59:59';
   const monthArray = [
     "",
     "มกราคม",
@@ -701,8 +676,8 @@ const historyOneDay = (req, res) => {
   const plusYear = year + 543;
   const DateShow = day + " " + mm + " " + plusYear;
   const sql =
-    "SELECT resource.resName,activity.actName,Sum(order_detail.deRes_amount)AS total,order_detail.deRes_date,order_detail.deRes_status FROM order_detail INNER JOIN `order` ON order.orderId = order_detail.orderId INNER JOIN activity ON activity.actId = order.actId INNER JOIN resource ON resource.resId = order_detail.resId WHERE order_detail.deRes_date = ? GROUP BY resource.resName,order_detail.deRes_status,activity.actName ORDER BY activity.actName ASC";
-  con.query(sql, [newDate], (err, respon) => {
+    "SELECT resource.resName,activity.actName,order_detail.deRes_amount as total,order_detail.deRes_date,order_detail.deRes_status FROM order_detail INNER JOIN `order` ON order.orderId = order_detail.orderId INNER JOIN activity ON activity.actId = order.actId INNER JOIN resource ON resource.resId = order_detail.resId WHERE order_detail.deRes_date  BETWEEN ?  AND ? ORDER BY order_detail.deRes_date DESC";
+  con.query(sql, [newDate,newDate2], (err, respon) => {
     if (err) throw err;
     res.render("page/resource/historyOneDay", {
       listHitory: respon,
@@ -719,7 +694,7 @@ const historyOneDay = (req, res) => {
 
 const historyAll = (req, res) => {
   const sql =
-    "SELECT resource.resName,activity.actName,Sum(order_detail.deRes_amount)AS total,order_detail.deRes_date,order_detail.deRes_status FROM `order_detail` INNER JOIN `order` ON order.orderId = order_detail.orderId INNER JOIN `activity` ON activity.actId = order.actId INNER JOIN `resource` ON resource.resId = order_detail.resId GROUP BY resource.resName,order_detail.deRes_status,activity.actName ORDER BY order_detail.deRes_date DESC";
+        "SELECT resource.resName,activity.actName,order_detail.deRes_date,order_detail.deRes_status ,order_detail.deRes_amount as total FROM order_detail INNER JOIN `order` ON order.orderId = order_detail.orderId INNER JOIN activity ON activity.actId = order.actId INNER JOIN resource ON resource.resId = order_detail.resId ORDER BY order_detail.deRes_date DESC";
   con.query(sql, (err, respon) => {
     res.render("page/resource/historyAll", {
       listHitoryAll: respon,
@@ -734,8 +709,8 @@ const historyAll = (req, res) => {
 };
 
 const AddAmount = (req, res) => {
+  const {resId, Amount} = req.body
   const numbers = /^[0-9]+$/;
-  const { resId, Amount } = req.query;
   const sql = "SELECT resAmount FROM `resource` WHERE resId = ?";
   if (Amount.match(numbers) && Amount > 0) {
     con.query(sql, [resId], (err, respon) => {
@@ -745,38 +720,38 @@ const AddAmount = (req, res) => {
       con.query(sqlAmount, [AmountSum, resId], (err, responAmount) => {
         const sqlAll = "SELECT * FROM `resource`";
         con.query(sqlAll, (err, respon) => {
-          res.render("page/resource/resourcePage", {
-            listsResource: respon,
-            data: {
-              css: false,
-              err: true,
-              msg: "เพิ่มจำนวน เรียบร้อยแล้ว",
-              cls: "alert alert-success",
-              dashboard: false,
-              managerUser: false,
-              managerActivity: false,
-              managerResource: true
-            }
-          });
+          // res.render("page/resource/resourcePage", {
+          //   listsResource: respon,
+          //   data: {
+          //     css: false,
+          //     err: true,
+          //     msg: "เพิ่มจำนวน เรียบร้อยแล้ว",
+          //     cls: "alert alert-success",
+          //     dashboard: false,
+          //     managerUser: false,
+          //     managerActivity: false,
+          //     managerResource: true
+          //   }
+          // });
         });
       });
     });
   } else {
     const sqlAll = "SELECT * FROM `resource`";
     con.query(sqlAll, (err, respon) => {
-      res.render("page/resource/resourcePage", {
-        listsResource: respon,
-        data: {
-          css: false,
-          err: true,
-          msg: "กรุณาใส่จำนวน หรือ จำนวนเกินกว่าที่เบิก",
-          cls: "alert alert-warning",
-          dashboard: false,
-          managerUser: false,
-          managerActivity: false,
-          managerResource: true
-        }
-      });
+      // res.render("page/resource/resourcePage", {
+      //   listsResource: respon,
+      //   data: {
+      //     css: false,
+      //     err: true,
+      //     msg: "กรุณาใส่จำนวน หรือ จำนวนเกินกว่าที่เบิก",
+      //     cls: "alert alert-warning",
+      //     dashboard: false,
+      //     managerUser: false,
+      //     managerActivity: false,
+      //     managerResource: true
+      //   }
+      // });
     });
   }
 };

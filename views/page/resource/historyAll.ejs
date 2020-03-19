@@ -50,12 +50,12 @@
   
 
         <div style="display:none;" id="loadedPage" class="animate-bottom">
-<div class="table-responsive">
-  <table data-order='[[ 0, "DESC" ]]' class="table table-striped " id="dataTable"  width="100%" cellspacing="0">
+<div class="table-responsive mb-5">
+  <table data-order='[[ 0, "DESC" ]]' class="table table-striped " id="example"  width="100%" cellspacing="0">
       <thead>
           <tr>
             <th>วัน/เดือน/ปี</th>
-              <th>รายการ</th>
+              <th>ทรัพยากร</th>
               <th>กิจกรรมที่เบิก</th>
               <th>จำนวน</th>
               <th>สถานะ</th>
@@ -128,4 +128,13 @@
 <%- include('../../component/admin/scriptJs')%>
 
 </body>
+<script>
+
+  $(document).ready(function() {
+      $('#example').DataTable( {
+          "lengthMenu": [[20, 50, 100], [20, 50, 100]]
+      } );
+  } );
+  
+  </script>
 </html>
