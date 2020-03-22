@@ -227,31 +227,55 @@ const delUser = async (req, res) => {
   const sqlUser = "SELECT * FROM `user`"
   // เข้าไปตรวจสอบรูป และลบรูปออกจากระบบ ถ้าเปนdefaultImage ไม่ต้องลบ
   con.query(imageUser,[req.params.id],(err,responImage) => {
-    if (responImage[0].userImage != 'defaultImage.png') {
-      const fileImageName = 'public/uploads/' + responImage[0].userImage
-      fs.unlink(fileImageName, (err) => {
-        if (err) throw err;
-      });
-    }
-  })
-  con.query(sql, [req.params.id], async (err, respon) => {
+    
+    if(responImage != ''){
+      if (responImage[0].userImage != 'defaultImage.png') {
+        const fileImageName = 'public/uploads/' + responImage[0].userImage
+        fs.unlink(fileImageName, (err) => {
+          if (err) throw err;
+        });
+      }
+      con.query(sql, [req.params.id], async (err, respon) => {
 
-    con.query(sqlUser, (err, responUserAll) => {
-      res.render("page/user/userPage", {
-        listsUser: responUserAll,
-        data: {
-          css: true,
-          err: true,
-          msg: 'ลบบุคลากรสำเร็จแล้ว',
-          cls: 'alert alert-success',
-          dashboard: false,
-          managerUser: true,
-          managerActivity: false,
-          managerResource: false
-        }
-      });
-    })
+        con.query(sqlUser, (err, responUserAll) => {
+          res.render("page/user/userPage", {
+            listsUser: responUserAll,
+            data: {
+              css: true,
+              err: true,
+              msg: 'ลบบุคลากรสำเร็จแล้ว',
+              cls: 'alert alert-success',
+              dashboard: false,
+              managerUser: true,
+              managerActivity: false,
+              managerResource: false
+            }
+          });
+        })
+      })
+
+    }
+    else{
+      con.query(sqlUser, (err, responUserAll) => {
+        res.render("page/user/userPage", {
+          listsUser: responUserAll,
+          data: {
+            css: true,
+            err: true,
+            msg: 'ลบบุคลากรสำเร็จแล้ว',
+            cls: 'alert alert-success',
+            dashboard: false,
+            managerUser: true,
+            managerActivity: false,
+            managerResource: false
+          }
+        });
+      })
+    }
+    
+  
   })
+
 }
 
 const getArea = (req, res) => {

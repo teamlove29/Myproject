@@ -77,6 +77,47 @@
 <button class="btn btn-sm btn-success ml-2">ค้นหา</button>
 
 </form>
+<!-- <hr>
+
+<form action="/reportActivityDate" method="POST">
+  <% 
+  var today = new Date();
+  var dd = today.getDate() 
+  var mm = today.getMonth() + 1
+  var yyyy = today.getFullYear() + 543
+  if (dd < 10) {
+    dd = '0' + dd;
+  } 
+  if (mm < 10) {
+    mm = '0' + mm;
+  } 
+  today = yyyy + '-' + mm + '-' + dd;
+  var sixmo = yyyy + '-' + mm + '-' + dd;
+  %>
+
+    <div class="row">
+      <div class="col-5">
+        <label for="start">วันเริ่มกิจกรรม:</label>
+        <input 
+        class="form-control"
+        type="date" id="start" name="start"
+        value="<%= today %>" min="2563-01-01" max="2563-12-31">
+      </div>
+      <div class="col-5">
+        <label for="end">วันสิ้นสุดกิจกรรม:</label>
+        <input 
+        class="form-control"
+        type="date" id="end" name="end"
+        value="<%= today %>" min="2563-01-01" max="<%= today %>">
+      </div>
+      <div class="col-2">
+      </div>
+    </div>
+    <br>
+    <button class="btn btn-sm btn-success ml-2">ค้นหา</button>
+  </form> -->
+
+
 <hr>
 <form action="/reportHistory" method="POST">
 <% 

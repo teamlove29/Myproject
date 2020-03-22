@@ -20,9 +20,13 @@
     <div class="container mt-4" id="tabledata">
       <h4 class="text-center">รายงานการใช้ทรัพยากร</h4>
     <h5 class="text-center"> วันที่ <%= data.startDay %> - วันที่ <%= data.endDay %></h5> 
+    <div class="container mt-3">
+      <!-- <button class="btn btn-success" onclick="downloadDoc()">Download PDF</button> -->
+      <a class="btn btn-secondary " href="/report"> < กลับด้านเดิม</a>
+  </div>
     <hr>
     <div style="display:none;" id="loadedPage" class="animate-bottom">
-    <div class="table-responsive">
+    <div class="table-responsive mb-3">
       <table data-order='[[ 0, "DESC" ]]' class="table table-striped " id="dataTable"  width="100%" cellspacing="0">
           <thead>
               <tr>
@@ -74,10 +78,7 @@
     </div>
   </div>
     </div>
-    <div class="container mt-3">
-        <!-- <button class="btn btn-success" onclick="downloadDoc()">Download PDF</button> -->
-        <a class="btn btn-secondary" href="/report">กลับด้านเดิม</a>
-    </div>
+
 </body>
   <!-- Bootstrap core JavaScript-->
   <script src="vendor/jquery/jquery.min.js"></script>

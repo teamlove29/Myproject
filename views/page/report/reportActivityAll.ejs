@@ -19,10 +19,19 @@
 
     <div class="container mt-4 text-center" id="tabledata">
     <h5>รายงานกิจกรรมทั้งหมด </h5>
-    <hr>
+
+    <div class="container text-left mt-3 mb-3">
+      <!-- <button class="btn btn-success" onclick="downloadDoc()">Download PDF</button> -->
+      <a class="btn btn-secondary" href="/report"> < กลับด้านเดิม</a>
+  </div>
+
+    <% if(start&&end != ''){ %>
+      <h5 class="text-center"> วันที่ <%= start %> - วันที่ <%= end %></h5> 
+   <% } %>
+    
 
     <div style="display:none;" id="loadedPage" class="animate-bottom">
-          <div class="table-responsive">
+          <div class="table-responsive mb-5">
             <table class="table-sm table table-bordered"  width="100%" cellspacing="0">
               <thead >
                 <tr>
@@ -117,7 +126,7 @@
                 <td><%= value.actScore %></td>
               </tr>
               <%}%>
-
+              
               <% })%>
               <% if(free2 === 0) {%>
                 <tr>
@@ -134,10 +143,7 @@
 
 
     </div>
-    <div class="container mt-3">
-        <!-- <button class="btn btn-success" onclick="downloadDoc()">Download PDF</button> -->
-        <a class="btn btn-secondary" href="/report">กลับด้านเดิม</a>
-    </div>
+  
 </body>
   <!-- Bootstrap core JavaScript-->
   <script src="vendor/jquery/jquery.min.js"></script>

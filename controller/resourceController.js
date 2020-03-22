@@ -239,11 +239,8 @@ const AddExport = async (req, res, next) => {
 
   let result = "";
   var errorNow = false;
-  Array.isArray(item_quantity)
-    ? (result = await item_name.filter(
-      a => item_name.filter(b => a == b).length != 1
-    ))
-    : (result = "");
+  // หาค่าซ้ำกัน 
+  Array.isArray(item_quantity) ? (result = await item_name.filter( a => item_name.filter(b => a == b).length != 1 )) : (result = "");
   if (result.length > 1) {
     const sql = "SELECT * FROM resource WHERE resAmount != 0";
     con.query(sql, (err, respon1) => {
@@ -265,10 +262,7 @@ const AddExport = async (req, res, next) => {
       });
     });
   } else {
-    
-
             if(Array.isArray(item_quantity) != true){
-
               console.log("แบบเดี่ยว");
               const sqlOne = "SELECT * FROM `resource` WHERE resId = ? ";
               con.query(sqlOne, [item_name], (err, responOne) => {
@@ -352,8 +346,8 @@ const AddExport = async (req, res, next) => {
                 });
               }, 200)
               
-            }else{
-
+            }else{ // End แบบเดี่ยว
+                // หาค่าติดลบ
               const resultArray = item_quantity.filter(value => {
                 return value < 0;
               });
@@ -381,27 +375,21 @@ const AddExport = async (req, res, next) => {
               }
               //หาค่าเกินของแบบกลุ่ม
               var Wong
-         
                 for (let i = 0; i < item_name.length; i++) {  
                   const sql =  "SELECT * FROM `resource` WHERE resId = ? ";
                    const test55 = await con.query(sql,[item_name[i]], async (err,responRes)  => { 
                     const sumtestArray = responRes[0].resAmount - item_quantity[i];
-
                     if(sumtestArray < 0){
                       console.log(item_name[i] ,sumtestArray ,' : yes');
                         Wong =  'noo'
-                    }
-                    
-                    
+                    }    
                   })
                 }
-  
-              
-       
+
          setTimeout(() => {
+           //ถ้าไม่มีค่าเกินให้ทำงาน
           if(Wong == 'noo'){
             console.log('noo');
-            
             const sql = "SELECT * FROM `resource` WHERE resAmount != 0";
             con.query(sql, (err, respon1) => {
               const sqlact =
@@ -425,115 +413,142 @@ const AddExport = async (req, res, next) => {
             });
             return false
           }else{
-            console.log('yes');
-            for (let i = 0; i < item_name.length; i++) {
-              const sql = "SELECT * FROM `resource` WHERE resId = ? ";
-              con.query(sql, [item_name[i]], (err, responRes) => {
-                if (Array.isArray(item_quantity)) {
-                  const sum = responRes[0].resAmount - item_quantity[i];
-                  if (sum < 0) {
-                    const sql = "SELECT * FROM `resource` WHERE resAmount != 0";
-                    con.query(sql, (err, respon1) => {
-                      const sqlact =
-                        "SELECT * FROM `activity` WHERE actCode != 'Complete' ";
-                      con.query(sqlact, (err, respon2) => {
-                        res.render("page/resource/exportResource", {
-                          activity: respon2,
-                          listsResource: respon1,
-                          data: {
-                            msg:
-                              "เกิดข้อผิดพลาด! โปรดตรวจสอบทรัพยาคงเหลือก่อนทำการเบิก",
-                            cls: "alert alert-danger",
-                            dashboard: false,
-                            managerUser: false,
-                            managerActivity: false,
-                            managerResource: true
-                          }
-                        });
-                      });
-                      
-                    });
-                    return false
-                  } else {
-                    console.log("แบบกลุ่ม");
-        
-                    //แบบ กลุ่ม
-                    const sqlcheck = "SELECT * FROM `order` WHERE actId = ? ";
+            console.log('for');
+            const sqlcheck1 = "SELECT * FROM `order` WHERE actId = ? ";
+            con.query(sqlcheck1,[name],(err,respomCheck1) => {
+              if (respomCheck1.length > 0) {
+                console.log('มีแล้วอันนี้');
+                const sql = "SELECT * FROM `resource` WHERE resId = ? ";
+                con.query(sql, [item_name[0]], (err, responRes) => {
+                  const sqlcheck = "SELECT * FROM `order` WHERE actId = ? ";
                     con.query(sqlcheck, [name], (err, responcheck) => {
-                      if (responcheck.length > 0) {
-                        const { orderId } = responcheck[0];
-                        const sqlAddDetail =
-                          "INSERT INTO `order_detail` (`orderId`, `resId`, `deRes_amount`, `deRes_date`, `deRes_status`) VALUES (?, ?, ?, ?, ?)";
-                        con.query(
-                          sqlAddDetail,
-                          [orderId, item_name[i], item_quantity[i], new Date(), "เบิก"],
-                          (err, responAddDetail) => {
-                            const sqlUpdate =
-                              "UPDATE `resource` SET `resAmount` = ? WHERE `resource`.`resId` = ?";
-                            con.query(
-                              sqlUpdate,
-                              [responRes[0].resAmount - item_quantity[i], item_name[i]],
-                              (err, resUpdate) => {
-                                // res.redirect("/ManagerResource")
-                                const sqlGo = "SELECT * FROM `resource`";
-                                con.query(sqlGo, (err, respon) => {
-                                  if (err) throw err;
-                                  // res.render('page/resource/resourcePage', {
-                                  //   listsResource: respon,
-                                  //   data: {
-                                  //     dashboard: false,
-                                  //     managerUser: false,
-                                  //     managerActivity: false,
-                                  //     managerResource: true
-                                  //   }
-                                  // })
-                                });
-                              }
-                            );
-                          }
-                        );
-                      } else {
-                        const sqlAddOrder =
-                          "INSERT INTO `order` (`orderId`, `actId`) VALUES (NULL, ?);";
-                        con.query(sqlAddOrder, [name], (err, responAddOrder) => {
-                          con.query(sqlcheck, [name], (err, responcheck) => {
-                            const { orderId } = responcheck[0];
-                            const sqlAddDetail ="INSERT INTO `order_detail` (`orderId`, `resId`, `deRes_amount`, `deRes_date`, `deRes_status`) VALUES (?, ?, ?, ?, ?);";
-                            con.query(sqlAddDetail,[orderId,item_name[i],item_quantity[i],new Date(),"เบิก"],(err, responAddDetail) => {
-                                const sqlUpdate ="UPDATE `resource` SET `resAmount` = ? WHERE `resource`.`resId` = ?";
-                                con.query(
-                                  sqlUpdate,
-                                  [
-                                    responRes[0].resAmount - item_quantity[i],
-                                    item_name[i]
-                                  ],
-                                  (err, resUpdate) => {
-                                    // res.redirect("/ManagerResource")
-                                    const sqlGo = "SELECT * FROM `resource`";
-                                    con.query(sqlGo, (err, respon) => {
-                                      if (err) throw err;
-                                      // res.render('page/resource/resourcePage', {
-                                      //   listsResource: respon,
-                                      //   data: {
-                                      //     dashboard: false,
-                                      //     managerUser: false,
-                                      //     managerActivity: false,
-                                      //     managerResource: true
-                                      //   }
-                                      // })
-                                    });
-                                  }
-                                );
-                              }
-                            );
-                          });
-                        });
-                      }
+                      const { orderId } = responcheck[0];
+                      const sqlAddDetail ="INSERT INTO `order_detail` (`orderId`, `resId`, `deRes_amount`, `deRes_date`, `deRes_status`) VALUES (?, ?, ?, ?, ?);";
+                      con.query(sqlAddDetail,[orderId,item_name[0],item_quantity[0],new Date(),"เบิก"],(err, responAddDetail) => {
+                          const sqlUpdate ="UPDATE `resource` SET `resAmount` = ? WHERE `resource`.`resId` = ?";
+                          con.query(
+                            sqlUpdate,
+                            [
+                              responRes[0].resAmount - item_quantity[0],
+                              item_name[0]
+                            ],
+                            (err, resUpdate) => {
+                              const sqlGo = "SELECT * FROM `resource`";
+                              con.query(sqlGo, (err, respon) => {
+                                if (err) throw err;
+                              });
+                            }
+                          );
+                        }
+                      );
                     });
-                  }
+                })
+              }else{
+                const sql = "SELECT * FROM `resource` WHERE resId = ? ";
+                con.query(sql, [item_name[0]], (err, responRes) => {
+                  console.log('ยังไม่มี/เพิ่ม');
+                  const sqlcheck = "SELECT * FROM `order` WHERE actId = ? ";
+                  const sqlAddOrder ="INSERT INTO `order` (`orderId`, `actId`) VALUES (NULL, ?);";
+                  con.query(sqlAddOrder, [name], (err, responAddOrder) => {
+                    con.query(sqlcheck, [name], (err, responcheck) => {
+                      const { orderId } = responcheck[0];
+                      const sqlAddDetail ="INSERT INTO `order_detail` (`orderId`, `resId`, `deRes_amount`, `deRes_date`, `deRes_status`) VALUES (?, ?, ?, ?, ?);";
+                      con.query(sqlAddDetail,[orderId,item_name[0],item_quantity[0],new Date(),"เบิก"],(err, responAddDetail) => {
+                          const sqlUpdate ="UPDATE `resource` SET `resAmount` = ? WHERE `resource`.`resId` = ?";
+                          con.query(
+                            sqlUpdate,
+                            [
+                              responRes[0].resAmount - item_quantity[0],
+                              item_name[0]
+                            ],
+                            (err, resUpdate) => {
+                              const sqlGo = "SELECT * FROM `resource`";
+                              con.query(sqlGo, (err, respon) => {
+                                if (err) throw err;
+                              });
+                            }
+                          );
+                        }
+                      );
+                    });
+                  });
+                })
+              }
+            })
+
+           
+          //  รอเพิ่มแล้วค่อยค่อยต่อ 
+setTimeout(() => {
+  
+  for (let i = 1; i < item_name.length; i++) {
+             
+    const sql = "SELECT * FROM `resource` WHERE resId = ? ";
+    con.query(sql, [item_name[i]], (err, responRes) => {
+      if (Array.isArray(item_quantity)) {
+        const sum = responRes[0].resAmount - item_quantity[i];
+        if (sum < 0) {
+          const sql = "SELECT * FROM `resource` WHERE resAmount != 0";
+          con.query(sql, (err, respon1) => {
+            const sqlact =
+              "SELECT * FROM `activity` WHERE actCode != 'Complete' ";
+            con.query(sqlact, (err, respon2) => {
+              res.render("page/resource/exportResource", {
+                activity: respon2,
+                listsResource: respon1,
+                data: {
+                  msg:
+                    "เกิดข้อผิดพลาด! โปรดตรวจสอบทรัพยาคงเหลือก่อนทำการเบิก",
+                  cls: "alert alert-danger",
+                  dashboard: false,
+                  managerUser: false,
+                  managerActivity: false,
+                  managerResource: true
                 }
               });
+            });
+            
+          });
+          return false
+        } else {
+          console.log("แบบกลุ่ม",i);
+          //แบบ กลุ่ม
+          const sqlcheck = "SELECT * FROM `order` WHERE actId = ? ";
+          con.query(sqlcheck, [name],async (err, responcheck) => {
+            if (await responcheck.length > 0) {
+              console.log('มีแล้ว');
+              const { orderId } = responcheck[0];
+              const sqlAddDetail =
+                "INSERT INTO `order_detail` (`orderId`, `resId`, `deRes_amount`, `deRes_date`, `deRes_status`) VALUES (?, ?, ?, ?, ?)";
+              con.query(
+                sqlAddDetail,
+                [orderId, item_name[i], item_quantity[i], new Date(), "เบิก"],
+                (err, responAddDetail) => {
+                  const sqlUpdate =
+                    "UPDATE `resource` SET `resAmount` = ? WHERE `resource`.`resId` = ?";
+                  con.query(
+                    sqlUpdate,
+                    [responRes[0].resAmount - item_quantity[i], item_name[i]],
+                    (err, resUpdate) => {
+                      // res.redirect("/ManagerResource")
+                      const sqlGo = "SELECT * FROM `resource`";
+                      con.query(sqlGo, (err, respon) => {
+                        if (err) throw err;
+                      });
+                    }
+                  );
+                }
+              );
+            } else {
+console.log('ไม่มีโว๊ย');
+
+       
             }
+          });
+        }
+      }
+    });
+  }
+}, 250);
       
 setTimeout(() => {
   const sql = "SELECT * FROM `resource`";
@@ -552,12 +567,12 @@ setTimeout(() => {
       }
     });
   });
-}, 300)
+}, 350)
 
 
           }
            
-         }, 300)
+         }, 350)
               
       
  
@@ -655,8 +670,8 @@ const historyOneDay = (req, res) => {
   const month = date.getMonth() + 1;
   const year = date.getFullYear();
   // const newDate = '2020-1-19'
-  const newDate = year + "-" + month + "-" + day+ " " + '00:00:00';
-  const newDate2 = year + "-" + month + "-" + day+ " " + '23:59:59';
+  const newDate = year + "-" + month + "-" + day+ ' 00:00:00';
+  const newDate2 = year + "-" + month + "-" + day+ ' 23:59:59';
   const monthArray = [
     "",
     "มกราคม",
@@ -676,7 +691,7 @@ const historyOneDay = (req, res) => {
   const plusYear = year + 543;
   const DateShow = day + " " + mm + " " + plusYear;
   const sql =
-    "SELECT resource.resName,activity.actName,order_detail.deRes_amount as total,order_detail.deRes_date,order_detail.deRes_status FROM order_detail INNER JOIN `order` ON order.orderId = order_detail.orderId INNER JOIN activity ON activity.actId = order.actId INNER JOIN resource ON resource.resId = order_detail.resId WHERE order_detail.deRes_date  BETWEEN ?  AND ? ORDER BY order_detail.deRes_date DESC";
+  "SELECT resource.resName,activity.actName,order_detail.deRes_date,order_detail.deRes_status ,order_detail.deRes_amount as total FROM order_detail INNER JOIN `order` ON order.orderId = order_detail.orderId INNER JOIN activity ON activity.actId = order.actId INNER JOIN resource ON resource.resId = order_detail.resId WHERE order_detail.deRes_date  BETWEEN ?  AND ? ORDER BY order_detail.deRes_date DESC";
   con.query(sql, [newDate,newDate2], (err, respon) => {
     if (err) throw err;
     res.render("page/resource/historyOneDay", {

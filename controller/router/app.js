@@ -68,13 +68,14 @@ router.post("/reportUser",authChecker,authChecker.checkAdmin, report.reportUserp
 router.post("/reportActivity",authChecker,authChecker.checkAdmin, report.reportActivity)
 router.post("/reportHistory",authChecker,authChecker.checkAdmin, report.reportHistory)
 router.post("/reportHistoryOne",authChecker,authChecker.checkAdmin, report.reportHistoryOne)
+router.post("/reportActivityDate",authChecker,authChecker.checkAdmin, report.reportActivityDate)
 
 router.get("/Area", userController.getArea)
 router.get("/test", backendController.test)
 router.get("*",authChecker,backendController.notFound)
 
 
-  
+
 
 
 module.exports = router;

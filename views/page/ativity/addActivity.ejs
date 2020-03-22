@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="shortcut icon" href="http://52.187.127.249/image/logo.png" />
       <!-- Custom fonts for this template-->
   <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <!-- Custom styles for this template-->
@@ -52,7 +53,7 @@
               <input 
               maxlength="30"
               pattern="[a-zA-Zก-ุฯ-๙\s0-9()]*"
-              value="<%= value.actName %>" type="text" name="name" id="name" class="form-control" placeholder="ชื่อกิจกรรม" required="required" autofocus="autofocus">
+              value="<%= value.actName %>" type="text" name="name" id="name" class="form-control" placeholder="ชื่อกิจกรรม" required="required" autofocus="autofocus" title="ห้ามกรอกตัวอักษรพิเศษ">
               <label for="name">ชื่อกิจกรรม</label>
             </div>
           </div>
@@ -66,7 +67,10 @@
       </div>
       <div class="form-group">
         <div class="form-label-group">
-          <input value="<%= value.actScore %>"  type="number" name="score" id="score" class="form-control" placeholder="คะแนนกิจกรรม" required="required">
+          <input 
+          pattern="[0-9]*"
+          min="0"
+          value="<%= value.actScore %>"  type="text" name="score" id="score" class="form-control" placeholder="คะแนนกิจกรรม" required="required" title="กรอกเฉพราะตัวเลขเท่านั้น (ห้ามติดลบ)">
           <label for="score">คะแนนกิจกรรม</label>
         </div>
       </div>
@@ -109,7 +113,7 @@
                 <input 
                 maxlength="30"
                 pattern="[a-zA-Zก-ุฯ-๙\s0-9()]*"
-                value="" type="text" name="name" id="name" class="form-control" placeholder="ชื่อกิจกรรม" required="required" autofocus="autofocus">
+                value="" type="text" name="name" id="name" class="form-control" placeholder="ชื่อกิจกรรม" required="required" autofocus="autofocus" title="ห้ามกรอกตัวอักษรพิเศษ">
                 <label for="name">ชื่อกิจกรรม</label>
               </div>
             </div>
@@ -136,7 +140,10 @@ today = yyyy + '-' + mm + '-' + dd;
         </div>
         <div class="form-group">
           <div class="form-label-group">
-            <input value=""  type="number" name="score" id="score" class="form-control" placeholder="คะแนนกิจกรรม" required="required">
+            <input 
+            pattern="[0-9]*"
+            min="0"
+            value=""  type="text" name="score" id="score" class="form-control" placeholder="คะแนนกิจกรรม" required="required" title="กรอกเฉพราะตัวเลขเท่านั้น(ห้ามติดลบ)">
             <label for="score">คะแนนกิจกรรม</label>
           </div>
         </div>

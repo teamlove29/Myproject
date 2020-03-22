@@ -52,8 +52,8 @@
                 <input 
                 minlength="5"
                 maxlength="30"
-                pattern="[a-zA-Zก-ุฯ-๙0-9]*"
-                value="<%= value.resName %>" type="text" name="name" id="name" class="form-control" placeholder="ชื่อกิจกรรม" required="required" autofocus="autofocus">
+                pattern="[a-zA-Zก-ุฯ-๙\s-9]*"
+                value="<%= value.resName %>" type="text" name="name" id="name" class="form-control" placeholder="ชื่อกิจกรรม" required="required" title="ห้ามใส่ตัวอักษรพิเศษ" >
                 <label for="name">ชื่อทรัพยากร</label>
               </div>
             </div>
@@ -61,7 +61,8 @@
               <div class="form-label-group">
                 <input 
                 min="0"
-                value="<%= value.resAmount %>" type="number" name="amount" id="amount" class="form-control" placeholder="วันที่จัดกิจจกรม" required="required">
+                attern="[0-9]*"
+                value="<%= value.resAmount %>" type="text" name="amount" id="amount" class="form-control" placeholder="วันที่จัดกิจจกรม" required="required" title="กรอกข้อมูลเป็นตัวเลขเท่านั้น" readonly>
                 <label for="amount">จำนวน</label>
               </div>
             </div>
@@ -108,8 +109,8 @@
                 <input 
                 minlength="5"
                 maxlength="30"
-                pattern="[a-zA-Zก-ุฯ-๙0-9]*"
-                value="" type="text" name="name" id="name" class="form-control" placeholder="ชื่อกิจกรรม" required="required" autofocus="autofocus">
+                pattern="[a-zA-Zก-ุฯ-๙\s0-9]*"
+                value="" type="text" name="name" id="name" class="form-control" placeholder="ชื่อกิจกรรม" required="required"  title="ห้ามใส่ตัวอักษรพิเศษ" autofocus>
                 <label for="name">ชื่อทรัพยากร</label>
               </div>
             </div>
@@ -117,7 +118,8 @@
               <div class="form-label-group">
                 <input
                 min="0"
-                value="" type="number" name="amount" id="amount" class="form-control" placeholder="วันที่จัดกิจจกรม" required="required">
+                pattern="[0-9]*"
+                value="" type="text" name="amount" id="amount" class="form-control" placeholder="วันที่จัดกิจจกรม" required="required" title="กรอกข้อมูลเป็นตัวเลขเท่านั้น">
                 <label for="amount">จำนวน</label>
               </div>
             </div>

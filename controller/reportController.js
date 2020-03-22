@@ -70,6 +70,8 @@ const reportActivity =  (req,res) => {
             res.render('page/report/reportActivityAll', {
               peopleJoin: result,
               listsActivity: respon2,
+              start:'',
+              end:'',
               data: {
                 dashboard: false,
                 managerUser: false,
@@ -95,6 +97,8 @@ const reportActivity =  (req,res) => {
                   listResouceRe: responReturn,
                   listResouce: responRe,
                   listJoin: respon,
+                  start:'',
+              end:'',
                   data: {
                   }
                 })
@@ -110,78 +114,66 @@ const reportActivity =  (req,res) => {
 
 
 const reportHistory =  async (req,res) => {
-    const { start,end } = req.body  
-    if(start == '' || end == '' || start > end){
+  const { start,end } = req.body  
+  if(start == '' || end == '' || start > end){
 
-        const sqlUser = "SELECT * FROM `user` WHERE userStatus <> 'admin'"
-        const sqlActivity = "SELECT * FROM `activity`"
-        con.query(sqlUser,(err,responUser) => {
-            con.query(sqlActivity,(err,responActivity) => {
-                res.render('page/report/report',
-                {
-                    listActivity : responActivity,
-                    listUser : responUser,
-                    data: {
-                        css: false,
-                        err: false,
-                        msg: 'กรุณาตรวจสอบวันที่',
-                        cls: 'alert alert-warning',
-                        dashboard: false,
-                        managerUser: false,
-                        managerActivity: false,
-                        managerResource: false,
-                        report:true
-                    }
-                  })
-            })
-    
-        })
+      const sqlUser = "SELECT * FROM `user` WHERE userStatus <> 'admin'"
+      const sqlActivity = "SELECT * FROM `activity`"
+      con.query(sqlUser,(err,responUser) => {
+          con.query(sqlActivity,(err,responActivity) => {
+              res.render('page/report/report',
+              {
+                  listActivity : responActivity,
+                  listUser : responUser,
+                  data: {
+                      css: false,
+                      err: false,
+                      msg: 'กรุณาตรวจสอบวันที่',
+                      cls: 'alert alert-warning',
+                      dashboard: false,
+                      managerUser: false,
+                      managerActivity: false,
+                      managerResource: false,
+                      report:true
+                  }
+                })
+          })
+  
+      })
 
-            
-    }else{
+          
+  }else{
 
-      const datestart = new Date(start)
-      const daystart = datestart.getDate()
-      const monthstart = datestart.getMonth()+1
-      const yearstart = datestart.getFullYear();
-      const yystrat = yearstart-543
-      const startDay = yystrat + '-' + monthstart + '-' + daystart+ " " + '00:00:00'
+    const datestart = new Date(start)
+    const daystart = datestart.getDate()
+    const monthstart = datestart.getMonth()+1
+    const yearstart = datestart.getFullYear();
+    const yystrat = yearstart-543
+    const startDay = yystrat + '-' + monthstart + '-' + daystart+ " " + '00:00:00'
 
-      const dateend = new Date(end)
-      const dayend = dateend.getDate()
-      const monthend = dateend.getMonth()+1
-      const yearend = dateend.getFullYear();
-      const yyend = yearstart-543
-      const endDay = yyend + '-' + monthend + '-' + dayend+ " " + '23:59:59'
+    const dateend = new Date(end)
+    const dayend = dateend.getDate()
+    const monthend = dateend.getMonth()+1
+    const yearend = dateend.getFullYear();
+    const yyend = yearstart-543
+    const endDay = yyend + '-' + monthend + '-' + dayend+ " " + '23:59:59'
 
-        // const arr1 = start.split('-');
-        // const yyyy = parseInt(arr1[0])-543
-        // const mm = arr1[1]
-        // const dd = arr1[2]
-        // const startDay = yyyy + '-' + mm + '-' + dd
-    
-        // const arr2 = end.split('-');
-        // const yyyy2 = parseInt(arr2[0])-543
-        // const mm2 = arr2[1]
-        // const dd2 = arr2[2]
-        // const endDay = yyyy2 + '-' + mm2 + '-' + dd2
-    
-        const monthArray = ["","มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน","กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม"] 
-        const mmstart = monthArray[monthstart]
-        const mmend = monthArray[monthend]
-        const toListStart =  daystart + ' ' + mmstart + ' ' + yearstart
-        const toListEnd =  dayend + ' ' + mmend + ' ' + yearend
-        const sql = "SELECT resource.resName,activity.actName,order_detail.deRes_amount as total,order_detail.deRes_date,order_detail.deRes_status FROM `order_detail` INNER JOIN `order` ON order.orderId = order_detail.orderId INNER JOIN `activity` ON activity.actId = order.actId INNER JOIN `resource` ON resource.resId = order_detail.resId WHERE order_detail.deRes_date BETWEEN ? AND ? ORDER BY order_detail.deRes_date DESC"
-        con.query(sql,[startDay,endDay],(err,respon)=> {
-          res.render('page/report/reportHistoryAll',{
-            listHitoryAll:respon,
-            data: {
-                startDay:toListStart,
-                endDay:toListEnd,
-            }
-        })
-        })
-    }
+      const monthArray = ["","มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน","กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม"] 
+      const mmstart = monthArray[monthstart]
+      const mmend = monthArray[monthend]
+      const toListStart =  daystart + ' ' + mmstart + ' ' + yearstart
+      const toListEnd =  dayend + ' ' + mmend + ' ' + yearend
+      const sql = "SELECT resource.resName,activity.actName,order_detail.deRes_amount as total,order_detail.deRes_date,order_detail.deRes_status FROM `order_detail` INNER JOIN `order` ON order.orderId = order_detail.orderId INNER JOIN `activity` ON activity.actId = order.actId INNER JOIN `resource` ON resource.resId = order_detail.resId WHERE order_detail.deRes_date BETWEEN ? AND ? ORDER BY order_detail.deRes_date DESC"
+      con.query(sql,[startDay,endDay],(err,respon)=> {
+        res.render('page/report/reportHistoryAll',{
+          listHitoryAll:respon,
+          data: {
+              startDay:toListStart,
+              endDay:toListEnd,
+          }
+      })
+      })
+  }
 
 
 }
@@ -211,14 +203,91 @@ const reportHistoryOne =  (req,res) => {
         }
     })
     })
-
-
 }
 
+const reportActivityDate = (req,res) => {
+  const { start,end } = req.body  
+  if(start == '' || end == '' || start > end){
+
+      const sqlUser = "SELECT * FROM `user` WHERE userStatus <> 'admin'"
+      const sqlActivity = "SELECT * FROM `activity`"
+      con.query(sqlUser,(err,responUser) => {
+          con.query(sqlActivity,(err,responActivity) => {
+              res.render('page/report/report',
+              {
+                  listActivity : responActivity,
+                  listUser : responUser,
+                  data: {
+                      css: false,
+                      err: false,
+                      msg: 'กรุณาตรวจสอบวันที่',
+                      cls: 'alert alert-warning',
+                      dashboard: false,
+                      managerUser: false,
+                      managerActivity: false,
+                      managerResource: false,
+                      report:true
+                  }
+                })
+          })
+  
+      })
+
+          
+  }else{
+console.log('false');
+
+    const datestart = new Date(start)
+    const daystart = datestart.getDate()
+    const monthstart = datestart.getMonth()+1
+    const yearstart = datestart.getFullYear();
+    const yystrat = yearstart
+    const startDay = yystrat + '-' + monthstart + '-' + daystart
+
+    const dateend = new Date(end)
+    const dayend = dateend.getDate()
+    const monthend = dateend.getMonth()+1
+    const yearend = dateend.getFullYear();
+    const yyend = yearend
+    const endDay = yyend + '-' + monthend + '-' + dayend
+
+      const monthArray = ["","มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน","กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม"] 
+      const mmstart = monthArray[monthstart]
+      const mmend = monthArray[monthend]
+      const toListStart =  daystart + ' ' + mmstart + ' ' + yearstart
+      const toListEnd =  dayend + ' ' + mmend + ' ' + yearend
+
+
+  const sql = "SELECT * FROM `activity` WHERE actDate between ? AND ? order BY actId DESC"
+        con.query(sql,[startDay,endDay] ,(err, respon2) => {
+          const sqlnum = "SELECT activity.actId FROM `register` INNER JOIN `register_detail` INNER JOIN activity INNER JOIN user ON register.actId = activity.actId AND register.regId = register_detail.regId AND register_detail.userId = user.userId "
+          con.query(sqlnum, async (err, respon) => {
+            let result = {}
+            await respon.map(value => {
+              result[value.actId] ? result[value.actId]++ : result[value.actId] = 1
+            })
+            res.render('page/report/reportActivityAll', {
+              peopleJoin: result,
+              listsActivity: respon2,
+              start:toListStart,
+              end:toListEnd,
+              data: {
+                dashboard: false,
+                managerUser: false,
+                managerActivity: true,
+                managerResource: false
+              }
+            })
+          })
+        })
+
+  
+}
+}
 
 module.exports.report = report
 module.exports.reportUserpost = reportUserpost
 module.exports.reportActivity = reportActivity
 module.exports.reportHistory = reportHistory
 module.exports.reportHistoryOne = reportHistoryOne
-
+module.exports.reportActivityDate = reportActivityDate

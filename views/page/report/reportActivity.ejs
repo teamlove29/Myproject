@@ -19,7 +19,11 @@
 
     <div class="container mt-4 text-center" id="tabledata">
     <h5>รายงานกิจกรรม <%= nameActivity[0].actName %></h5>
-    <hr>
+    <div class="container text-left mt-3">
+        <a class="btn btn-secondary" href="/report"> < กลับด้านเดิม</a>
+    </div>
+
+    
     <div style="display:none;" id="loadedPage" class="animate-bottom">
     <div class="text-center">
       <%  
@@ -72,7 +76,7 @@
   <div id="msg" class="" role="alert">
     </div>
   <h4>ทรัพยากรที่ในกิจกรรมนี้</h4>
-  <div class="table-responsive">
+  <div class="table-responsive mb-5">
       <table class="table table-striped table-sm" width="100%" cellspacing="0">
           <thead>
               <tr>
@@ -105,10 +109,7 @@
     </div>
   </div>
     </div>
-    <div class="container mt-3">
-        <!-- <button class="btn btn-success" onclick="downloadDoc()">Download PDF</button> -->
-        <a class="btn btn-secondary" href="/report">กลับด้านเดิม</a>
-    </div>
+   
 </div>
 
 </body>
