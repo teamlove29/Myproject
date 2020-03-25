@@ -33,7 +33,7 @@
         <!-- Breadcrumbs-->
         <ol class="breadcrumb">
           <li class="breadcrumb-item">
-            <a href="/ManagerResource">จัดการรัพยากร</a>
+            <a href="/ManagerResource">จัดการทรัพยากร</a>
           </li>
           <li class="breadcrumb-item">
             เบิกทรัพยากร</li>
@@ -82,7 +82,7 @@
                         </select>
                       </td>
                       <td><input 
-                        min="0"
+                        min="1"
                         type="number" name="item_quantity" class="form-control item_quantity" required /></td>
                       <td id="txt0"></td>
                       <td>
@@ -180,7 +180,7 @@
       loop = loop + 1
       html += '<tr>';
       html += '<td><select onChange="myFunction('+ test +')" id=value' + test + ' required name="item_name" class="form-control item_name"><option value="">เลือกทรัพยากร</option><% listsResource.map(value =>{  %><option value="<%= value.resId %>"><%= value.resName %> </option> <% }) %></select></td>';
-      html += '<td><input required type="number" name="item_quantity" class="form-control item_quantity" /></td>';
+      html += '<td><input min="1" title="กรุณาใส่จำนวนที่ต้องการเบิก" required type="number" name="item_quantity" class="form-control item_quantity" /></td>';
       html += '<td id=txt' + test + '></td>';
       html += '<td><button type="button" name="remove" class="btn btn-danger btn-sm remove"><i class="far fa-trash-alt"></i></button></td></tr>';
       $('#item_table').append(html);

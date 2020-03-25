@@ -59,10 +59,13 @@
         class="p-2 mb-3 btn btn-success btn-sm"><i class="fas fa-plus"></i> เพิ่มทรัพยากร</button>
         <button 
         onclick="javascript:window.location.href='/historyAll'"
-        class="p-2 mb-3 btn btn-light btn-sm"><i class="fas fa-redo-alt"></i> ประวัติย้อนหลัง</button>
+        class="p-2 mb-3 btn btn-light btn-sm"><i class="far fa-calendar-alt"></i> ประวัติย้อนหลัง</button>
         <button 
         onclick="javascript:window.location.href='/historyOneDay'"
         class="p-2 mb-3 btn btn-light btn-sm"><i class="far fa-calendar-check"></i> ทรัพยากรที่ใช้แต่ละวัน</button>
+        <button 
+        onclick="javascript:window.location.href='/checkReturn'"
+        class="p-2 mb-3 btn btn-light btn-sm"><i class="fas fa-undo"></i> ทรัพยากรรอคืน</button>
         <div class="float-right">
           <button
           onclick="javascript:window.location.href='/exportResource'"
@@ -81,9 +84,10 @@
           <div id="msg" class="" role="alert"></div>
           
             <div class="table-responsive">
-              <table  data-order='[[ 1, "DESC" ]]' class="table table-bordered table-sm " id="dataTable" width="100%" cellspacing="0">
-                <thead>
+              <table  data-order='[[ 1, "DESC" ]]' class="table table-sm " id="dataTable" width="100%" cellspacing="0">
+                <thead class="thead-light">
                   <tr>
+                    <th class="text-center">รูปภาพ</th>
                     <th>รายการ</th>
                     <th>คงเหลือ</th>
                     <th>ตัวเลือก</th>
@@ -91,10 +95,11 @@
                 </thead>
                 <tbody>
                   <% listsResource.map((value,index) => { %>
-                  <tr >
-                    <td class="<%= value.resAmount == 0 ? 'bg-red text-white' : '' %>"><%= value.resName %></td>
-                    <td class="<%= value.resAmount == 0 ? 'bg-red text-white' : '' %>"><%= value.resAmount %></td>
-                    <td>
+                  <tr>
+                    <td class="text-center"><img style="width: 75px;" src="/uploads/<%= value.resImage %>" alt=""></td>
+                    <td class="align-middle <%= value.resAmount == 0 ? 'bg-red text-white' : '' %>"><%= value.resName %></td>
+                    <td class="align-middle <%= value.resAmount == 0 ? 'bg-red text-white' : '' %>"><%= value.resAmount %></td>
+                    <td class="align-middle">
                       <button 
                       onclick="return ConfirmPlus(<%= value.resId %>)"
                       class="btn btn-info btn-sm"> 
@@ -102,7 +107,7 @@
                        </button>
                        <button 
                        onclick="javascript:window.location.href='/ManagerResource/editresource/<%= value.resId %>'"
-                       class="btn btn-sm editIcon"><i class="fas fa-pen"></i>
+                       class="btn btn-sm editIcon"><i class="fas fa-edit"></i>
                      </button>
                      <button 
                      data-toggle="modal" data-target="#DeleteModal<%= index%>"
@@ -220,6 +225,18 @@
   }
 
     
+  </script>
+
+  <script>
+// dataTable
+$(".table").dataTable({"bAutoWidth": false , 
+aoColumns : [
+      { "sWidth": "20%"},
+      { "sWidth": "5%"},
+      { "sWidth": "50%"},
+
+    ]
+});
   </script>
 
 </html>

@@ -55,7 +55,8 @@
               <table class="table-sm table table-bordered"  width="100%" cellspacing="0">
                 <thead >
                   <tr>
-                    <th>วัน/เดือน/ปี</th>
+                    <th>เริ่ม</th>
+                  <th>สิ้นสุด</th>
                     <th>รายการ</th>
                     <th>รหัส</th>
                     <th>คนเข้าร่วม</th>
@@ -73,6 +74,8 @@
                     <% if(value.actCode != 'Complete') {%>
                   <tr>
                     <%  
+                    var endEnd = new Date(value.actEnd)
+
                         free = free + 1
                         var dd = value.actDate.getDate() 
                         var mm = value.actDate.getMonth() + 1
@@ -83,11 +86,26 @@
                         if (mm < 10) {
                           <!-- mm = '0' + mm; -->
                         } 
+
+                        var dd2 = endEnd.getDate() 
+                        var mm2 = endEnd.getMonth() + 1
+                        var yyyy2 = endEnd.getFullYear()
+                        if (dd2 < 10) {
+                          <!-- dd2 = '0' + dd; -->
+                        } 
+                        if (mm2 < 10) {
+                          <!-- mm = '0' + mm; -->
+                        } 
+
                         const monthArray = ["","มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน","กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม"] 
                         mm = monthArray[mm]
-                       var today = dd + ' ' + mm + ' ' + yyyy;
+                        mm2 = monthArray[mm2]
+
+                       var StartDay = dd + ' ' + mm + ' ' + yyyy;
+                       var EndDay = dd2 + ' ' + mm2 + ' ' + yyyy2;
                     %>
-                    <td><%= today %></td>
+                    <td><%= StartDay %></td>
+                    <td><%= EndDay %></td>
                     <td><%= value.actName %></td>
                     <% if(value.actCode != 'Complete') { %>
                     <td><%= value.actCode %></td>
@@ -111,7 +129,7 @@
                         class="btn btn-sm btn-secondary "><i class="fas fa-search"></i></button>
                         <button 
                         onclick="javascript:window.location.href='/ManagerActivity/editactivity/<%= value.actId%>'"
-                        class="btn btn-sm editIcon"><i class="fas fa-pen"></i></button>
+                        class="btn btn-sm editIcon"><i class="fas fa-edit"></i></button>
                         <button 
                         data-toggle="modal" data-target="#DeleteModal<%= index%>"
                         class="btn btn-sm deleteIcon"><i class="fas fa-trash"></i></button>
@@ -160,7 +178,8 @@
             <table data-order='[[ 0, "DESC" ]]' class="table-sm table table-bordered" id="dataTable" width="100%" cellspacing="0">
               <thead>
                 <tr>
-                  <th>วัน/เดือน/ปี</th>
+                  <th>เริ่ม</th>
+                  <th>สิ้นสุด</th>
                   <th>รายการ</th>
                   <th>คนเข้าร่วม</th>
                   <th>คะแนน</th>
@@ -173,7 +192,10 @@
                 <% listsActivity.map((value, index) => {  %>
                   <% if(value.actCode === 'Complete') {%>
                 <tr>
+
                   <%  
+                    var endEnd = new Date(value.actEnd)
+
                       free2 = free2 + 1
                       var dd = value.actDate.getDate() 
                       var mm = value.actDate.getMonth() + 1
@@ -185,11 +207,27 @@
                         <!-- mm = '0' + mm; -->
                       } 
 
+                      var dd2 = endEnd.getDate() 
+                      var mm2 = endEnd.getMonth() + 1
+                      var yyyy2 = endEnd.getFullYear()
+                      if (dd2 < 10) {
+                        <!-- dd2 = '0' + dd; -->
+                      } 
+                      if (mm2 < 10) {
+                        <!-- mm = '0' + mm; -->
+                      } 
+
                       const monthArray = ["","มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน","กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม"] 
                       mm = monthArray[mm]
-                     var today = dd + ' ' + mm + ' ' + yyyy;
+                      mm2 = monthArray[mm2]
+                     var startDay = dd + ' ' + mm + ' ' + yyyy;
+
+
+                     var endDay = dd2 + ' ' + mm2 + ' ' + yyyy2;
                   %>
-                  <td><%= today %></td>
+
+                  <td><%= startDay %></td>
+                  <td><%= endDay %></td>
                   <td><%= value.actName %></td>
                   <td><%= peopleJoin[value.actId]  ? peopleJoin[value.actId] : '0' %></td>
                   <td><%= value.actScore %></td>

@@ -26,7 +26,7 @@
         <!-- Breadcrumbs-->
         <ol class="breadcrumb">
           <li class="breadcrumb-item">
-            <a href="/ManagerResource">จัดการรัพยากร</a>
+            <a href="/ManagerResource">จัดการทรัพยากร</a>
           </li>
           <li class="breadcrumb-item active">ประวัติย้อนหลัง</li>
         </ol>
@@ -37,10 +37,13 @@
         class="p-2 mb-3 btn btn-success btn-sm"><i class="fas fa-plus"></i> เพิ่มทรัพยากร</button>
         <button 
         onclick="javascript:window.location.href='/historyAll'"
-        class="p-2 mb-3 btn btn-secondary btn-sm"><i class="fas fa-redo-alt"></i> ประวัติย้อนหลัง</button>
+        class="p-2 mb-3 btn btn-secondary btn-sm"><i class="far fa-calendar-alt"></i> ประวัติย้อนหลัง</button>
         <button 
         onclick="javascript:window.location.href='/historyOneDay'"
         class="p-2 mb-3 btn btn-light btn-sm"><i class="far fa-calendar-check"></i> ทรัพยากรที่ใช้แต่ละวัน</button>
+        <button 
+        onclick="javascript:window.location.href='/checkReturn'"
+        class="p-2 mb-3 btn btn-light btn-sm"><i class="fas fa-undo"></i> ทรัพยากรรอคืน</button>
         <div class="float-right">
           <button
           onclick="javascript:window.location.href='/exportResource'"
@@ -51,8 +54,8 @@
 
         <div style="display:none;" id="loadedPage" class="animate-bottom">
 <div class="table-responsive mb-5">
-  <table data-order='[[ 0, "DESC" ]]' class="table table-striped " id="example"  width="100%" cellspacing="0">
-      <thead>
+  <table data-order='[[ 0, "DESC" ]]' class="table" id="example"  width="100%" cellspacing="0">
+      <thead class="thead-light">
           <tr>
             <th>วัน/เดือน/ปี</th>
               <th>ทรัพยากร</th>

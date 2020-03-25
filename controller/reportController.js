@@ -285,9 +285,63 @@ console.log('false');
 }
 }
 
+const reportAct = (req,res) => {
+
+  const sqlUser = "SELECT * FROM `user` WHERE userStatus <> 'admin'"
+  const sqlActivity = "SELECT * FROM `activity`"
+  con.query(sqlUser,(err,responUser) => {
+      con.query(sqlActivity,(err,responActivity) => {
+          res.render('page/report/reportAct',
+          {
+              listActivity : responActivity,
+              listUser : responUser,
+              data: {
+                  css: false,
+                  err: false,
+                  msg: '',
+                  cls: '',
+                  dashboard: false,
+                  managerUser: false,
+                  managerActivity: false,
+                  managerResource: false,
+                  report:true
+              }
+            })
+      })
+  }) 
+}
+
+const reportRe = (req,res) => {
+  const sqlUser = "SELECT * FROM `user` WHERE userStatus <> 'admin'"
+  const sqlActivity = "SELECT * FROM `activity`"
+  con.query(sqlUser,(err,responUser) => {
+      con.query(sqlActivity,(err,responActivity) => {
+          res.render('page/report/reportRe',
+          {
+              listActivity : responActivity,
+              listUser : responUser,
+              data: {
+                  css: false,
+                  err: false,
+                  msg: '',
+                  cls: '',
+                  dashboard: false,
+                  managerUser: false,
+                  managerActivity: false,
+                  managerResource: false,
+                  report:true
+              }
+            })
+      })
+  }) 
+}
+
+
 module.exports.report = report
 module.exports.reportUserpost = reportUserpost
 module.exports.reportActivity = reportActivity
 module.exports.reportHistory = reportHistory
 module.exports.reportHistoryOne = reportHistoryOne
 module.exports.reportActivityDate = reportActivityDate
+module.exports.reportAct = reportAct
+module.exports.reportRe = reportRe

@@ -11,6 +11,30 @@
   <link href="/css/sb-admin.css" rel="stylesheet">
   <link href="/css/style.css" rel="stylesheet">
     <title>ค้นหาบุคลากร</title>
+    <style>
+      /* Text between <hr> tag */
+
+hr.style-four {
+padding: 0;
+border: none;
+border-top: medium solid white;
+color: white;
+text-align: center;
+margin: 20px;
+}
+hr.style-four:after {
+content: "หรือ";
+display: inline-block;
+position: relative;
+top: -0.7em;
+font-size: 1.5em;
+padding: 0 0.25em;
+font-size: 16px;
+color: white;
+
+background: #787977;
+}
+    </style>
 </head>
 <body id="page-top"  id="loadedPage" onload="myFunction()">
   <div id="loader"></div>
@@ -74,18 +98,28 @@
           </div>
 
           <% }else { }%>
-          <div class="card-header text-center text-white" style="background-color: #73696a;">ค้นหาบุคลากร (รหัสประจำตำแหน่ง)</div>
+          <div class="card-header text-center text-white" style="background-color: #73696a;">ค้นหาบุคลากร </div>
           <div class="card-body" style="background-color: #787977;">
             <form class="" action="/PostCheckUser" method="POST">
               <div class="form-group" style="margin: 0 auto;">
                 <div class="form-label-group">
                   <input 
-                  pattern="\d*" minlength="8" maxlength="8"
-                  type="text" name="code" id="code" class="form-control " placeholder="รหัสประจำตำแหน่ง" required="required">
+                  onchange="disname()"
+                  pattern="[0-9]*" maxlength="8"
+                  type="text" name="code" id="code" class="form-control " placeholder="รหัสประจำตำแหน่ง" title="ตัวเลขเท่านั้น">
                   <label for="code">รหัสประจำตำแหน่ง</label>
                 </div>
               </div>
-              
+              <hr class="style-four">
+
+              <div class="form-group" style="margin: 0 auto;">
+                <div class="form-label-group">
+                  <input 
+                  onchange="discode()"
+                  type="text" name="name" id="name" class="form-control " placeholder="ชื่อ / นามสกุล" >
+                  <label for="name">ชื่อ / นามสกุล </label>
+                </div>
+              </div>
               <button class="btn btn-success mt-3 btn-block">ค้นหา</button>
         
               
@@ -96,7 +130,122 @@
       </div>
       <p class="lead text-center mt-5">กลับหน้าหลัก
         <a href="/home">คลิ๊ก</a>
+
+        <% if(User != '') {    %>
+          <table class="table container">
+            <thead class="thead-light">
+              <tr>
+                <th scope="col">รูปภาพ</th>
+                <th scope="col">ชื่อ - นามสกุล</th>
+                <th scope="col">รหัสประจำตำแหน่ง</th>
+                <th scope="col">พื้นที่ดูแล</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% User.map( value => {  %>
+              <tr>
+                <th><img style="width: 75px;" src="/uploads/<%= value.userImage %>" alt=""></th>
+                <td class="align-middle"><%= value.userFname + ' ' + value.userLname %></td>
+                <td class="align-middle"><%= value.userPosition %></td>
+                <td class="align-middle"><%= value.userArea %></td>
+              </tr>
+              <% }) %>
+            </tbody>
+          </table>
+          <% } else { }%>
       </div>
+
+
+
 </body>
-<%- include('../../component/admin/scriptJs')%>
+<!-- Bootstrap core JavaScript-->
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+<!-- Page level plugin JavaScript-->
+<script src="vendor/chart.js/Chart.min.js"></script>
+<script src="vendor/datatables/jquery.dataTables.js"></script>
+<script src="vendor/datatables/dataTables.bootstrap4.js"></script>
+
+<!-- Custom scripts for all pages-->
+<script src="js/sb-admin.js"></script>
+
+<!-- Demo scripts for this page-->
+<script src="js/demo/datatables-demo.js"></script>
+<script src="js/demo/chart-pie-demo.js"></script>
+
+<!-- <script>
+
+$(document).ready(function() {
+loadsec();
+});
+
+</script> -->
+
+<script>
+
+function disname() {
+  var x = document.getElementById("code").value;
+  if(x != '' || x.length > 0) {
+    document.getElementById("name").disabled = true;
+  }else{
+    document.getElementById("name").disabled = false;
+  }
+}
+
+
+function discode() {
+  var x = document.getElementById("name").value;
+  if(x != '' || x.length > 0) {
+    document.getElementById("code").disabled = true;
+  }else{
+    document.getElementById("code").disabled = false;
+  }
+}
+
+</script>
+
+<script>
+window.addEventListener("load", function() {
+  const loader = document.querySelector(".loader");
+  setTimeout(() => {
+      loader.className += " hidden"; // class "loader hidden"
+  }, 10)
+  
+    
+
+});
+</script>
+<script>
+  var myVar;
+  
+  function myFunction() {
+    myVar = setTimeout(showPage, 100);
+  }
+
+
+
+  function showPage() {
+    document.getElementById("loader").style.display = "none";
+    document.getElementById("loadedPage").style.display = "block";
+  }
+
+
+$(document).ready(function() { // พอ DOM โหลดเสร็จ -> รัน document.ready -> พอรูป และ Element อื่น ๆโหลดเสร็จ -> รัน window.onload 
+  setTimeout(() => {
+    document.getElementById("loader").style.display = "none";
+  document.getElementById("loadedPage").style.display = "block";
+  }, 100)
+  
+});
+
+
+
+  </script>
+
+
+
 </html>

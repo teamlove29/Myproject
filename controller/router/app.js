@@ -56,6 +56,7 @@ router.get("/returnExport",authChecker,authChecker.checkAdmin, resourceControllo
 router.get("/historyOneDay",authChecker,authChecker.checkAdmin, resourceControlloer.historyOneDay)
 router.get("/historyAll",authChecker,authChecker.checkAdmin, resourceControlloer.historyAll)
 router.post("/AddAmount",authChecker,authChecker.checkAdmin, resourceControlloer.AddAmount)
+router.get("/checkReturn",authChecker,authChecker.checkAdmin, resourceControlloer.checkReturn)
 
 //register
 router.get("/register",authChecker,authChecker.checkUser, registerController.registerPage)
@@ -64,6 +65,8 @@ router.get("/history",authChecker,authChecker.checkUser, registerController.hist
 
 //report
 router.get("/report",authChecker,authChecker.checkAdmin, report.report)
+router.get("/reportAct",authChecker,authChecker.checkAdmin, report.reportAct)
+router.get("/reportRe",authChecker,authChecker.checkAdmin, report.reportRe)
 router.post("/reportUser",authChecker,authChecker.checkAdmin, report.reportUserpost)
 router.post("/reportActivity",authChecker,authChecker.checkAdmin, report.reportActivity)
 router.post("/reportHistory",authChecker,authChecker.checkAdmin, report.reportHistory)

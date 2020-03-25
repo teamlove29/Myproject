@@ -49,20 +49,20 @@
     
             <div class="row">
               <div class="col-xl-3 col-md-6">
-                  <div class="card bg-secondary text-white mb-4">
+                  <div class="card bg-light text-dark mb-4">
                       <div class="card-body"><i class="fas fa-user-friends"></i> รายงานบุคลากร</div>
                       <div class="card-footer d-flex align-items-center justify-content-between">
-                          <a class="small text-white stretched-link" href="/report">ดูรายละเอียด</a>
-                          <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                          <a class="small text-dark stretched-link" href="/report">ดูรายละเอียด</a>
+                          <div class="small text-dark"><i class="fas fa-angle-right"></i></div>
                       </div>
                   </div>
               </div>
               <div class="col-xl-3 col-md-6">
-                  <div class="card bg-light text-dark mb-4">
-                      <div class="card-body"><i class="fas fa-chart-line"></i> รายงานกิจกรรม</div>
+                  <div class="card bg-secondary text-white mb-4">
+                      <div class="card-body"><i class="fas fa-chart-line"></i>  รายงานกิจกรรม</div>
                       <div class="card-footer d-flex align-items-center justify-content-between">
-                          <a class="small text-dark stretched-link" href="/reportAct">ดูรายละเอียด</a>
-                          <div class="small text-dark"><i class="fas fa-angle-right"></i></div>
+                          <a class="small text-white stretched-link" href="/reportAct">ดูรายละเอียด</a>
+                          <div class="small text-white"><i class="fas fa-angle-right"></i></div>
                       </div>
                   </div>
               </div>
@@ -79,23 +79,13 @@
           </div>
 
 <hr>
-<form action="/reportUser" method="POST">
-  <div class="<%= data.cls %>" role="alert">
+<div class="<%= data.cls %>" role="alert">
     <%= data.msg %>
   </div>
-            <select class="form-control form-control-xs selectpicker" name="reportUser" data-size="15" data-live-search="true" data-title="Location" id="state_list" data-width="30%">
-                <option value="All" selected>ทั้งหมด</option>
-                <% listUser.map(value => {   %>
-                <option value="<%= value.userId%>"><%= value.userPosition + ' ' + value.userFname + ' ' + value.userLname %></option>
-                <% }) %>
-              </select>
 
-<button class="btn btn-sm btn-success ml-2">ค้นหา</button>
-
-</form>
 
 <!-- รายงานกิจกรรม -->
-<!-- <form action="/reportActivity" method="POST">
+<form action="/reportActivity" method="POST">
   <p>รายงานกิจกรรม</p>
             <select class="form-control form-control-xs selectpicker w-50" name="reportActivity" data-size="7" data-live-search="true" data-title="Location" id="state_list" data-width="100%">
                 <option value="All" selected>ทั้งหมด</option>
@@ -107,10 +97,11 @@
 <button class="btn btn-sm btn-success ml-2">ค้นหา</button>
 
 </form>
-<hr> -->
+
+<hr>
 
 <!-- รายงานกิจกรรมแบบใส่วัน -->
-<!-- <form action="/reportActivityDate" method="POST">
+<form action="/reportActivityDate" method="POST">
   <% 
   var today = new Date();
   var dd = today.getDate() 
@@ -146,66 +137,7 @@
     </div>
     <br>
     <button class="btn btn-sm btn-success ml-2">ค้นหา</button>
-  </form> -->
-
-
-<!-- รายงานทรัพยากรแบบใส่วัน  -->
-<!-- <form action="/reportHistory" method="POST">
-<% 
-var today = new Date();
-var dd = today.getDate() 
-var mm = today.getMonth() + 1
-var yyyy = today.getFullYear() + 543
-if (dd < 10) {
-  dd = '0' + dd;
-} 
-if (mm < 10) {
-  mm = '0' + mm;
-} 
-today = yyyy + '-' + mm + '-' + dd;
-var sixmo = yyyy + '-' + mm + '-' + dd;
-%>
-  <p>รายงานทรัพยากรย้อนหลัง</p>
-
-  <div class="row">
-    <div class="col-5">
-      <label for="start">วันเริ่มต้น:</label>
-      <input 
-      class="form-control"
-      type="date" id="start" name="start"
-      value="<%= today %>" min="2563-01-01" max="2563-12-31">
-    </div>
-    <div class="col-5">
-      <label for="end">วันสิ้นสุด:</label>
-      <input 
-      class="form-control"
-      type="date" id="end" name="end"
-      value="<%= today %>" min="2563-01-01" max="<%= today %>">
-    </div>
-    <div class="col-2">
-    </div>
-  </div>
-  <br>
-  <button class="btn btn-sm btn-success ml-2">ค้นหา</button>
-</form> -->
-
-
-<!-- <form action="#" method="POST">
-
-  <p>รายงานทรัพยากรที่ยังไม่ได้คืน</p>
-      <button class="btn btn-sm btn-success ml-2">ค้นหา</button>
-</form>  -->
-
-<!-- <hr>
-<form action="/reportHistoryOne" method="POST">
-
-  <p>รายงานทรัพยากรล่าสุด</p>
-
-
-      <button class="btn btn-sm btn-success ml-2">ค้นหา</button>
-
-
-</form> -->
+  </form>
 
   </div>
   </div>

@@ -35,9 +35,45 @@ const adduser = (req, res) => {
   });
 };
 
-const postUser = (req, res) => {
-  upload(req, res, (err) => { //อัพรูป
+const postUser =  (req, res) => {
+  upload(req, res, async (err)  => { //อัพรูป
     const { firstName, lastName, area, positionId, sex, date, idCard, address, Email, tel, status } = req.body
+
+
+ const forloop = (idcardNa) => {
+  const idCards = []
+  for (let index = 0; index < idcardNa.length; index++) {
+    
+    idCards.push(idCard.slice(index-1,index))
+  }
+  return idCards
+ }
+
+
+  const idcardJa = await forloop(idCard)
+
+const checkCard  =  idcardJa[1]*13 + idcardJa[2]*12 + idcardJa[3]*11 + idcardJa[4]*10 + idcardJa[5]*9 + idcardJa[6]*8 + idcardJa[7]*7 + idcardJa[8]*6 + idcardJa[9]*5 + idcardJa[10]*4 + idcardJa[11]*3 + idcardJa[12]*2
+const sumcard = (11-checkCard%11)%10
+const resultCard = sumcard == idCard.slice(12) ? 'pass' : 'nopass'
+
+const sqlUser = "SELECT * FROM `user`"
+if(resultCard === 'nopass' && idCard != ''){
+  con.query(sqlUser, (err, responUserAll) => {
+    res.render("page/user/userPage", {
+      listsUser: responUserAll,
+      data: {
+        err: true,
+        msg: 'เลขบัตรประชาชนไม่ถูกต้องกรุณาตรวจสอบ',
+        cls: 'alert alert-danger',
+        dashboard: false,
+        managerUser: true,
+        managerActivity: false,
+        managerResource: false
+      }
+    });
+  })
+}else{
+  
 //     if (upload.MulterError) {
 //       // ไม่ผ่านเงื่อนไขการอัพโหลดไฟล์ 
 //     }
@@ -54,7 +90,9 @@ const postUser = (req, res) => {
     const image = req.files != '' ? filenames : 'defaultImage.png'
     const sql = "INSERT INTO `user`(`userId`, `userPosition`, `userFname`, `userLname`, `userSex`, `userBirth`, `userPass`, `userIdCard`, `userAddress`, `userArea`, `userEmail`, `userTel`, `userStatus`, `userImage`) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)"
     const sqlCheck = "SELECT * FROM `user` WHERE userPosition= ?"
-    const sqlUser = "SELECT * FROM `user`"
+    
+
+
     con.query(sqlCheck, [positionId], (err, responCheck) => {
       if (responCheck.length > 0) { //เช็คซ้ำ
         con.query(sqlUser, (err, responUserAll) => {
@@ -91,7 +129,7 @@ const postUser = (req, res) => {
         })
       }
     })
-
+  }
   })
 
 }
@@ -288,6 +326,7 @@ const getArea = (req, res) => {
 
 const CheckUser = (req, res) => {
   res.render('page/user/checkUser', {
+    User : '',
     data: {
       err: false,
       msg: '',
@@ -297,36 +336,111 @@ const CheckUser = (req, res) => {
 }
 
 const PostCheckUser = (req, res) => {
-  const { code } = req.body
-  const sql = "SELECT `userPosition`,`userFname`,`userLname`,`userArea`,`userImage` FROM `user` WHERE `userPosition` = ?"
-  con.query(sql, [code], (err, respon) => {
-    if (respon.length > 0) {
-      const name = respon[0].userFname + ' ' + respon[0].userLname
-      const Area = respon[0].userArea
-      const image = respon[0].userImage
-      res.render('page/user/checkUser', {
-        data: {
-          err: true,
-          image: image,
-          name: name,
-          code: code,
-          Area: Area,
-          cls: 'alert alert-success',
+  // const { name} = req.body
+  const code = req.body.code === undefined ? '' : req.body.code
+   const name = req.body.name === undefined ? '' : req.body.name
+  // const Fname = name.split(" ")
+  // const Fname2 = Fname[0]
+  // console.log(Lname2);
+  
+  // const SQLNAME = () => {
+  //   const sql = "SELECT `userFname` ,`userLname` FROM `user`"
+  // }
+
+  if(name != '' && code != ''){
+    // ค้นจาก ชื่อและหรัส 
+    res.render('page/user/checkUser', {
+      User : '',
+      data: {
+        err: true,
+        image: 'ไม่พบบุคลากร',
+        name: 'ไม่พบบุคลากร',
+        code: 'ไม่พบบุคลากร',
+        Area: 'ไม่พบบุคลากร',
+        cls: 'alert alert-warning',
+      }
+    })
+  }else if(name != ''){
+    // ค้นจากชื่อ 
+    const Fname = name.split(" ")
+    const Fname2 = Fname[0]
+    const sql = "SELECT `userPosition`,`userFname`,`userLname`,`userArea`,`userImage` FROM `user` WHERE `userFname` = ? AND `userStatus` != 'admin' "
+    con.query(sql, [Fname2], (err, respon) => {
+      if (respon.length > 0) {
+        if(respon.length > 1){
+          res.render('page/user/checkUser', {
+            User : respon,
+            data: {
+              cls: 'alert alert-success',
+            }
+          })
+        }else{
+          const name = respon[0].userFname + ' ' + respon[0].userLname
+          const Area = respon[0].userArea
+          const image = respon[0].userImage
+          res.render('page/user/checkUser', {
+            User : '',
+            data: {
+              err: true,
+              image: image,
+              name: name,
+              code: respon[0].userPosition,
+              Area: Area,
+              cls: 'alert alert-success',
+            }
+          })
         }
-      })
-    } else {
-      res.render('page/user/checkUser', {
-        data: {
-          err: true,
-          image: 'ไม่พบบุคลากร',
-          name: 'ไม่พบบุคลากร',
-          code: 'ไม่พบบุคลากร',
-          Area: 'ไม่พบบุคลากร',
-          cls: 'alert alert-warning',
-        }
-      })
-    }
-  })
+       
+      } else {
+        res.render('page/user/checkUser', {
+          User : '',
+          data: {
+            err: true,
+            image: 'ไม่พบบุคลากร',
+            name: 'ไม่พบบุคลากร',
+            code: 'ไม่พบบุคลากร',
+            Area: 'ไม่พบบุคลากร',
+            cls: 'alert alert-warning',
+          }
+        })
+      }
+    })
+  }else{
+    // ค้นจากรหัส 
+    const sql = "SELECT `userPosition`,`userFname`,`userLname`,`userArea`,`userImage` FROM `user` WHERE `userPosition` = ? "
+    con.query(sql, [code], (err, respon) => {
+      if (respon.length > 0) {
+        const name = respon[0].userFname + ' ' + respon[0].userLname
+        const Area = respon[0].userArea
+        const image = respon[0].userImage
+        res.render('page/user/checkUser', {
+          User : '',
+          data: {
+            err: true,
+            image: image,
+            name: name,
+            code: code,
+            Area: Area,
+            cls: 'alert alert-success',
+          }
+        })
+      } else {
+        res.render('page/user/checkUser', {
+          User : '',
+          data: {
+            err: true,
+            image: 'ไม่พบบุคลากร',
+            name: 'ไม่พบบุคลากร',
+            code: 'ไม่พบบุคลากร',
+            Area: 'ไม่พบบุคลากร',
+            cls: 'alert alert-warning',
+          }
+        })
+      }
+    })
+  }
+
+ 
 
 }
 

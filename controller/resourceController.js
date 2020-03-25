@@ -771,6 +771,18 @@ const AddAmount = (req, res) => {
   }
 };
 
+const checkReturn = (req,res) => {
+  res.render("page/resource/returnResource", {
+    data: {
+      dashboard: false,
+      managerUser: false,
+      managerActivity: false,
+      managerResource: true
+    }
+  });
+}
+
+
 module.exports.resourcePage = resourcePage;
 module.exports.addResource = addResource;
 module.exports.PostaddResource = PostaddResource;
@@ -783,3 +795,4 @@ module.exports.ReturnExport = ReturnExport;
 module.exports.historyOneDay = historyOneDay;
 module.exports.historyAll = historyAll;
 module.exports.AddAmount = AddAmount;
+module.exports.checkReturn = checkReturn;

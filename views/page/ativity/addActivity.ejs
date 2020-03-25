@@ -48,7 +48,7 @@
     <form action="/ManagerActivity/editactivity/<%= value.actId %>" method="POST">
       <div class="form-group">
         <div class="form-row">
-          <div class="col-md-6">
+          <div class="col-md-12">
             <div class="form-label-group">
               <input 
               maxlength="30"
@@ -56,15 +56,24 @@
               value="<%= value.actName %>" type="text" name="name" id="name" class="form-control" placeholder="ชื่อกิจกรรม" required="required" autofocus="autofocus" title="ห้ามกรอกตัวอักษรพิเศษ">
               <label for="name">ชื่อกิจกรรม</label>
             </div>
+          </div> 
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-md-6">
+          <div class="form-label-group">
+            <input value="<%= value.actDate.toISOString().slice(0,10).replace(/-/g,"-")%>" type="date" name="date" id="date" class="form-control" placeholder="วันที่จัดกิจจกรม" required="required">
+            <label for="date">วันเริ่มกิจกรรม</label>
           </div>
-          <div class="col-md-6">
-            <div class="form-label-group">
-              <input value="<%= value.actDate.toISOString().slice(0,10).replace(/-/g,"-")%>" type="date" name="date" id="date" class="form-control" placeholder="วันที่จัดกิจจกรม" required="required">
-              <label for="date">วันที่จัดกิจจกรม</label>
-            </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-label-group">
+            <input value="<%= value.actEnd.toISOString().slice(0,10).replace(/-/g,"-")%>" type="date" name="dateEnd" id="dateEnd" class="form-control" placeholder="วันที่สิ้นสุดกิจกรรม" required="required">
+            <label for="dateEnd">วันสิ้นสุดกิจกรรม</label>
           </div>
         </div>
       </div>
+
       <div class="form-group">
         <div class="form-label-group">
           <input 
@@ -103,12 +112,12 @@
  <div style="display:none;" id="loadedPage" class="animate-bottom">
  <div class="container">
   <div class="card card-register mx-auto mt-5">
-    <div class="card-header">+เพิ่มงานกิจกรรม</div>
+    <div class="card-header">+ เพิ่มงานกิจกรรม</div>
     <div class="card-body">
       <form action="/ManagerActivity/addactivity/activity" method="POST">
         <div class="form-group">
           <div class="form-row">
-            <div class="col-md-6">
+            <div class="col-md-12">
               <div class="form-label-group">
                 <input 
                 maxlength="30"
@@ -130,11 +139,20 @@ if (mm < 10) {
 } 
 today = yyyy + '-' + mm + '-' + dd;
 %>
-            <div class="col-md-6">
-              <div class="form-label-group">
-                <input value="<%= today %>" type="date" name="date" id="date" class="form-control" placeholder="วันที่จัดกิจจกรม" required="required">
-                <label for="date">วันที่จัดกิจจกรม</label>
-              </div>
+         
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-md-6">
+            <div class="form-label-group">
+              <input value="<%= today %>" type="date" name="date" id="date" class="form-control" placeholder="วันเริ่มกิจกรรม" required="required">
+              <label for="date">วันเริ่มกิจกรรม</label>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-label-group">
+              <input value="<%= today %>" type="date" name="dateEnd" id="dateEnd" class="form-control" placeholder="วันสิ้นสุดกิจกรรม" required="required">
+              <label for="dateEnd">วันสิ้นสุดกิจกรรม</label>
             </div>
           </div>
         </div>

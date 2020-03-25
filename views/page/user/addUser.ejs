@@ -119,7 +119,7 @@
             <input
             minlength="10"
             maxlength="10"
-            pattern="[0-9\s]*" value="<%= value.userTel %>" type="text" name="tel" id="tel" class="form-control" placeholder="tel" title="กรอกเฉพราะตัวเลข 10 หลักห้ามมี - ">
+            pattern="[0]{1}[6|8-9]{1}[0-9]{8}"  value="<%= value.userTel %>" type="text" name="tel" id="tel" class="form-control" placeholder="tel" title="กรอกเฉพราะตัวเลข 10 หลักห้ามมี - หรือไม่ใช่หมายเลขนประเทศไทย">
             <label for="tel">เบอร์โทร</label>
           </div>
         </div>
@@ -174,7 +174,7 @@
                           <input 
                           minlength="3"
                           maxlength="25"
-                          pattern="[a-zA-Zก-ุฯ-๙\s]*"  type="text" name="firstName" id="firstName" class="form-control" placeholder="ชื่อ" required="required" autofocus="autofocus" title="ห้ามกรอกตัวอักษรพิเศษ หรือตัวเลข">
+                          pattern="[a-zA-Zก-ุฯ-๙\s]*"  type="text" name="firstName" id="firstName" class="form-control" placeholder="ชื่อ" required="required" autofocus="autofocus" title="ห้ามกรอกตัวอักษรพิเศษ หรือตัวเลข" >
                           <label for="firstName">ชื่อ</label>
                         </div>
                       </div>
@@ -240,7 +240,7 @@
                       <input  
                       minlength="10"
                       maxlength="10"
-                      pattern="[0-9\s]*" type="text" name="tel" id="tel" class="form-control" placeholder="tel" title="กรอกเฉพราะตัวเลข 10 หลักห้ามมี - ">
+                      pattern="[0]{1}[6|8-9]{1}[0-9]{8}" type="text" name="tel" id="tel" class="form-control" placeholder="tel" title="กรอกเฉพราะตัวเลข 10 หลักห้ามมี - หรือไม่ใช่หมายเลขนประเทศไทย">
                       <label for="tel">เบอร์โทร</label>
                     </div>
                   </div>
@@ -248,7 +248,7 @@
                     <div class="form-label-group">
                       <select name="status" id="status" class="form-control" required>
                         <option value="user">บุคลากร</option>
-                        <option value="admin">ผู้ดูแล</option>
+                        <!-- // <option value="admin">ผู้ดูแล</option>  -->
                       </select>
                     </div>
                   </div>
