@@ -352,10 +352,13 @@ const listJoin = (req, res) => {
     con.query(sql, [IdActivity], (err, respon) => {
       const sqlReturn = "SELECT DISTINCT order.orderId, order.actId, order_detail.resId, resource.resName,order_detail.deRes_status, SUM(order_detail.deRes_amount) AS total FROM `order` INNER JOIN `order_detail` ON order.orderId = order_detail.orderId INNER JOIN resource ON order_detail.resId = resource.resId WHERE order.actId = ? && order_detail.deRes_status = 'คืน' GROUP BY resource.resName"
       con.query(sqlReturn, [IdActivity], (err, responReturn) => {
+        console.table(responRe);
+        
+        console.table(responReturn);
+        
         const sqlActivity = "SELECT * FROM `activity` WHERE `actId` = ?"
         con.query(sqlActivity, [IdActivity], (err, responActivity) => {
-          // console.table(responRe);
-          // console.table(responReturn);
+
           res.render('page/ativity/listJoinActivity', {
             nameActivity: responActivity,
             listResouceRe: responReturn,

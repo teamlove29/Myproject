@@ -87,8 +87,8 @@
 <!-- รายงานกิจกรรม -->
 <form action="/reportActivity" method="POST">
   <p>รายงานกิจกรรม</p>
-            <select class="form-control form-control-xs selectpicker w-50" name="reportActivity" data-size="7" data-live-search="true" data-title="Location" id="state_list" data-width="100%">
-                <option value="All" selected>ทั้งหมด</option>
+            <select class="form-control form-control-xs selectpicker w-50" name="reportActivity" data-title="เลือกกิจกรรม"  data-size="15" data-live-search="true"  id="state_list" data-width="100%" required>
+                <option value="All">ทั้งหมด</option>
                 <% listActivity.map(value => {   %>
                   <option value="<%= value.actId%>"><%= value.actName %></option>
                   <% }) %>

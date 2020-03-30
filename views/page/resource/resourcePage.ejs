@@ -90,15 +90,26 @@
                     <th class="text-center">รูปภาพ</th>
                     <th>รายการ</th>
                     <th>คงเหลือ</th>
+                    <th>ยังไม่คืน</th>
                     <th>ตัวเลือก</th>
                   </tr>
                 </thead>
                 <tbody>
                   <% listsResource.map((value,index) => { %>
                   <tr>
-                    <td class="text-center"><img style="width: 75px;" src="/uploads/<%= value.resImage %>" alt=""></td>
+                    <td class="text-center <%= value.resAmount == 0 ? 'bg-red text-white' : '' %>"><img style="width: 75px;" src="/uploads/<%= value.resImage %>" alt=""></td>
                     <td class="align-middle <%= value.resAmount == 0 ? 'bg-red text-white' : '' %>"><%= value.resName %></td>
                     <td class="align-middle <%= value.resAmount == 0 ? 'bg-red text-white' : '' %>"><%= value.resAmount %></td>
+                    <% if(value.resStatus == '1'){ %>
+                    <td class="align-middle <%= value.resAmount == 0 ? 'bg-red text-white' : ' text-danger ' %>">
+                      <% if(value.future == 0) { %>
+                        - </td>
+                      <% }else { %>
+                      <%= value.future %></td>
+                      <%} %>
+                    <% }else {%>
+                      <td class="align-middle <%= value.resAmount == 0 ? 'bg-red text-white' : '' %>" ></td>
+                      <% } %>
                     <td class="align-middle">
                       <button 
                       onclick="return ConfirmPlus(<%= value.resId %>)"

@@ -79,7 +79,9 @@ if(resultCard === 'nopass' && idCard != ''){
 //     }
     var filenames = req.files.map((file) => {
       return file.filename; // or file.originalname
-    }); //หันเอาคำตั้งแต่ 8-10
+    }); 
+    
+    //หันเอาคำตั้งแต่ 8-10
     
     // กรณีใส่รูปมาที่ไม่ใช่ไฟล์ jpg png จะเปลี่ยนเปนค่าว่าง
     const day = date.slice(8, 10)

@@ -1,7 +1,9 @@
 var con = require("./conDB");
+var upload = require('./upload')
 
 const resourcePage = (req, res) => {
-  const sql = "SELECT * FROM `resource`";
+  const sql = 
+  "SELECT  resource.resId, resource.resName, resource.resDetail, resource.resAmount,resource.resImage,resource.resStatus ,SUM(case WHEN order_detail.deRes_status = 'เบิก' AND resource.resStatus = 1 AND resource.resId = order_detail.resId THEN order_detail.deRes_amount  else 0 end) - SUM(case WHEN order_detail.deRes_status = 'คืน' AND resource.resStatus = 1 AND resource.resId = order_detail.resId THEN order_detail.deRes_amount else 0 end) AS future FROM `order_detail` JOIN resource GROUP BY resource.resName";
   con.query(sql, (err, respon) => {
     if (err) throw err;
     res.render("page/resource/resourcePage", {
@@ -31,11 +33,22 @@ const addResource = (req, res) => {
   });
 };
 const PostaddResource = (req, res) => {
-  const { name, amount, detail } = req.body;
+  upload(req, res, async (err)  => { 
+
+  var filenames = req.files.map((file) => {
+    return file.filename; // or file.originalname
+  }); 
+const image = req.files != '' ? filenames : 'itemdefault.png'
+
+  const { name, amount, detail ,status} = req.body;
+// const resStatus = status == 0 ? 'สิ้นเปลือง' : 'ต้องคืนเท่านั้น'
+
+
   const sql =
-    "INSERT INTO `resource` (`resId`, `resName`, `resDetail`, `resAmount`) VALUES (NULL,?,?,?);";
+    "INSERT INTO `resource` (`resId`, `resName`, `resDetail`, `resAmount`, `resImage`, `resStatus`) VALUES (NULL,?,?,?,?,?);";
   const sqlcheck = "SELECT * FROM `resource` WHERE resName = ? ";
-  const sqlAll = "SELECT * FROM `resource`";
+  const sqlAll = 
+  "SELECT  resource.resId, resource.resName, resource.resDetail, resource.resAmount,resource.resImage,resource.resStatus ,SUM(case WHEN order_detail.deRes_status = 'เบิก' AND resource.resStatus = 1 AND resource.resId = order_detail.resId THEN order_detail.deRes_amount  else 0 end) - SUM(case WHEN order_detail.deRes_status = 'คืน' AND resource.resStatus = 1 AND resource.resId = order_detail.resId THEN order_detail.deRes_amount else 0 end) AS future FROM `order_detail` JOIN resource GROUP BY resource.resName";
   con.query(sqlcheck, [name], (err, respomCheck) => {
     if (respomCheck.length > 0) {
       con.query(sqlAll, (err, responAll) => {
@@ -54,7 +67,7 @@ const PostaddResource = (req, res) => {
         });
       });
     } else {
-      con.query(sql, [name, detail, amount], (err, respon) => {
+      con.query(sql, [name, detail, amount, image, status], (err, respon) => {
         con.query(sqlAll, (err, responAll) => {
           res.render("page/resource/resourcePage", {
             listsResource: responAll,
@@ -73,7 +86,7 @@ const PostaddResource = (req, res) => {
       });
     }
   });
-};
+})};
 const editResource = (req, res) => {
   const idResource = req.params.id;
   const sql = "SELECT * FROM `resource` WHERE resId = ? ";
@@ -92,19 +105,37 @@ const editResource = (req, res) => {
   });
 };
 const posteditResource = (req, res) => {
-  const idResource = req.params.id;
-  const { name, amount, detail } = req.body;
-  const sql =
-    "UPDATE `resource` SET `resId` = ?, `resName` = ?, `resDetail` =?, `resAmount` = ? WHERE `resId` = ?;";
+  upload(req, res, async (err)  => { //อัพรูป 
+    const idResource = req.params.id;
+    const { name, amount, detail ,status} = req.body;
+    const sql =
+    "UPDATE `resource` SET `resId` = ?, `resName` = ?, `resDetail` =?, `resAmount` = ?,`resImage` = ?, `resStatus` = ? WHERE `resId` = ?"
   const sqlcheck = "SELECT * FROM `resource` WHERE resName = ? AND resId = ?";
   const sqlcheckname = "SELECT * FROM `resource` WHERE resName = ?";
-  const sqlAll = "SELECT * FROM `resource`";
+  const sqlAll = 
+  "SELECT  resource.resId, resource.resName, resource.resDetail, resource.resAmount,resource.resImage,resource.resStatus ,SUM(case WHEN order_detail.deRes_status = 'เบิก' AND resource.resStatus = 1 AND resource.resId = order_detail.resId THEN order_detail.deRes_amount  else 0 end) - SUM(case WHEN order_detail.deRes_status = 'คืน' AND resource.resStatus = 1 AND resource.resId = order_detail.resId THEN order_detail.deRes_amount else 0 end) AS future FROM `order_detail` JOIN resource GROUP BY resource.resName";
+
+    var filenames = req.files.map((file) => {
+      return file.filename; // or file.originalname
+    }); 
+
+    const sqlcheckImage = "SELECT * FROM `resource` WHERE `resId` = ?";
+    con.query(sqlcheckImage,[idResource],(err,rescheckImage) => {
+ 
+      const image = req.files != '' ? filenames : rescheckImage[0].resImage
+      if (image == filenames && rescheckImage[0].resImage != 'itemdefault.png') {
+        const fileImageName = 'public/uploads/' + rescheckImage[0].resImage
+        fs.unlink(fileImageName, (err) => {
+          if (err) throw err;
+        });
+      } //เช็ครูป
+      if (rescheckImage[0].resImage == '') { image = 'itemdefault.png' } 
+
+
   con.query(sqlcheck, [name, idResource], (err, respomCheck) => {
     if (respomCheck.length > 0) {
-      con.query(
-        sql,
-        [idResource, name, detail.trim(), amount, idResource],
-        (err, respon) => {
+      con.query(sql,[idResource, name, detail.trim(), amount,image, status,idResource],(err, respon) => {
+
           con.query(sqlAll, (err, responAll) => {
             res.render("page/resource/resourcePage", {
               listsResource: responAll,
@@ -141,10 +172,8 @@ const posteditResource = (req, res) => {
             });
           });
         } else {
-          con.query(
-            sql,
-            [idResource, name, detail.trim(), amount, idResource],
-            (err, respon) => {
+          con.query(sql,[idResource, name, detail.trim(), amount,image, status,idResource],(err, respon) => {
+
               con.query(sqlAll, (err, responAll) => {
                 res.render("page/resource/resourcePage", {
                   listsResource: responAll,
@@ -166,11 +195,12 @@ const posteditResource = (req, res) => {
       });
     }
   });
-};
+})})};
 const delResource = async (req, res) => {
   const idResource = await req.params.id;
   const sql = await "DELETE FROM `resource` WHERE `resId` = ?";
-  const sqlAll = "SELECT * FROM `resource`";
+  const sqlAll = 
+  "SELECT  resource.resId, resource.resName, resource.resDetail, resource.resAmount,resource.resImage,resource.resStatus ,SUM(case WHEN order_detail.deRes_status = 'เบิก' AND resource.resStatus = 1 AND resource.resId = order_detail.resId THEN order_detail.deRes_amount  else 0 end) - SUM(case WHEN order_detail.deRes_status = 'คืน' AND resource.resStatus = 1 AND resource.resId = order_detail.resId THEN order_detail.deRes_amount else 0 end) AS future FROM `order_detail` JOIN resource GROUP BY resource.resName";
   con.query(sql, [idResource], (err, respon) => {
     con.query(sqlAll, (err, responAll) => {
       res.render("page/resource/resourcePage", {
@@ -192,11 +222,16 @@ const delResource = async (req, res) => {
 
 const exportResouce = (req, res) => {
   const sql = "SELECT * FROM `resource` WHERE resAmount != 0";
+  const sqlUser = "SELECT * FROM `user`"
   con.query(sql, (err, respon1) => {
     const sqlact = "SELECT * FROM `activity` WHERE actCode != 'Complete' ORDER BY actId DESC";
     con.query(sqlact, (err, respon2) => {
+      con.query(sqlUser,(err,resUser) => {
+
+      
       if (err) throw err;
       res.render("page/resource/exportResource", {
+        User : resUser,
         activity: respon2,
         listsResource: respon1,
         data: {
@@ -210,28 +245,34 @@ const exportResouce = (req, res) => {
       });
     });
   });
+  });
 };
 
 const AddExport = async (req, res, next) => {
   const { name, item_name, item_quantity } = req.body;
+  const User = req.body.User == 'NO' ? 0 : req.body.User
 
   if (item_quantity < 0) {
     const sql = "SELECT * FROM `resource` WHERE resAmount != 0";
     const sqlact = "SELECT * FROM `activity` WHERE actCode != 'Complete' ORDER BY actId DESC";
     con.query(sql, (err, respon1) => {
       con.query(sqlact, (err, respon2) => {
-        res.render("page/resource/exportResource", {
-          activity: respon2,
-          listsResource: respon1,
-          data: {
-            msg: "เกิดข้อผิดพลาด! ตัวเลขไม่สามารถติดลบได้",
-            cls: "alert alert-danger",
-            dashboard: false,
-            managerUser: false,
-            managerActivity: false,
-            managerResource: true
-          }
-        });
+        const sql = "SELECT * FROM `user`"
+                      con.query(sql,(err,responUser) => {  
+                        res.render("page/resource/exportResource", {
+                          activity: respon2,
+                          listsResource: respon1,
+                          data: {
+                            msg: "เกิดข้อผิดพลาด! ตัวเลขไม่สามารถติดลบได้",
+                            cls: "alert alert-danger",
+                            dashboard: false,
+                            managerUser: false,
+                            managerActivity: false,
+                            managerResource: true
+                          }
+                        });
+                      })
+        
       });
     });
     return false
@@ -247,55 +288,65 @@ const AddExport = async (req, res, next) => {
       const sqlact = "SELECT * FROM `activity` WHERE actCode != 'Complete' ORDER BY actId DESC ";
       con.query(sqlact, (err, respon2) => {
         if (err) throw err;
-        res.render("page/resource/exportResource", {
-          activity: respon2,
-          listsResource: respon1,
-          data: {
-            msg: "ทรัพยาซ้ำกัน กรุณาตรวจสอบ",
-            cls: "alert alert-warning",
-            dashboard: false,
-            managerUser: false,
-            managerActivity: false,
-            managerResource: true
-          }
-        });
+        const sql = "SELECT * FROM `user`"
+                      con.query(sql,(err,responUser) => { 
+                        res.render("page/resource/exportResource", {
+                          User : responUser,
+                          activity: respon2,
+                          listsResource: respon1,
+                          data: {
+                            msg: "ทรัพยาซ้ำกัน กรุณาตรวจสอบ",
+                            cls: "alert alert-warning",
+                            dashboard: false,
+                            managerUser: false,
+                            managerActivity: false,
+                            managerResource: true
+                          }
+                        });
+                      })
+  
       });
     });
   } else {
+  
             if(Array.isArray(item_quantity) != true){
               console.log("แบบเดี่ยว");
               const sqlOne = "SELECT * FROM `resource` WHERE resId = ? ";
-              con.query(sqlOne, [item_name], (err, responOne) => {
+              con.query(sqlOne, [item_name], async (err, responOne) => {
                 const sum = responOne[0].resAmount - item_quantity;
                 if (sum < 0) {
                   const sql = "SELECT * FROM `resource`";
                   con.query(sql, (err, respon1) => {
                     const sqlact ="SELECT * FROM `activity` WHERE actCode != 'Complete' ORDER BY actId DESC";
-                    con.query(sqlact, (err, respon2) => {
-                      res.render("page/resource/exportResource", {
-                        activity: respon2,
-                        listsResource: respon1,
-                        data: {
-                          msg: "เกิดข้อผิดพลาด! โปรดตรวจสอบทรัพยาคงเหลือก่อนทำการเบิก",
-                          cls: "alert alert-danger",
-                          dashboard: false,
-                          managerUser: false,
-                          managerActivity: false,
-                          managerResource: true
-                        }
-                      });
+                    con.query(sqlact, async (err, respon2) => {
+                      const sql = "SELECT * FROM `user`"
+                      con.query(sql,(err,responUser) => {
+                        res.render("page/resource/exportResource", {
+                          User : responUser ,
+                          activity: respon2,
+                          listsResource: respon1,
+                          data: {
+                            msg: "เกิดข้อผิดพลาด! โปรดตรวจสอบทรัพยาคงเหลือก่อนทำการเบิก",
+                            cls: "alert alert-danger",
+                            dashboard: false,
+                            managerUser: false,
+                            managerActivity: false,
+                            managerResource: true
+                          }
+                        });
+                      })
                     });
                   });
 
-                } else {
+                } else {   
                   //แบบ เดี่ยว
                   const sqlcheck = "SELECT * FROM `order` WHERE actId = ? ";
                   con.query(sqlcheck, [name], (err, responcheck) => {
                     if (responcheck.length > 0) {
                       const { orderId } = responcheck[0];
                       const sqlAddDetail =
-                        "INSERT INTO `order_detail` (`orderId`, `resId`, `deRes_amount`, `deRes_date`, `deRes_status`) VALUES (?, ?, ?, ?, ?)";
-                      con.query(sqlAddDetail,[orderId, item_name, item_quantity, new Date(), "เบิก"],(err, responAddDetail) => {
+                        "INSERT INTO `order_detail` (`orderId`, `resId`, `userId`, `deRes_amount`, `deRes_date`, `deRes_status`) VALUES (?, ?, ?, ?, ?, ?)";
+                      con.query(sqlAddDetail,[orderId, item_name, User, item_quantity, new Date(), "เบิก"],(err, responAddDetail) => {
                           const sqlUpdate ="UPDATE `resource` SET `resAmount` = ? WHERE `resource`.`resId` = ?";
                           con.query(sqlUpdate,[responOne[0].resAmount - item_quantity, item_name],(err, resUpdate) => {
                               // res.redirect("/ManagerResource")
@@ -303,13 +354,14 @@ const AddExport = async (req, res, next) => {
                           );
                         }
                       );
-                    } else {
+                    } else { 
                       const sqlAddOrder ="INSERT INTO `order` (`orderId`, `actId`) VALUES (NULL, ?);";
                       con.query(sqlAddOrder, [name], (err, responAddOrder) => {
                         con.query(sqlcheck, [name], (err, responcheck) => {
                           const { orderId } = responcheck[0];
-                          const sqlAddDetail ="INSERT INTO `order_detail` (`orderId`, `resId`, `deRes_amount`, `deRes_date`, `deRes_status`) VALUES (?, ?, ?, ?, ?);";
-                          con.query(sqlAddDetail,[orderId, item_name, item_quantity, new Date(), "เบิก"],(err, responAddDetail) => {
+                          const sqlAddDetail =
+                            "INSERT INTO `order_detail` (`orderId`, `resId`, `userId`, `deRes_amount`, `deRes_date`, `deRes_status`) VALUES (?, ?, ?, ?, ?, ?)";
+                          con.query(sqlAddDetail,[orderId, item_name, User, item_quantity, new Date(), "เบิก"],(err, responAddDetail) => {
                               const sqlUpdate ="UPDATE `resource` SET `resAmount` = ? WHERE `resource`.`resId` = ?";
                               con.query(
                                 sqlUpdate,
@@ -328,25 +380,32 @@ const AddExport = async (req, res, next) => {
               });
 
               setTimeout(() => {
-                const sql = "SELECT * FROM `resource`";
+                const sql = 
+                "SELECT  resource.resId, resource.resName, resource.resDetail, resource.resAmount,resource.resImage,resource.resStatus ,SUM(case WHEN order_detail.deRes_status = 'เบิก' AND resource.resStatus = 1 AND resource.resId = order_detail.resId THEN order_detail.deRes_amount  else 0 end) - SUM(case WHEN order_detail.deRes_status = 'คืน' AND resource.resStatus = 1 AND resource.resId = order_detail.resId THEN order_detail.deRes_amount else 0 end) AS future FROM `order_detail` JOIN resource GROUP BY resource.resName";
                 con.query(sql, (err, respon) => {
-                  res.render("page/resource/resourcePage", {
-                    listsResource: respon,
-                    data: {
-                      css: false,
-                      err: true,
-                      msg: "เบิกทรัพยากร เรียบร้อยแล้ว",
-                      cls: "alert alert-success",
-                      dashboard: false,
-                      managerUser: false,
-                      managerActivity: false,
-                      managerResource: true
-                    }
-                  });
+                  const sql = "SELECT * FROM `user`"
+                    con.query(sql,(err,responUser) => {  
+                      res.render("page/resource/resourcePage", {
+                        User : responUser,
+                        listsResource: respon,
+                        data: {
+                          css: false,
+                          err: true,
+                          msg: "เบิกทรัพยากร เรียบร้อยแล้ว",
+                          cls: "alert alert-success",
+                          dashboard: false,
+                          managerUser: false,
+                          managerActivity: false,
+                          managerResource: true
+                        }
+                      });
+                    })
+                 
                 });
               }, 200)
               
             }else{ // End แบบเดี่ยว
+              console.log('แบบเยอะ');
                 // หาค่าติดลบ
               const resultArray = item_quantity.filter(value => {
                 return value < 0;
@@ -356,25 +415,30 @@ const AddExport = async (req, res, next) => {
                 const sqlact = "SELECT * FROM `activity` WHERE actCode != 'Complete' ";
                 con.query(sql, (err, respon1) => {
                   con.query(sqlact, (err, respon2) => {
-                    res.render("page/resource/exportResource", {
-                      activity: respon2,
-                      listsResource: respon1,
-                      data: {
-                        msg: "เกิดข้อผิดพลาด! ตัวเลขไม่สามารถติดลบได้",
-                        cls: "alert alert-danger",
-                        dashboard: false,
-                        managerUser: false,
-                        managerActivity: false,
-                        managerResource: true
-                      }
-                    });
+                    const sql = "SELECT * FROM `user`"
+                    con.query(sql,(err,responUser) => { 
+                      res.render("page/resource/exportResource", {
+                        User : responUser,
+                        activity: respon2,
+                        listsResource: respon1,
+                        data: {
+                          msg: "เกิดข้อผิดพลาด! ตัวเลขไม่สามารถติดลบได้",
+                          cls: "alert alert-danger",
+                          dashboard: false,
+                          managerUser: false,
+                          managerActivity: false,
+                          managerResource: true
+                        }
+                      });
+                    })
+                    
                   });
                 });
                 // console.log('resultArray จ้า');
                 return false
-              }
+              } 
               //หาค่าเกินของแบบกลุ่ม
-              var Wong
+              var Wong  
                 for (let i = 0; i < item_name.length; i++) {  
                   const sql =  "SELECT * FROM `resource` WHERE resId = ? ";
                    const test55 = await con.query(sql,[item_name[i]], async (err,responRes)  => { 
@@ -395,24 +459,29 @@ const AddExport = async (req, res, next) => {
               const sqlact =
                 "SELECT * FROM `activity` WHERE actCode != 'Complete' ";
               con.query(sqlact, (err, respon2) => {
-                res.render("page/resource/exportResource", {
-                  activity: respon2,
-                  listsResource: respon1,
-                  data: {
-                    msg:
-                      "เกิดข้อผิดพลาด! โปรดตรวจสอบทรัพยาคงเหลือก่อนทำการเบิก",
-                    cls: "alert alert-danger",
-                    dashboard: false,
-                    managerUser: false,
-                    managerActivity: false,
-                    managerResource: true
-                  }
-                });
+                const sql = "SELECT * FROM `user`"
+                    con.query(sql,(err,responUser) => {  
+                      res.render("page/resource/exportResource", {
+                        User : responUser ,
+                        activity: respon2,
+                        listsResource: respon1,
+                        data: {
+                          msg:
+                            "เกิดข้อผิดพลาด! โปรดตรวจสอบทรัพยาคงเหลือก่อนทำการเบิก",
+                          cls: "alert alert-danger",
+                          dashboard: false,
+                          managerUser: false,
+                          managerActivity: false,
+                          managerResource: true
+                        }
+                      });
+                    })
+                
               });
               
             });
             return false
-          }else{
+          }else{ 
             console.log('for');
             const sqlcheck1 = "SELECT * FROM `order` WHERE actId = ? ";
             con.query(sqlcheck1,[name],(err,respomCheck1) => {
@@ -423,8 +492,9 @@ const AddExport = async (req, res, next) => {
                   const sqlcheck = "SELECT * FROM `order` WHERE actId = ? ";
                     con.query(sqlcheck, [name], (err, responcheck) => {
                       const { orderId } = responcheck[0];
-                      const sqlAddDetail ="INSERT INTO `order_detail` (`orderId`, `resId`, `deRes_amount`, `deRes_date`, `deRes_status`) VALUES (?, ?, ?, ?, ?);";
-                      con.query(sqlAddDetail,[orderId,item_name[0],item_quantity[0],new Date(),"เบิก"],(err, responAddDetail) => {
+                      const sqlAddDetail =
+                            "INSERT INTO `order_detail` (`orderId`, `resId`, `userId`, `deRes_amount`, `deRes_date`, `deRes_status`) VALUES (?, ?, ?, ?, ?, ?)";
+                      con.query(sqlAddDetail,[orderId, item_name[0], User[0], item_quantity[0], new Date(), "เบิก"],(err, responAddDetail) => {
                           const sqlUpdate ="UPDATE `resource` SET `resAmount` = ? WHERE `resource`.`resId` = ?";
                           con.query(
                             sqlUpdate,
@@ -452,8 +522,9 @@ const AddExport = async (req, res, next) => {
                   con.query(sqlAddOrder, [name], (err, responAddOrder) => {
                     con.query(sqlcheck, [name], (err, responcheck) => {
                       const { orderId } = responcheck[0];
-                      const sqlAddDetail ="INSERT INTO `order_detail` (`orderId`, `resId`, `deRes_amount`, `deRes_date`, `deRes_status`) VALUES (?, ?, ?, ?, ?);";
-                      con.query(sqlAddDetail,[orderId,item_name[0],item_quantity[0],new Date(),"เบิก"],(err, responAddDetail) => {
+                      const sqlAddDetail =
+                      "INSERT INTO `order_detail` (`orderId`, `resId`, `userId`, `deRes_amount`, `deRes_date`, `deRes_status`) VALUES (?, ?, ?, ?, ?, ?)";
+                      con.query(sqlAddDetail,[orderId,item_name[0], User[0], item_quantity[0],new Date(),"เบิก"],(err, responAddDetail) => {
                           const sqlUpdate ="UPDATE `resource` SET `resAmount` = ? WHERE `resource`.`resId` = ?";
                           con.query(
                             sqlUpdate,
@@ -462,7 +533,8 @@ const AddExport = async (req, res, next) => {
                               item_name[0]
                             ],
                             (err, resUpdate) => {
-                              const sqlGo = "SELECT * FROM `resource`";
+                              const sqlGo = 
+                              "SELECT  resource.resId, resource.resName, resource.resDetail, resource.resAmount,resource.resImage,resource.resStatus ,SUM(case WHEN order_detail.deRes_status = 'เบิก' AND resource.resStatus = 1 AND resource.resId = order_detail.resId THEN order_detail.deRes_amount  else 0 end) - SUM(case WHEN order_detail.deRes_status = 'คืน' AND resource.resStatus = 1 AND resource.resId = order_detail.resId THEN order_detail.deRes_amount else 0 end) AS future FROM `order_detail` JOIN resource GROUP BY resource.resName";
                               con.query(sqlGo, (err, respon) => {
                                 if (err) throw err;
                               });
@@ -492,19 +564,24 @@ setTimeout(() => {
             const sqlact =
               "SELECT * FROM `activity` WHERE actCode != 'Complete' ";
             con.query(sqlact, (err, respon2) => {
-              res.render("page/resource/exportResource", {
-                activity: respon2,
-                listsResource: respon1,
-                data: {
-                  msg:
-                    "เกิดข้อผิดพลาด! โปรดตรวจสอบทรัพยาคงเหลือก่อนทำการเบิก",
-                  cls: "alert alert-danger",
-                  dashboard: false,
-                  managerUser: false,
-                  managerActivity: false,
-                  managerResource: true
-                }
-              });
+              const sql = "SELECT * FROM `user`"
+              con.query(sql,(err,responUser) => {  
+                res.render("page/resource/exportResource", {
+                  User : responUser,
+                  activity: respon2,
+                  listsResource: respon1,
+                  data: {
+                    msg:
+                      "เกิดข้อผิดพลาด! โปรดตรวจสอบทรัพยาคงเหลือก่อนทำการเบิก",
+                    cls: "alert alert-danger",
+                    dashboard: false,
+                    managerUser: false,
+                    managerActivity: false,
+                    managerResource: true
+                  }
+                });
+              })
+              
             });
             
           });
@@ -518,10 +595,10 @@ setTimeout(() => {
               console.log('มีแล้ว');
               const { orderId } = responcheck[0];
               const sqlAddDetail =
-                "INSERT INTO `order_detail` (`orderId`, `resId`, `deRes_amount`, `deRes_date`, `deRes_status`) VALUES (?, ?, ?, ?, ?)";
+              "INSERT INTO `order_detail` (`orderId`, `resId`, `userId`, `deRes_amount`, `deRes_date`, `deRes_status`) VALUES (?, ?, ?, ?, ?, ?)";
               con.query(
                 sqlAddDetail,
-                [orderId, item_name[i], item_quantity[i], new Date(), "เบิก"],
+                [orderId, item_name[i],User[i], item_quantity[i], new Date(), "เบิก"],
                 (err, responAddDetail) => {
                   const sqlUpdate =
                     "UPDATE `resource` SET `resAmount` = ? WHERE `resource`.`resId` = ?";
@@ -530,7 +607,8 @@ setTimeout(() => {
                     [responRes[0].resAmount - item_quantity[i], item_name[i]],
                     (err, resUpdate) => {
                       // res.redirect("/ManagerResource")
-                      const sqlGo = "SELECT * FROM `resource`";
+                      const sqlGo = 
+                      "SELECT  resource.resId, resource.resName, resource.resDetail, resource.resAmount,resource.resImage,resource.resStatus ,SUM(case WHEN order_detail.deRes_status = 'เบิก' AND resource.resStatus = 1 AND resource.resId = order_detail.resId THEN order_detail.deRes_amount  else 0 end) - SUM(case WHEN order_detail.deRes_status = 'คืน' AND resource.resStatus = 1 AND resource.resId = order_detail.resId THEN order_detail.deRes_amount else 0 end) AS future FROM `order_detail` JOIN resource GROUP BY resource.resName";
                       con.query(sqlGo, (err, respon) => {
                         if (err) throw err;
                       });
@@ -551,56 +629,32 @@ console.log('ไม่มีโว๊ย');
 }, 250);
       
 setTimeout(() => {
-  const sql = "SELECT * FROM `resource`";
+  const sql = 
+  "SELECT  resource.resId, resource.resName, resource.resDetail, resource.resAmount,resource.resImage,resource.resStatus ,SUM(case WHEN order_detail.deRes_status = 'เบิก' AND resource.resStatus = 1 AND resource.resId = order_detail.resId THEN order_detail.deRes_amount  else 0 end) - SUM(case WHEN order_detail.deRes_status = 'คืน' AND resource.resStatus = 1 AND resource.resId = order_detail.resId THEN order_detail.deRes_amount else 0 end) AS future FROM `order_detail` JOIN resource GROUP BY resource.resName";
   con.query(sql, (err, respon) => {
-    res.render("page/resource/resourcePage", {
-      listsResource: respon,
-      data: {
-        css: false,
-        err: true,
-        msg: "เบิกทรัพยากร เรียบร้อยแล้ว",
-        cls: "alert alert-success",
-        dashboard: false,
-        managerUser: false,
-        managerActivity: false,
-        managerResource: true
-      }
-    });
+    const sql = "SELECT * FROM `user`"
+                    con.query(sql,(err,responUser) => {   
+                      res.render("page/resource/resourcePage", {
+                        User : responUser,
+                        listsResource: respon,
+                        data: {
+                          css: false,
+                          err: true,
+                          msg: "เบิกทรัพยากร เรียบร้อยแล้ว",
+                          cls: "alert alert-success",
+                          dashboard: false,
+                          managerUser: false,
+                          managerActivity: false,
+                          managerResource: true
+                        }
+                      });
+                    } )
   });
 }, 350)
-
-
-          }
-           
+          }         
          }, 350)
-              
-      
- 
-        //  const sql = "SELECT * FROM `resource`";
-        //  con.query(sql, (err, respon) => {
-        //    res.render("page/resource/resourcePage", {
-        //      listsResource: respon,
-        //      data: {
-        //        css: false,
-        //        err: true,
-        //        msg: "เบิกทรัพยากร เรียบร้อยแล้ว",
-        //        cls: "alert alert-success",
-        //        dashboard: false,
-        //        managerUser: false,
-        //        managerActivity: false,
-        //        managerResource: true
-        //      }
-        //    });
-        //  });
-
-
-
   }
-
-
   }
-
-
 };
 
 // SELECT DISTINCT  order.orderId, order.actId, order_detail.resId, resource.resName,order_detail.deRes_status, SUM(order_detail.deRes_amount) AS total FROM `order` INNER JOIN `order_detail` ON order.orderId =  order_detail.orderId INNER JOIN resource ON order_detail.resId = resource.resId WHERE order.actId = 2 && order_detail.deRes_status = 'เบิก' GROUP BY resource.resName
@@ -622,10 +676,10 @@ const ReturnExport = (req, res) => {
   con.query(sqlcheck, [idAct], (err, respon) => {
     if (respon.length > 0) {
       const sqlcheckAmount =
-        "SELECT DISTINCT  order.orderId, order.actId, order_detail.resId, resource.resName,order_detail.deRes_status, SUM(order_detail.deRes_amount) AS total FROM `order` INNER JOIN `order_detail` ON order.orderId =  order_detail.orderId INNER JOIN resource ON order_detail.resId = resource.resId WHERE order.actId = ? && order_detail.deRes_status = 'เบิก' && resource.resId = ? GROUP BY resource.resName";
+        "SELECT DISTINCT  order.orderId, order.actId, order_detail.resId,order_detail.userId, resource.resName,order_detail.deRes_status, SUM(order_detail.deRes_amount) AS total FROM `order` INNER JOIN `order_detail` ON order.orderId =  order_detail.orderId INNER JOIN resource ON order_detail.resId = resource.resId WHERE order.actId = ? && order_detail.deRes_status = 'เบิก' && resource.resId = ? GROUP BY resource.resName";
       con.query(sqlcheckAmount, [idAct, idresId], (err, responCheckOrder) => {
         const sqlcheckreturn =
-          "SELECT DISTINCT  order.orderId, order.actId, order_detail.resId, resource.resName,order_detail.deRes_status, SUM(order_detail.deRes_amount) AS total FROM `order` INNER JOIN `order_detail` ON order.orderId =  order_detail.orderId INNER JOIN resource ON order_detail.resId = resource.resId WHERE order.actId = ? && order_detail.deRes_status = 'คืน' && resource.resId = ? GROUP BY resource.resName";
+          "SELECT DISTINCT  order.orderId, order.actId, order_detail.resId ,order_detail.userId, resource.resName,order_detail.deRes_status, SUM(order_detail.deRes_amount) AS total FROM `order` INNER JOIN `order_detail` ON order.orderId =  order_detail.orderId INNER JOIN resource ON order_detail.resId = resource.resId WHERE order.actId = ? && order_detail.deRes_status = 'คืน' && resource.resId = ? GROUP BY resource.resName";
         con.query(sqlcheckreturn, [idAct, idresId], (err, responCheckRe) => {
             if (Amount == 0) {
               res.redirect("/listJoin/" + idAct);
@@ -633,10 +687,10 @@ const ReturnExport = (req, res) => {
               const toInt = parseInt(Amount);
                 const orderId = respon[0].orderId;
                 sql =
-                  "INSERT INTO `order_detail` (`orderId`, `resId`, `deRes_amount`, `deRes_date`, `deRes_status`) VALUES (?, ?, ?, ?, 'คืน')";
+                  "INSERT INTO `order_detail` (`orderId`,`resId`, `userId`,`deRes_amount`, `deRes_date`, `deRes_status`) VALUES (?, ? , ?, ?, ?, 'คืน')";
                 con.query(
                   sql,
-                  [orderId, idresId, Amount, new Date()],
+                  [orderId, idresId,'0', Amount, new Date()],
                   (err, respon) => {
                     const sqlResource =
                       "SELECT * FROM resource WHERE `resId` = ?";

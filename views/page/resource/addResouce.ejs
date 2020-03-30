@@ -44,7 +44,7 @@
   <div class="card card-register mx-auto mt-5">
     <div class="card-header">แก้ไขทรัพยากร</div>
     <div class="card-body">
-      <form action="/ManagerResource/editresource/<%= value.resId %>" method="POST">
+      <form action="/ManagerResource/editresource/<%= value.resId %>" method="POST" enctype="multipart/form-data">
         <div class="form-group">
           <div class="form-row">
             <div class="col-md-6">
@@ -69,12 +69,34 @@
           </div>
         </div>
         <div class="form-group">
+          <div class="form-row">
+            <div class="col-md-4">
+              <select name="status" id="status" class="form-control" required>
+                <option <%= value.resStatus == 0 ? 'selected="selected"' : '' %> value="0">สิ้นเปลือง</option>
+                <option  <%= value.resStatus == 1 ? 'selected="selected"' : '' %> value="1">ต้องคืนเท่านั้น</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
           <div class="form-label-group">
             <textarea 
               maxlength="255"
             type="textarea" name="detail" id="detail" class="form-control" required="required"><%= value.resDetail %></textarea>
           </div>
         </div>
+
+        <div class="form-group" id="hideImage">
+          <img width="200" src="/uploads/<%= value.resImage%>" alt="">
+          </div>
+          
+          <div class="form-group">
+            <img width="200" id="output"/>
+          </div>
+          <div class="form-group" id="uploadImage">
+            <input  type="file" accept="image/*" name="avatar" id="avatar"  accept="image/png, image/jpeg" onchange="loadFile(event)">
+          </div>
+
         <button type="submit" class="btn btn-success">แก้ไข</button>
       </form>
     </div>
@@ -101,7 +123,7 @@
   <div class="card card-register mx-auto mt-5">
     <div class="card-header">+เพิ่มทรัพยากร</div>
     <div class="card-body">
-      <form action="/addresource" method="POST">
+      <form action="/addresource" method="POST" enctype="multipart/form-data">
         <div class="form-group">
           <div class="form-row">
             <div class="col-md-6">
@@ -144,6 +166,14 @@
             type="textarea" name="detail" id="detail" class="form-control" placeholder="รายละเอียดทรัพยากร" required="required"></textarea>
           </div>
         </div>
+
+        <div class="form-group">
+          <img width="200" id="outputAdd"/>
+        </div>
+        <!-- <img src="/uploads/defaultImage.png" alt=""> -->
+        <div class="form-group" id="uploadImage">
+          <input  type="file" accept="image/*" name="avatar" id="avatar"  accept="image/png, image/jpeg" onchange="loadFileAdd(event)">
+        </div>
         <button type="submit" class="btn btn-success">บันทึก</button>
         <button type="reset" class="btn btn-secondary">เคลียร์</button>
       </form>
@@ -178,4 +208,18 @@
  <%- include('../../component/admin/scriptJs')%>
  
  </body>
+
+ <script>
+  var loadFile = function(event) {
+    var output = document.getElementById('output');
+    document.getElementById("hideImage").style.display = "none";
+    output.src = URL.createObjectURL(event.target.files[0]);
+  };
+</script>
+<script>
+  var loadFileAdd = function(event) {
+    var outputAdd = document.getElementById('outputAdd');
+    outputAdd.src = URL.createObjectURL(event.target.files[0]);
+  };
+</script>
 </html>

@@ -83,8 +83,8 @@
   <div class="<%= data.cls %>" role="alert">
     <%= data.msg %>
   </div>
-            <select class="form-control form-control-xs selectpicker" name="reportUser" data-size="15" data-live-search="true" data-title="Location" id="state_list" data-width="30%">
-                <option value="All" selected>ทั้งหมด</option>
+            <select class="form-control form-control-xs selectpicker" name="reportUser" data-title="เลือกบุคลกากร"  data-size="15" data-live-search="true" id="state_list" data-width="30%" required>
+                <option value="All">ทั้งหมด</option>
                 <% listUser.map(value => {   %>
                 <option value="<%= value.userId%>"><%= value.userPosition + ' ' + value.userFname + ' ' + value.userLname %></option>
                 <% }) %>

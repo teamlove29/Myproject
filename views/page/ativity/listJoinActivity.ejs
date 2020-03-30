@@ -123,6 +123,7 @@
                       <th>ทรัพยากร</th>
                       <th>จำนวนที่เบิก</th>
                       <th>จำนวนที่คืน</th>
+                      <th>ผู้รับผิดชอบ</th>
                       <th></th>
                   </tr>
               </thead> 
@@ -133,26 +134,24 @@
                       <td><%= index+1 %></td>
                       <td><%= value.resName %></td>
                       <td><%= value.total %></td>
-                      <% if(index < listResouceRe.length) { 
-                        var resturnRe
-                        %>
-                        <!-- <h1><%= index%></h1>
-                        <h1><%= listResouceRe.length%></h1>
-                        <h1><%= index < listResouceRe.length ? 'ture' : 'false' %></h1> -->
-                      <td><%= value.resName == listResouceRe[index].resName  ? listResouceRe[index].total : '0'  %></td>
-                         %>
-                          <% resturnRe = [value.resName == listResouceRe[index].resName  ? listResouceRe[index].total : 0] %>
-                      <% }else{ %>
-                          <td>
-                            0
-                            <% resturnRe = [0]%>
-                          </td>
-                          <%}%>
-      
+                      
+                      <% var resturnRe,i=0 %>
+                      <%  listResouceRe.map( valueRe => {  %> 
+                        <%  if(value.resName == valueRe.resName) { %>
+                      <td><%= valueRe.total %></td>
+                      <%  resturnRe = [value.resName == valueRe.resName  ? valueRe.total : 0] }else { i += 1 } %>
+                      
+                    <% }) %>
+                    <% if(i == listResouceRe.length) { %>
+                          <td> 0 </td>
+                      <% } %>
+                          <td>ADMIN</td>
                       <td>
                           <button onclick="return ConfirReturn(<%= value.resId %>,<%= value.actId %>,<%= value.total %>, <%= resturnRe %>)"
-                              class="btn btn-sm btn-info">คืน
+                              class="btn btn-sm btn-secondary mr-2">คืน
+                                <button class="btn btn-sm btn-warning">สูญหาย
                       </td>
+                      
                   </tr>
                   <% })} else{  %>
                   <tr>
@@ -217,6 +216,7 @@
   }
 
   function ConfirReturn(idresId, idAct, total,returnResource) {
+
       var txt;
       var person = prompt("กรุณาใส่จำนวนที่้องการคืน:", "0");
       var numbers = /^[0-9]+$/;
