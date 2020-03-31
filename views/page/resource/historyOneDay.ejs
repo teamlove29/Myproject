@@ -57,8 +57,9 @@
               <th>วัน/เดือน/ปี</th>
               <th>ทรัพยากร</th>
               <th>กิจกรรมที่เบิก</th>
-              <th>จำนวน</th>
-              <th>สถานะ</th>
+              <th class="text-center">จำนวน</th>
+              <th class="text-center">สถานะ</th>
+              <th>ผู้รับผิดชอบ</th>
           </tr>
       </thead>
       <tbody>
@@ -83,9 +84,46 @@
               <td><%= today %></td>
               <td><%= value.resName %></td>
               <td><%= value.actName %></td>
-              <td class="<%= value.deRes_status == 'เบิก' ? 'text-danger'  : 'text-success' %>" > <%= value.deRes_status == 'เบิก' ?    '-'  : '+' %> <%= value.total %></td>
-              <td class="<%= value.deRes_status == 'เบิก' ? 'text-danger'  : 'text-success' %>" ><%= value.deRes_status %></td>
+              <td class="text-center <%= value.deRes_status == 'เบิก' ? 'text-danger'  : 'text-success' %>" >  <%= value.total %></td>
+              <td class="text-center <%= value.deRes_status == 'เบิก' ? 'text-danger'  : 'text-success' %>" ><%= value.deRes_status %></td>
+              <td>
+
+                <% if(value.userFname == 'ไม่มีผู้รับผิดชอบ') { %>
+              
+              <% } else{ %>
+                <button class="pointer btn btn-sm btn-outline-info " data-toggle="modal" data-target="#ModalShowImage<%= index%>">
+                  <%= value.userFname + ' ' + value.userLname %> 
+              </button>
+                <%  } %>
+              </td>
           </tr>
+
+      <!-- Modal -->
+      <div class="modal fade" id="ModalShowImage<%= index %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">คุณ <%= value.userFname + ' ' + value.userLname%></h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="card text-center">
+                <img class="align-self-center" src="/uploads/<%= value.userImage %>" alt="image" style="width:50%">
+                <h4 class="mt-3"><%= value.userFname + ' ' + value.userLname%></h4>
+                <p class="mt-2">รหัส : <%= value.userPosition%></p>
+                <p class="title">นามเรียกขาน : <%= value.userArea %></p> 
+                <p class="title">เบอร์โทรติดต่อ : ว่าง </p> 
+                </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary btn-sm btn-block" data-dismiss="modal">ปิดหน้าต่าง</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
 <% }) }else{ %>
   <tr>
     <td class="text-center" colspan="6">----- ไม่มีข้อมูล -----</td>

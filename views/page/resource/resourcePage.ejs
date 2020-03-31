@@ -89,8 +89,9 @@
                   <tr>
                     <th class="text-center">รูปภาพ</th>
                     <th>รายการ</th>
-                    <th>คงเหลือ</th>
+                    <th>มีอยู่</th>
                     <th>ยังไม่คืน</th>
+                    <th>คงเหลือ</th>
                     <th>ตัวเลือก</th>
                   </tr>
                 </thead>
@@ -99,7 +100,11 @@
                   <tr>
                     <td class="text-center <%= value.resAmount == 0 ? 'bg-red text-white' : '' %>"><img style="width: 75px;" src="/uploads/<%= value.resImage %>" alt=""></td>
                     <td class="align-middle <%= value.resAmount == 0 ? 'bg-red text-white' : '' %>"><%= value.resName %></td>
-                    <td class="align-middle <%= value.resAmount == 0 ? 'bg-red text-white' : '' %>"><%= value.resAmount %></td>
+                    <% if(value.resStatus == '1'){ %>
+                    <td class="align-middle"><%= value.total %></td>
+                    <% }else{ %>
+                      <td></td>
+                      <% } %>
                     <% if(value.resStatus == '1'){ %>
                     <td class="align-middle <%= value.resAmount == 0 ? 'bg-red text-white' : ' text-danger ' %>">
                       <% if(value.future == 0) { %>
@@ -110,6 +115,7 @@
                     <% }else {%>
                       <td class="align-middle <%= value.resAmount == 0 ? 'bg-red text-white' : '' %>" ></td>
                       <% } %>
+                      <td class="align-middle <%= value.resAmount == 0 ? 'bg-red text-white' : '' %>"><%= value.resAmount %></td>
                     <td class="align-middle">
                       <button 
                       onclick="return ConfirmPlus(<%= value.resId %>)"

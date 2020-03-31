@@ -54,20 +54,20 @@
 
         <div style="display:none;" id="loadedPage" class="animate-bottom">
 <div class="table-responsive mb-5">
-  <table data-order='[[ 0, "DESC" ]]' class="table" id="example"  width="100%" cellspacing="0">
+  <!-- data-order='[[ 0, "DESC" ]]'  -->
+  <table class="table table-bordered table-sm" id="dataTable"  width="100%" cellspacing="0">
       <thead class="thead-light">
           <tr>
             <th>วันที่เบิก</th>
-              <th>ทรัพยากร</th>
-              <th>กิจกรรมที่เบิก</th>
-              <th>ยังไม่คืน</th>
+              <th>รายการ</th>            
+              <th class="text-center">ยังไม่คืน</th>
               <th>ผู้รับผิดชอบ</th>
-  
+              
           </tr>
       </thead>
      <tbody>
       <% listreturn.map((value, index) => {     %>
-
+          <% if(value.total > 0){  %>
         <%  
         var dd = value.deRes_date.getDate() 
         var mm = value.deRes_date.getMonth() + 1
@@ -86,19 +86,28 @@
 
 <tr>
   <td><%= today %></td>
-<td><%= value.resName %></td>
-<td> 
-  <a 
-  onclick="javascript:window.location.href='/listJoin/<%= value.actId%>'"
-  class="btn btn-sm btn-outline-primary text-primary ">
-    <%= value.actName %>  <i class="fas fa-info-circle"></i>
-</a>
+<td>  
+    <p><strong>ทรัพยากร : </strong> <%= value.resName %></p>
+    <p><strong>กิจกรรม : </strong>
+      <button
+      onclick="javascript:window.location.href='/listJoin/<%= value.actId%>'"
+      class="btn btn-sm btn-outline-dark ">
+        <%= value.actName %>  <i class="fas fa-info-circle"></i>
+      </button>
+    </p>
+
+ 
 </td>
-<td class="text-danger"><%= value.total %></td>
+<td class="text-danger text-center"><%= value.total %></td>
 <td>
-  <a class="btn btn-sm btn-outline-info text-info" data-toggle="modal" data-target="#ModalShowImage<%= index%>">
+
+  <% if(value.userFname == 'ไม่มีผู้รับผิดชอบ') { %>
+
+<% } else{ %>
+  <button class="pointer btn btn-sm btn-outline-info " data-toggle="modal" data-target="#ModalShowImage<%= index%>">
     <%= value.userFname + ' ' + value.userLname %> 
-</a>
+</button>
+  <%  } %>
 </td>
 
 </tr>
@@ -130,7 +139,7 @@
         </div>
       </div>
 
-      <% }) %>
+      <%} }) %>
      </tbody>
   </table>
 </div>
@@ -162,7 +171,7 @@
 <%- include('../../component/admin/scriptJs')%>
 
 </body>
-<script>
+<!-- <script>
 
   $(document).ready(function() {
       $('#example').DataTable( {
@@ -170,5 +179,5 @@
       } );
   } );
   
-  </script>
+  </script> -->
 </html>

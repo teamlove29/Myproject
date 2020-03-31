@@ -89,7 +89,8 @@
                       <% if(1== 1 ) {%>
                       <td> 
                         <select class="form-control form-control-xs selectpicker" name="User"  data-size="15" data-live-search="true" id="state_list" data-width="auto" required>
-                          <option value="NO">ไม่มี</option>
+                          <option value="0">ไม่มีผู้รับผิดชอบ</option>
+                          
                           <% User.map(value => {   %>
                           <option value="<%= value.userId%>"><%= value.userPosition + ' ' + value.userFname + ' ' + value.userLname %></option>
                           <% }) %>
@@ -196,7 +197,7 @@
       html += '<td><select onChange="myFunction('+ test +')" id=value' + test + ' required name="item_name" class="form-control item_name selectpicker" data-title="เลือกทรัพยากร" data-size="15" data-live-search="true" data-width="auto> <option value=""></option>  <% listsResource.map(value =>{  %><option value="<%= value.resId %>"><%= value.resName %> </option> <% }) %></select></td>';
       html += '<td><input min="1" title="กรุณาใส่จำนวนที่ต้องการเบิก" required type="number" name="item_quantity" class="form-control item_quantity" /></td>';
       html += '<td id=txt' + test + '></td>';
-      html += '<td><select class="form-control form-control-xs selectpicker" name="User" data-size="15" data-live-search="true" id="state_list" data-width="100%" required> <option value="NO">ไม่มี</option> <% User.map(value => {   %> <option value="<%= value.userId%>"><%= value.userPosition + " "  + value.userFname + " " + value.userLname %></option> <% }) %> </select></td>'
+      html += '<td><select class="form-control form-control-xs selectpicker" name="User" data-size="15" data-live-search="true" id="state_list" data-width="100%" required> <option value="0">ไม่มี</option> <% User.map(value => {   %> <option value="<%= value.userId%>"><%= value.userPosition + " "  + value.userFname + " " + value.userLname %></option> <% }) %> </select></td>'
       html += '<td><button type="button" name="remove" class="btn btn-danger btn-sm remove"><i class="far fa-trash-alt"></i></button></td></tr>';
       $('#item_table').append(html);
       $('select').selectpicker();

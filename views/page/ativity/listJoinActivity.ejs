@@ -153,11 +153,16 @@
                           <td> 0 </td>
                           <% resturnRe = 0 %>
                       <%   } %>
-                          <td >
-                            <a class="btn btn-sm btn-outline-info text-info" data-toggle="modal" data-target="#ModalShowImage<%= index%>">
-                               <%= value.userFname + ' ' + value.userLname %> 
-                          </a>
-                        </td>
+                      <td>
+
+                        <% if(value.userFname == 'ไม่มีผู้รับผิดชอบ') { %>
+                      
+                      <% } else{ %>
+                        <button class="pointer btn btn-sm btn-outline-info " data-toggle="modal" data-target="#ModalShowImage<%= index%>">
+                          <%= value.userFname + ' ' + value.userLname %> 
+                      </button>
+                        <%  } %>
+                      </td>
 
 
                   <!-- Modal -->

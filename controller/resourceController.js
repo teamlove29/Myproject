@@ -2,8 +2,10 @@ var con = require("./conDB");
 var upload = require('./upload')
 
 const resourcePage = (req, res) => {
-  const sql = 
-  "SELECT  resource.resId, resource.resName, resource.resDetail, resource.resAmount,resource.resImage,resource.resStatus ,SUM(case WHEN order_detail.deRes_status = 'เบิก' AND resource.resStatus = 1 AND resource.resId = order_detail.resId THEN order_detail.deRes_amount  else 0 end) - SUM(case WHEN order_detail.deRes_status = 'คืน' AND resource.resStatus = 1 AND resource.resId = order_detail.resId THEN order_detail.deRes_amount else 0 end) AS future FROM `order_detail` JOIN resource GROUP BY resource.resName";
+  const sql =
+  "SELECT  resource.resId, resource.resName, resource.resDetail, resource.resAmount,resource.resImage,resource.resStatus , SUM(case WHEN order_detail.deRes_status = 'เบิก' AND resource.resStatus = 1 AND resource.resId = order_detail.resId THEN order_detail.deRes_amount  else 0 end) - SUM(case WHEN order_detail.deRes_status = 'คืน' AND resource.resStatus = 1 AND resource.resId = order_detail.resId THEN order_detail.deRes_amount else 0 end) AS future ,SUM(case WHEN order_detail.deRes_status = 'เบิก' AND resource.resStatus = 1 AND resource.resId = order_detail.resId THEN order_detail.deRes_amount  else 0 end) - SUM(case WHEN order_detail.deRes_status = 'คืน' AND resource.resStatus = 1 AND resource.resId = order_detail.resId THEN order_detail.deRes_amount else 0 end) + resource.resAmount as total FROM `order_detail` JOIN resource GROUP BY resource.resName" 
+  // "SELECT resource.resId, resource.resName, resource.resDetail, resource.resAmount,resource.resImage,resource.resStatus , SUM(case WHEN order_detail.deRes_status = 'เบิก' AND resource.resStatus = 1 AND resource.resId = order_detail.resId THEN order_detail.deRes_amount else 0 end) - SUM(case WHEN order_detail.deRes_status = 'คืน' AND resource.resStatus = 1 AND resource.resId = order_detail.resId THEN order_detail.deRes_amount else 0 end) AS future , resource.resAmount + order_detail.deRes_amount as total FROM `order_detail` JOIN resource GROUP BY resource.resName"
+  // "SELECT  resource.resId, resource.resName, resource.resDetail, resource.resAmount,resource.resImage,resource.resStatus , SUM(case WHEN order_detail.deRes_status = 'เบิก' AND resource.resStatus = 1 AND resource.resId = order_detail.resId THEN order_detail.deRes_amount  else 0 end) - SUM(case WHEN order_detail.deRes_status = 'คืน' AND resource.resStatus = 1 AND resource.resId = order_detail.resId THEN order_detail.deRes_amount else 0 end) AS future ,SUM(case WHEN order_detail.deRes_status = 'เบิก' AND resource.resStatus = 1 AND resource.resId = order_detail.resId THEN order_detail.deRes_amount  else 0 end) - SUM(case WHEN order_detail.deRes_status = 'คืน' AND resource.resStatus = 1 AND resource.resId = order_detail.resId THEN order_detail.deRes_amount else 0 end) + resource.resAmount as total FROM `order_detail` JOIN resource GROUP BY resource.resName"
   con.query(sql, (err, respon) => {
     if (err) throw err;
     res.render("page/resource/resourcePage", {
@@ -48,7 +50,7 @@ const image = req.files != '' ? filenames : 'itemdefault.png'
     "INSERT INTO `resource` (`resId`, `resName`, `resDetail`, `resAmount`, `resImage`, `resStatus`) VALUES (NULL,?,?,?,?,?);";
   const sqlcheck = "SELECT * FROM `resource` WHERE resName = ? ";
   const sqlAll = 
-  "SELECT  resource.resId, resource.resName, resource.resDetail, resource.resAmount,resource.resImage,resource.resStatus ,SUM(case WHEN order_detail.deRes_status = 'เบิก' AND resource.resStatus = 1 AND resource.resId = order_detail.resId THEN order_detail.deRes_amount  else 0 end) - SUM(case WHEN order_detail.deRes_status = 'คืน' AND resource.resStatus = 1 AND resource.resId = order_detail.resId THEN order_detail.deRes_amount else 0 end) AS future FROM `order_detail` JOIN resource GROUP BY resource.resName";
+  "SELECT  resource.resId, resource.resName, resource.resDetail, resource.resAmount,resource.resImage,resource.resStatus , SUM(case WHEN order_detail.deRes_status = 'เบิก' AND resource.resStatus = 1 AND resource.resId = order_detail.resId THEN order_detail.deRes_amount  else 0 end) - SUM(case WHEN order_detail.deRes_status = 'คืน' AND resource.resStatus = 1 AND resource.resId = order_detail.resId THEN order_detail.deRes_amount else 0 end) AS future ,SUM(case WHEN order_detail.deRes_status = 'เบิก' AND resource.resStatus = 1 AND resource.resId = order_detail.resId THEN order_detail.deRes_amount  else 0 end) - SUM(case WHEN order_detail.deRes_status = 'คืน' AND resource.resStatus = 1 AND resource.resId = order_detail.resId THEN order_detail.deRes_amount else 0 end) + resource.resAmount as total FROM `order_detail` JOIN resource GROUP BY resource.resName"
   con.query(sqlcheck, [name], (err, respomCheck) => {
     if (respomCheck.length > 0) {
       con.query(sqlAll, (err, responAll) => {
@@ -113,7 +115,7 @@ const posteditResource = (req, res) => {
   const sqlcheck = "SELECT * FROM `resource` WHERE resName = ? AND resId = ?";
   const sqlcheckname = "SELECT * FROM `resource` WHERE resName = ?";
   const sqlAll = 
-  "SELECT  resource.resId, resource.resName, resource.resDetail, resource.resAmount,resource.resImage,resource.resStatus ,SUM(case WHEN order_detail.deRes_status = 'เบิก' AND resource.resStatus = 1 AND resource.resId = order_detail.resId THEN order_detail.deRes_amount  else 0 end) - SUM(case WHEN order_detail.deRes_status = 'คืน' AND resource.resStatus = 1 AND resource.resId = order_detail.resId THEN order_detail.deRes_amount else 0 end) AS future FROM `order_detail` JOIN resource GROUP BY resource.resName";
+  "SELECT  resource.resId, resource.resName, resource.resDetail, resource.resAmount,resource.resImage,resource.resStatus , SUM(case WHEN order_detail.deRes_status = 'เบิก' AND resource.resStatus = 1 AND resource.resId = order_detail.resId THEN order_detail.deRes_amount  else 0 end) - SUM(case WHEN order_detail.deRes_status = 'คืน' AND resource.resStatus = 1 AND resource.resId = order_detail.resId THEN order_detail.deRes_amount else 0 end) AS future ,SUM(case WHEN order_detail.deRes_status = 'เบิก' AND resource.resStatus = 1 AND resource.resId = order_detail.resId THEN order_detail.deRes_amount  else 0 end) - SUM(case WHEN order_detail.deRes_status = 'คืน' AND resource.resStatus = 1 AND resource.resId = order_detail.resId THEN order_detail.deRes_amount else 0 end) + resource.resAmount as total FROM `order_detail` JOIN resource GROUP BY resource.resName"
 
     var filenames = req.files.map((file) => {
       return file.filename; // or file.originalname
@@ -200,7 +202,7 @@ const delResource = async (req, res) => {
   const idResource = await req.params.id;
   const sql = await "DELETE FROM `resource` WHERE `resId` = ?";
   const sqlAll = 
-  "SELECT  resource.resId, resource.resName, resource.resDetail, resource.resAmount,resource.resImage,resource.resStatus ,SUM(case WHEN order_detail.deRes_status = 'เบิก' AND resource.resStatus = 1 AND resource.resId = order_detail.resId THEN order_detail.deRes_amount  else 0 end) - SUM(case WHEN order_detail.deRes_status = 'คืน' AND resource.resStatus = 1 AND resource.resId = order_detail.resId THEN order_detail.deRes_amount else 0 end) AS future FROM `order_detail` JOIN resource GROUP BY resource.resName";
+  "SELECT  resource.resId, resource.resName, resource.resDetail, resource.resAmount,resource.resImage,resource.resStatus , SUM(case WHEN order_detail.deRes_status = 'เบิก' AND resource.resStatus = 1 AND resource.resId = order_detail.resId THEN order_detail.deRes_amount  else 0 end) - SUM(case WHEN order_detail.deRes_status = 'คืน' AND resource.resStatus = 1 AND resource.resId = order_detail.resId THEN order_detail.deRes_amount else 0 end) AS future ,SUM(case WHEN order_detail.deRes_status = 'เบิก' AND resource.resStatus = 1 AND resource.resId = order_detail.resId THEN order_detail.deRes_amount  else 0 end) - SUM(case WHEN order_detail.deRes_status = 'คืน' AND resource.resStatus = 1 AND resource.resId = order_detail.resId THEN order_detail.deRes_amount else 0 end) + resource.resAmount as total FROM `order_detail` JOIN resource GROUP BY resource.resName"
   con.query(sql, [idResource], (err, respon) => {
     con.query(sqlAll, (err, responAll) => {
       res.render("page/resource/resourcePage", {
@@ -222,7 +224,7 @@ const delResource = async (req, res) => {
 
 const exportResouce = (req, res) => {
   const sql = "SELECT * FROM `resource` WHERE resAmount != 0";
-  const sqlUser = "SELECT * FROM `user`"
+  const sqlUser = "SELECT * FROM `user` WHERE userId != 0 "
   con.query(sql, (err, respon1) => {
     const sqlact = "SELECT * FROM `activity` WHERE actCode != 'Complete' ORDER BY actId DESC";
     con.query(sqlact, (err, respon2) => {
@@ -249,15 +251,15 @@ const exportResouce = (req, res) => {
 };
 
 const AddExport = async (req, res, next) => {
-  const { name, item_name, item_quantity } = req.body;
-  const User = req.body.User == 'NO' ? 0 : req.body.User
+  const { name, item_name, item_quantity ,User} = req.body;
+
 
   if (item_quantity < 0) {
     const sql = "SELECT * FROM `resource` WHERE resAmount != 0";
     const sqlact = "SELECT * FROM `activity` WHERE actCode != 'Complete' ORDER BY actId DESC";
     con.query(sql, (err, respon1) => {
       con.query(sqlact, (err, respon2) => {
-        const sql = "SELECT * FROM `user`"
+        const sql = "SELECT * FROM `user` WHERE userId != 0 "
                       con.query(sql,(err,responUser) => {  
                         res.render("page/resource/exportResource", {
                           activity: respon2,
@@ -288,7 +290,7 @@ const AddExport = async (req, res, next) => {
       const sqlact = "SELECT * FROM `activity` WHERE actCode != 'Complete' ORDER BY actId DESC ";
       con.query(sqlact, (err, respon2) => {
         if (err) throw err;
-        const sql = "SELECT * FROM `user`"
+        const sql = "SELECT * FROM `user` WHERE userId != 0 "
                       con.query(sql,(err,responUser) => { 
                         res.render("page/resource/exportResource", {
                           User : responUser,
@@ -319,7 +321,7 @@ const AddExport = async (req, res, next) => {
                   con.query(sql, (err, respon1) => {
                     const sqlact ="SELECT * FROM `activity` WHERE actCode != 'Complete' ORDER BY actId DESC";
                     con.query(sqlact, async (err, respon2) => {
-                      const sql = "SELECT * FROM `user`"
+                      const sql = "SELECT * FROM `user` WHERE userId != 0 "
                       con.query(sql,(err,responUser) => {
                         res.render("page/resource/exportResource", {
                           User : responUser ,
@@ -381,9 +383,9 @@ const AddExport = async (req, res, next) => {
 
               setTimeout(() => {
                 const sql = 
-                "SELECT  resource.resId, resource.resName, resource.resDetail, resource.resAmount,resource.resImage,resource.resStatus ,SUM(case WHEN order_detail.deRes_status = 'เบิก' AND resource.resStatus = 1 AND resource.resId = order_detail.resId THEN order_detail.deRes_amount  else 0 end) - SUM(case WHEN order_detail.deRes_status = 'คืน' AND resource.resStatus = 1 AND resource.resId = order_detail.resId THEN order_detail.deRes_amount else 0 end) AS future FROM `order_detail` JOIN resource GROUP BY resource.resName";
+                "SELECT  resource.resId, resource.resName, resource.resDetail, resource.resAmount,resource.resImage,resource.resStatus , SUM(case WHEN order_detail.deRes_status = 'เบิก' AND resource.resStatus = 1 AND resource.resId = order_detail.resId THEN order_detail.deRes_amount  else 0 end) - SUM(case WHEN order_detail.deRes_status = 'คืน' AND resource.resStatus = 1 AND resource.resId = order_detail.resId THEN order_detail.deRes_amount else 0 end) AS future ,SUM(case WHEN order_detail.deRes_status = 'เบิก' AND resource.resStatus = 1 AND resource.resId = order_detail.resId THEN order_detail.deRes_amount  else 0 end) - SUM(case WHEN order_detail.deRes_status = 'คืน' AND resource.resStatus = 1 AND resource.resId = order_detail.resId THEN order_detail.deRes_amount else 0 end) + resource.resAmount as total FROM `order_detail` JOIN resource GROUP BY resource.resName"
                 con.query(sql, (err, respon) => {
-                  const sql = "SELECT * FROM `user`"
+                  const sql = "SELECT * FROM `user`  "
                     con.query(sql,(err,responUser) => {  
                       res.render("page/resource/resourcePage", {
                         User : responUser,
@@ -415,7 +417,7 @@ const AddExport = async (req, res, next) => {
                 const sqlact = "SELECT * FROM `activity` WHERE actCode != 'Complete' ";
                 con.query(sql, (err, respon1) => {
                   con.query(sqlact, (err, respon2) => {
-                    const sql = "SELECT * FROM `user`"
+                    const sql = "SELECT * FROM `user` WHERE userId != 0 "
                     con.query(sql,(err,responUser) => { 
                       res.render("page/resource/exportResource", {
                         User : responUser,
@@ -459,7 +461,7 @@ const AddExport = async (req, res, next) => {
               const sqlact =
                 "SELECT * FROM `activity` WHERE actCode != 'Complete' ";
               con.query(sqlact, (err, respon2) => {
-                const sql = "SELECT * FROM `user`"
+                const sql = "SELECT * FROM `user` WHERE userId != 0 "
                     con.query(sql,(err,responUser) => {  
                       res.render("page/resource/exportResource", {
                         User : responUser ,
@@ -534,7 +536,7 @@ const AddExport = async (req, res, next) => {
                             ],
                             (err, resUpdate) => {
                               const sqlGo = 
-                              "SELECT  resource.resId, resource.resName, resource.resDetail, resource.resAmount,resource.resImage,resource.resStatus ,SUM(case WHEN order_detail.deRes_status = 'เบิก' AND resource.resStatus = 1 AND resource.resId = order_detail.resId THEN order_detail.deRes_amount  else 0 end) - SUM(case WHEN order_detail.deRes_status = 'คืน' AND resource.resStatus = 1 AND resource.resId = order_detail.resId THEN order_detail.deRes_amount else 0 end) AS future FROM `order_detail` JOIN resource GROUP BY resource.resName";
+                              "SELECT  resource.resId, resource.resName, resource.resDetail, resource.resAmount,resource.resImage,resource.resStatus , SUM(case WHEN order_detail.deRes_status = 'เบิก' AND resource.resStatus = 1 AND resource.resId = order_detail.resId THEN order_detail.deRes_amount  else 0 end) - SUM(case WHEN order_detail.deRes_status = 'คืน' AND resource.resStatus = 1 AND resource.resId = order_detail.resId THEN order_detail.deRes_amount else 0 end) AS future ,SUM(case WHEN order_detail.deRes_status = 'เบิก' AND resource.resStatus = 1 AND resource.resId = order_detail.resId THEN order_detail.deRes_amount  else 0 end) - SUM(case WHEN order_detail.deRes_status = 'คืน' AND resource.resStatus = 1 AND resource.resId = order_detail.resId THEN order_detail.deRes_amount else 0 end) + resource.resAmount as total FROM `order_detail` JOIN resource GROUP BY resource.resName"
                               con.query(sqlGo, (err, respon) => {
                                 if (err) throw err;
                               });
@@ -564,7 +566,7 @@ setTimeout(() => {
             const sqlact =
               "SELECT * FROM `activity` WHERE actCode != 'Complete' ";
             con.query(sqlact, (err, respon2) => {
-              const sql = "SELECT * FROM `user`"
+              const sql = "SELECT * FROM `user` WHERE userId != 0 "
               con.query(sql,(err,responUser) => {  
                 res.render("page/resource/exportResource", {
                   User : responUser,
@@ -608,7 +610,7 @@ setTimeout(() => {
                     (err, resUpdate) => {
                       // res.redirect("/ManagerResource")
                       const sqlGo = 
-                      "SELECT  resource.resId, resource.resName, resource.resDetail, resource.resAmount,resource.resImage,resource.resStatus ,SUM(case WHEN order_detail.deRes_status = 'เบิก' AND resource.resStatus = 1 AND resource.resId = order_detail.resId THEN order_detail.deRes_amount  else 0 end) - SUM(case WHEN order_detail.deRes_status = 'คืน' AND resource.resStatus = 1 AND resource.resId = order_detail.resId THEN order_detail.deRes_amount else 0 end) AS future FROM `order_detail` JOIN resource GROUP BY resource.resName";
+                      "SELECT  resource.resId, resource.resName, resource.resDetail, resource.resAmount,resource.resImage,resource.resStatus , SUM(case WHEN order_detail.deRes_status = 'เบิก' AND resource.resStatus = 1 AND resource.resId = order_detail.resId THEN order_detail.deRes_amount  else 0 end) - SUM(case WHEN order_detail.deRes_status = 'คืน' AND resource.resStatus = 1 AND resource.resId = order_detail.resId THEN order_detail.deRes_amount else 0 end) AS future ,SUM(case WHEN order_detail.deRes_status = 'เบิก' AND resource.resStatus = 1 AND resource.resId = order_detail.resId THEN order_detail.deRes_amount  else 0 end) - SUM(case WHEN order_detail.deRes_status = 'คืน' AND resource.resStatus = 1 AND resource.resId = order_detail.resId THEN order_detail.deRes_amount else 0 end) + resource.resAmount as total FROM `order_detail` JOIN resource GROUP BY resource.resName"
                       con.query(sqlGo, (err, respon) => {
                         if (err) throw err;
                       });
@@ -630,7 +632,7 @@ console.log('ไม่มีโว๊ย');
       
 setTimeout(() => {
   const sql = 
-  "SELECT  resource.resId, resource.resName, resource.resDetail, resource.resAmount,resource.resImage,resource.resStatus ,SUM(case WHEN order_detail.deRes_status = 'เบิก' AND resource.resStatus = 1 AND resource.resId = order_detail.resId THEN order_detail.deRes_amount  else 0 end) - SUM(case WHEN order_detail.deRes_status = 'คืน' AND resource.resStatus = 1 AND resource.resId = order_detail.resId THEN order_detail.deRes_amount else 0 end) AS future FROM `order_detail` JOIN resource GROUP BY resource.resName";
+  "SELECT  resource.resId, resource.resName, resource.resDetail, resource.resAmount,resource.resImage,resource.resStatus , SUM(case WHEN order_detail.deRes_status = 'เบิก' AND resource.resStatus = 1 AND resource.resId = order_detail.resId THEN order_detail.deRes_amount  else 0 end) - SUM(case WHEN order_detail.deRes_status = 'คืน' AND resource.resStatus = 1 AND resource.resId = order_detail.resId THEN order_detail.deRes_amount else 0 end) AS future ,SUM(case WHEN order_detail.deRes_status = 'เบิก' AND resource.resStatus = 1 AND resource.resId = order_detail.resId THEN order_detail.deRes_amount  else 0 end) - SUM(case WHEN order_detail.deRes_status = 'คืน' AND resource.resStatus = 1 AND resource.resId = order_detail.resId THEN order_detail.deRes_amount else 0 end) + resource.resAmount as total FROM `order_detail` JOIN resource GROUP BY resource.resName"
   con.query(sql, (err, respon) => {
     const sql = "SELECT * FROM `user`"
                     con.query(sql,(err,responUser) => {   
@@ -750,8 +752,10 @@ const historyOneDay = (req, res) => {
   const plusYear = year + 543;
   const DateShow = day + " " + mm + " " + plusYear;
   const sql =
-  "SELECT DISTINCT resource.resName,activity.actName, SUM(case WHEN order_detail.orderId = order.orderId THEN order_detail.deRes_amount else 0 END) AS total ,order_detail.deRes_date,order_detail.deRes_status FROM `order_detail` INNER JOIN `order` ON order.orderId = order_detail.orderId INNER JOIN `activity` ON activity.actId = order.actId INNER JOIN `resource` ON resource.resId = order_detail.resId WHERE order_detail.deRes_date  BETWEEN ?  AND ? GROUP By  resource.resId,activity.actId,order_detail.deRes_status,order_detail.deRes_date ORDER BY order_detail.deRes_date , activity.actName  , order_detail.deRes_status  DESC"
-  // "SELECT resource.resName,activity.actName,order_detail.deRes_date,order_detail.deRes_status ,order_detail.deRes_amount as total FROM order_detail INNER JOIN `order` ON order.orderId = order_detail.orderId INNER JOIN activity ON activity.actId = order.actId INNER JOIN resource ON resource.resId = order_detail.resId WHERE order_detail.deRes_date  BETWEEN ?  AND ? ORDER BY order_detail.deRes_date DESC";
+  "SELECT user.userId,user.userPosition,user.userFname,user.userLname,user.userArea,user.userImage,resource.resName,activity.actName,order_detail.deRes_date,order_detail.deRes_status ,order_detail.deRes_amount as total FROM order_detail INNER JOIN `order` ON order.orderId = order_detail.orderId  INNER JOIN activity ON activity.actId = order.actId  INNER JOIN resource ON resource.resId = order_detail.resId INNER JOIN user ON user.userId = order_detail.userId WHERE order_detail.deRes_date  BETWEEN ?  AND ? ORDER BY order_detail.deRes_date DESC"
+  // "SELECT resource.resName,activity.actName,order_detail.deRes_date,order_detail.deRes_status ,order_detail.deRes_amount as total FROM order_detail INNER JOIN `order` ON order.orderId = order_detail.orderId INNER JOIN activity ON activity.actId = order.actId INNER JOIN resource ON resource.resId = order_detail.resId  WHERE order_detail.deRes_date  BETWEEN ?  AND ? ORDER BY order_detail.deRes_date DESC";
+  // "SELECT DISTINCT resource.resName,activity.actName, SUM(case WHEN order_detail.orderId = order.orderId THEN order_detail.deRes_amount else 0 END) AS total ,order_detail.deRes_date,order_detail.deRes_status FROM `order_detail` INNER JOIN `order` ON order.orderId = order_detail.orderId INNER JOIN `activity` ON activity.actId = order.actId INNER JOIN `resource` ON resource.resId = order_detail.resId WHERE order_detail.deRes_date  BETWEEN ?  AND ? GROUP By  resource.resId,activity.actId,order_detail.deRes_status,order_detail.deRes_date ORDER BY order_detail.deRes_date , activity.actName  , order_detail.deRes_status  DESC"
+  
   con.query(sql, [newDate,newDate2], (err, respon) => {
     if (err) throw err;
     res.render("page/resource/historyOneDay", {
@@ -769,8 +773,10 @@ const historyOneDay = (req, res) => {
 
 const historyAll = (req, res) => {
   const sql =
-  "SELECT DISTINCT resource.resName,activity.actName, SUM(case WHEN order_detail.orderId = order.orderId THEN order_detail.deRes_amount else 0 END) AS total ,order_detail.deRes_date,order_detail.deRes_status FROM `order_detail` INNER JOIN `order` ON order.orderId = order_detail.orderId INNER JOIN `activity` ON activity.actId = order.actId INNER JOIN `resource` ON resource.resId = order_detail.resId GROUP By  resource.resId,activity.actId,order_detail.deRes_status,order_detail.deRes_date ORDER BY order_detail.deRes_date , activity.actName  , order_detail.deRes_status  DESC"
-        // "SELECT resource.resName,activity.actName,order_detail.deRes_date,order_detail.deRes_status ,order_detail.deRes_amount as total FROM order_detail INNER JOIN `order` ON order.orderId = order_detail.orderId INNER JOIN activity ON activity.actId = order.actId INNER JOIN resource ON resource.resId = order_detail.resId ORDER BY order_detail.deRes_date DESC";
+  "SELECT user.userId,user.userPosition,user.userFname,user.userLname,user.userArea,user.userImage,resource.resName,activity.actName,order_detail.deRes_date,order_detail.deRes_status ,order_detail.deRes_amount as total FROM order_detail INNER JOIN `order` ON order.orderId = order_detail.orderId  INNER JOIN activity ON activity.actId = order.actId  INNER JOIN resource ON resource.resId = order_detail.resId INNER JOIN user ON user.userId = order_detail.userId ORDER BY order_detail.deRes_date DESC"
+  // "SELECT resource.resName,activity.actName,order_detail.deRes_date,order_detail.deRes_status ,order_detail.deRes_amount as total FROM order_detail INNER JOIN `order` ON order.orderId = order_detail.orderId INNER JOIN activity ON activity.actId = order.actId INNER JOIN resource ON resource.resId = order_detail.resId ORDER BY order_detail.deRes_date DESC";
+  // "SELECT DISTINCT resource.resName,activity.actName, SUM(case WHEN order_detail.orderId = order.orderId THEN order_detail.deRes_amount else 0 END) AS total ,order_detail.deRes_date,order_detail.deRes_status FROM `order_detail` INNER JOIN `order` ON order.orderId = order_detail.orderId INNER JOIN `activity` ON activity.actId = order.actId INNER JOIN `resource` ON resource.resId = order_detail.resId GROUP By  resource.resId,activity.actId,order_detail.deRes_status,order_detail.deRes_date ORDER BY order_detail.deRes_date , activity.actName  , order_detail.deRes_status  DESC"
+        
         
   con.query(sql, (err, respon) => {
     res.render("page/resource/historyAll", {
@@ -835,9 +841,8 @@ const AddAmount = (req, res) => {
 
 const checkReturn = (req,res) => {
   const sql = 
-  "SELECT DISTINCT activity.actId,user.userPosition,user.userArea, user.userImage,resource.resName,activity.actName,user.userFname,user.userLname, SUM(case WHEN resource.resStatus = '1' AND  order_detail.deRes_status = 'เบิก' AND order_detail.orderId = order.orderId THEN order_detail.deRes_amount else 0 END) - SUM(case WHEN resource.resStatus = '1' AND  order_detail.deRes_status = 'คืน' AND order_detail.orderId = order.orderId THEN order_detail.deRes_amount else 0 END) AS total ,order_detail.deRes_date,order_detail.deRes_status FROM `order_detail` INNER JOIN `order` ON order.orderId = order_detail.orderId INNER JOIN `activity` ON activity.actId = order.actId INNER JOIN `resource` ON resource.resId = order_detail.resId INNER JOIN `user` ON user.userId = order_detail.userId WHERE resource.resStatus = '1' GROUP By  resource.resId,activity.actId,order_detail.deRes_date ORDER BY order_detail.deRes_date DESC"
+  "SELECT DISTINCT activity.actId,user.userPosition,user.userArea, user.userImage,resource.resName,activity.actName,user.userFname,user.userLname, SUM(case WHEN resource.resStatus = '1' AND  order_detail.deRes_status = 'เบิก' AND order_detail.orderId = order.orderId THEN order_detail.deRes_amount else 0 END) - SUM(case WHEN resource.resStatus = '1' AND  order_detail.deRes_status = 'คืน' AND order_detail.orderId = order.orderId THEN order_detail.deRes_amount else 0 END) AS total ,order_detail.deRes_date,order_detail.deRes_status FROM `order_detail` INNER JOIN `order` ON order.orderId = order_detail.orderId INNER JOIN `activity` ON activity.actId = order.actId INNER JOIN `resource` ON resource.resId = order_detail.resId INNER JOIN `user` ON user.userId = order_detail.userId WHERE resource.resStatus = '1' GROUP By  resource.resId,activity.actId ORDER BY order_detail.deRes_date DESC"
   con.query(sql,(err ,respon) => {
-
     res.render("page/resource/returnResource", {
       listreturn : respon ,
       data: {
