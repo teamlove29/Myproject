@@ -346,16 +346,12 @@ const delActivity = async (req, res) => {
 
 const listJoin = (req, res) => {
   const IdActivity = req.params.id
-  const sqlResource = "SELECT DISTINCT  order.orderId, order.actId, order_detail.resId, resource.resName,order_detail.deRes_status, SUM(order_detail.deRes_amount) AS total FROM `order` INNER JOIN `order_detail` ON order.orderId =  order_detail.orderId INNER JOIN resource ON order_detail.resId = resource.resId WHERE order.actId = ? && order_detail.deRes_status = 'เบิก' GROUP BY resource.resName"
+  const sqlResource = "SELECT DISTINCT user.userId,user.userFname,user.userLname, user.userImage,user.userPosition,user.userArea,order.orderId, order.actId, order_detail.resId,resource.resStatus, resource.resName,order_detail.deRes_status, SUM(order_detail.deRes_amount) AS total FROM `order` INNER JOIN `order_detail` ON order.orderId =  order_detail.orderId INNER JOIN resource ON order_detail.resId = resource.resId INNER JOIN user ON user.userId = order_detail.userId WHERE order.actId = ? && order_detail.deRes_status = 'เบิก' GROUP BY resource.resName"
   con.query(sqlResource, [IdActivity], (err, responRe) => {
     const sql = "SELECT register_detail.regId,activity.actId,activity.actName,activity.actDate,user.userId,user.userPosition,user.userFname,user.userLname,user.userArea FROM `register` INNER JOIN `register_detail` INNER JOIN activity INNER JOIN user ON register.actId =  activity.actId AND register.regId = register_detail.regId AND register_detail.userId = user.userId WHERE activity.actId = ?"
     con.query(sql, [IdActivity], (err, respon) => {
-      const sqlReturn = "SELECT DISTINCT order.orderId, order.actId, order_detail.resId, resource.resName,order_detail.deRes_status, SUM(order_detail.deRes_amount) AS total FROM `order` INNER JOIN `order_detail` ON order.orderId = order_detail.orderId INNER JOIN resource ON order_detail.resId = resource.resId WHERE order.actId = ? && order_detail.deRes_status = 'คืน' GROUP BY resource.resName"
+      const sqlReturn = "SELECT DISTINCT order.orderId, order.actId, order_detail.resId,resource.resStatus, resource.resName,order_detail.deRes_status, SUM(order_detail.deRes_amount) AS total FROM `order` INNER JOIN `order_detail` ON order.orderId = order_detail.orderId INNER JOIN resource ON order_detail.resId = resource.resId WHERE order.actId = ? && order_detail.deRes_status = 'คืน' GROUP BY resource.resName"
       con.query(sqlReturn, [IdActivity], (err, responReturn) => {
-        console.table(responRe);
-        
-        console.table(responReturn);
-        
         const sqlActivity = "SELECT * FROM `activity` WHERE `actId` = ?"
         con.query(sqlActivity, [IdActivity], (err, responActivity) => {
 

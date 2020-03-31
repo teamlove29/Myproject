@@ -121,7 +121,7 @@ const reportHistory =  async (req,res) => {
       const sqlActivity = "SELECT * FROM `activity`"
       con.query(sqlUser,(err,responUser) => {
           con.query(sqlActivity,(err,responActivity) => {
-              res.render('page/report/report',
+              res.render('page/report/reportRe',
               {
                   listActivity : responActivity,
                   listUser : responUser,
@@ -163,7 +163,9 @@ const reportHistory =  async (req,res) => {
       const mmend = monthArray[monthend]
       const toListStart =  daystart + ' ' + mmstart + ' ' + yearstart
       const toListEnd =  dayend + ' ' + mmend + ' ' + yearend
-      const sql = "SELECT resource.resName,activity.actName,order_detail.deRes_amount as total,order_detail.deRes_date,order_detail.deRes_status FROM `order_detail` INNER JOIN `order` ON order.orderId = order_detail.orderId INNER JOIN `activity` ON activity.actId = order.actId INNER JOIN `resource` ON resource.resId = order_detail.resId WHERE order_detail.deRes_date BETWEEN ? AND ? ORDER BY order_detail.deRes_date DESC"
+      const sql = 
+      "SELECT DISTINCT resource.resName,activity.actName, SUM(case WHEN order_detail.orderId = order.orderId THEN order_detail.deRes_amount else 0 END) AS total ,order_detail.deRes_date,order_detail.deRes_status FROM `order_detail` INNER JOIN `order` ON order.orderId = order_detail.orderId INNER JOIN `activity` ON activity.actId = order.actId INNER JOIN `resource` ON resource.resId = order_detail.resId WHERE order_detail.deRes_date  BETWEEN ?  AND ? GROUP By  resource.resId,activity.actId,order_detail.deRes_status,order_detail.deRes_date ORDER BY order_detail.deRes_date DESC" 
+      // "SELECT resource.resName,activity.actName,order_detail.deRes_amount as total,order_detail.deRes_date,order_detail.deRes_status FROM `order_detail` INNER JOIN `order` ON order.orderId = order_detail.orderId INNER JOIN `activity` ON activity.actId = order.actId INNER JOIN `resource` ON resource.resId = order_detail.resId WHERE order_detail.deRes_date BETWEEN ? AND ? ORDER BY order_detail.deRes_date DESC"
       con.query(sql,[startDay,endDay],(err,respon)=> {
         res.render('page/report/reportHistoryAll',{
           listHitoryAll:respon,
@@ -213,7 +215,7 @@ const reportActivityDate = (req,res) => {
       const sqlActivity = "SELECT * FROM `activity`"
       con.query(sqlUser,(err,responUser) => {
           con.query(sqlActivity,(err,responActivity) => {
-              res.render('page/report/report',
+              res.render('page/report/reportAct',
               {
                   listActivity : responActivity,
                   listUser : responUser,

@@ -671,7 +671,8 @@ setTimeout(() => {
 // SELECT DISTINCT resource.resName,activity.actName,order_detail.deRes_amount,order_detail.deRes_date,order_detail.deRes_status FROM `order_detail` INNER JOIN `order` ON order.orderId = order_detail.orderId INNER JOIN `activity` ON activity.actId = order.actId INNER JOIN `resource` ON resource.resId = order_detail.resId ORDER BY order_detail.deRes_date DESC
 
 const ReturnExport = (req, res) => {
-  const { idresId, idAct, Amount } = req.query;
+  const { idresId, idAct, Amount ,idUser} = req.query;
+
   sqlcheck = "SELECT * FROM `order` WHERE actId = ?";
   con.query(sqlcheck, [idAct], (err, respon) => {
     if (respon.length > 0) {
@@ -688,9 +689,9 @@ const ReturnExport = (req, res) => {
                 const orderId = respon[0].orderId;
                 sql =
                   "INSERT INTO `order_detail` (`orderId`,`resId`, `userId`,`deRes_amount`, `deRes_date`, `deRes_status`) VALUES (?, ? , ?, ?, ?, 'คืน')";
-                con.query(
+                  con.query(
                   sql,
-                  [orderId, idresId,'0', Amount, new Date()],
+                  [orderId, idresId,idUser, Amount, new Date()],
                   (err, respon) => {
                     const sqlResource =
                       "SELECT * FROM resource WHERE `resId` = ?";
@@ -717,6 +718,10 @@ const ReturnExport = (req, res) => {
     }
   });
 };
+
+const lossExport = (req,res) => {
+  res.send('OK')
+}
 
 const historyOneDay = (req, res) => {
   const date = new Date();
@@ -745,7 +750,8 @@ const historyOneDay = (req, res) => {
   const plusYear = year + 543;
   const DateShow = day + " " + mm + " " + plusYear;
   const sql =
-  "SELECT resource.resName,activity.actName,order_detail.deRes_date,order_detail.deRes_status ,order_detail.deRes_amount as total FROM order_detail INNER JOIN `order` ON order.orderId = order_detail.orderId INNER JOIN activity ON activity.actId = order.actId INNER JOIN resource ON resource.resId = order_detail.resId WHERE order_detail.deRes_date  BETWEEN ?  AND ? ORDER BY order_detail.deRes_date DESC";
+  "SELECT DISTINCT resource.resName,activity.actName, SUM(case WHEN order_detail.orderId = order.orderId THEN order_detail.deRes_amount else 0 END) AS total ,order_detail.deRes_date,order_detail.deRes_status FROM `order_detail` INNER JOIN `order` ON order.orderId = order_detail.orderId INNER JOIN `activity` ON activity.actId = order.actId INNER JOIN `resource` ON resource.resId = order_detail.resId WHERE order_detail.deRes_date  BETWEEN ?  AND ? GROUP By  resource.resId,activity.actId,order_detail.deRes_status,order_detail.deRes_date ORDER BY order_detail.deRes_date , activity.actName  , order_detail.deRes_status  DESC"
+  // "SELECT resource.resName,activity.actName,order_detail.deRes_date,order_detail.deRes_status ,order_detail.deRes_amount as total FROM order_detail INNER JOIN `order` ON order.orderId = order_detail.orderId INNER JOIN activity ON activity.actId = order.actId INNER JOIN resource ON resource.resId = order_detail.resId WHERE order_detail.deRes_date  BETWEEN ?  AND ? ORDER BY order_detail.deRes_date DESC";
   con.query(sql, [newDate,newDate2], (err, respon) => {
     if (err) throw err;
     res.render("page/resource/historyOneDay", {
@@ -763,7 +769,9 @@ const historyOneDay = (req, res) => {
 
 const historyAll = (req, res) => {
   const sql =
-        "SELECT resource.resName,activity.actName,order_detail.deRes_date,order_detail.deRes_status ,order_detail.deRes_amount as total FROM order_detail INNER JOIN `order` ON order.orderId = order_detail.orderId INNER JOIN activity ON activity.actId = order.actId INNER JOIN resource ON resource.resId = order_detail.resId ORDER BY order_detail.deRes_date DESC";
+  "SELECT DISTINCT resource.resName,activity.actName, SUM(case WHEN order_detail.orderId = order.orderId THEN order_detail.deRes_amount else 0 END) AS total ,order_detail.deRes_date,order_detail.deRes_status FROM `order_detail` INNER JOIN `order` ON order.orderId = order_detail.orderId INNER JOIN `activity` ON activity.actId = order.actId INNER JOIN `resource` ON resource.resId = order_detail.resId GROUP By  resource.resId,activity.actId,order_detail.deRes_status,order_detail.deRes_date ORDER BY order_detail.deRes_date , activity.actName  , order_detail.deRes_status  DESC"
+        // "SELECT resource.resName,activity.actName,order_detail.deRes_date,order_detail.deRes_status ,order_detail.deRes_amount as total FROM order_detail INNER JOIN `order` ON order.orderId = order_detail.orderId INNER JOIN activity ON activity.actId = order.actId INNER JOIN resource ON resource.resId = order_detail.resId ORDER BY order_detail.deRes_date DESC";
+        
   con.query(sql, (err, respon) => {
     res.render("page/resource/historyAll", {
       listHitoryAll: respon,
@@ -826,14 +834,22 @@ const AddAmount = (req, res) => {
 };
 
 const checkReturn = (req,res) => {
-  res.render("page/resource/returnResource", {
-    data: {
-      dashboard: false,
-      managerUser: false,
-      managerActivity: false,
-      managerResource: true
-    }
-  });
+  const sql = 
+  "SELECT DISTINCT activity.actId,user.userPosition,user.userArea, user.userImage,resource.resName,activity.actName,user.userFname,user.userLname, SUM(case WHEN resource.resStatus = '1' AND  order_detail.deRes_status = 'เบิก' AND order_detail.orderId = order.orderId THEN order_detail.deRes_amount else 0 END) - SUM(case WHEN resource.resStatus = '1' AND  order_detail.deRes_status = 'คืน' AND order_detail.orderId = order.orderId THEN order_detail.deRes_amount else 0 END) AS total ,order_detail.deRes_date,order_detail.deRes_status FROM `order_detail` INNER JOIN `order` ON order.orderId = order_detail.orderId INNER JOIN `activity` ON activity.actId = order.actId INNER JOIN `resource` ON resource.resId = order_detail.resId INNER JOIN `user` ON user.userId = order_detail.userId WHERE resource.resStatus = '1' GROUP By  resource.resId,activity.actId,order_detail.deRes_date ORDER BY order_detail.deRes_date DESC"
+  con.query(sql,(err ,respon) => {
+
+    res.render("page/resource/returnResource", {
+      listreturn : respon ,
+      data: {
+        dashboard: false,
+        managerUser: false,
+        managerActivity: false,
+        managerResource: true
+      }
+    });
+
+  })
+
 }
 
 
@@ -846,6 +862,7 @@ module.exports.delResource = delResource;
 module.exports.exportResouce = exportResouce;
 module.exports.AddExport = AddExport;
 module.exports.ReturnExport = ReturnExport;
+module.exports.lossExport = lossExport;
 module.exports.historyOneDay = historyOneDay;
 module.exports.historyAll = historyAll;
 module.exports.AddAmount = AddAmount;

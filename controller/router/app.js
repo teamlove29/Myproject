@@ -53,6 +53,7 @@ router.get("/delresource/:id",authChecker,authChecker.checkAdmin, resourceContro
 router.get("/exportResource",authChecker,authChecker.checkAdmin, resourceControlloer.exportResouce)
 router.post("/addExport", resourceControlloer.AddExport)
 router.get("/returnExport",authChecker,authChecker.checkAdmin, resourceControlloer.ReturnExport)
+router.get("/lossExport",authChecker,authChecker.checkAdmin, resourceControlloer.lossExport)
 router.get("/historyOneDay",authChecker,authChecker.checkAdmin, resourceControlloer.historyOneDay)
 router.get("/historyAll",authChecker,authChecker.checkAdmin, resourceControlloer.historyAll)
 router.post("/AddAmount",authChecker,authChecker.checkAdmin, resourceControlloer.AddAmount)
