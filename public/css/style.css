@@ -204,13 +204,13 @@ a{
 }
 
 @-webkit-keyframes animatebottom {
-  from { bottom:-50px; opacity:0 } 
+  from { bottom:-35px; opacity:0 } 
   to { bottom:0px; opacity:1 }
 }
 /* เดิมๆ -100px = มาจากด้านล่าง  */
 
 @keyframes animatebottom { 
-  from{ bottom:-50px; opacity:0 }  
+  from{ bottom:-35px; opacity:0 }  
   to{ bottom:0; opacity:1 }
 }
 

@@ -3,7 +3,7 @@ var upload = require('./upload')
 var fs = require('fs');
 
 const ManagerUser = (req, res) => {
-  const sql = "SELECT * FROM `user`"
+  const sql = "SELECT * FROM `user` WHERE userId != 0 "
   con.query(sql, (err, respon) => {
     if (err) throw err
     res.render("page/user/userPage", {

@@ -84,15 +84,15 @@
           <div id="msg" class="" role="alert"></div>
           
             <div class="table-responsive">
-              <table  data-order='[[ 1, "DESC" ]]' class="table table-sm " id="dataTable" width="100%" cellspacing="0">
+              <table class="table table-bordered " id="dataTable" width="100%" cellspacing="0">
                 <thead class="thead-light">
                   <tr>
                     <th class="text-center">รูปภาพ</th>
                     <th>รายการ</th>
-                    <th>มีอยู่</th>
-                    <th>ยังไม่คืน</th>
-                    <th>คงเหลือ</th>
-                    <th>ตัวเลือก</th>
+                    <th class="text-center">มีอยู่</th>
+                    <th class="text-center">ยังไม่คืน</th>
+                    <th class="text-center">คงเหลือ</th>
+                    <th >ตัวเลือก</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -101,21 +101,21 @@
                     <td class="text-center <%= value.resAmount == 0 ? 'bg-red text-white' : '' %>"><img style="width: 75px;" src="/uploads/<%= value.resImage %>" alt=""></td>
                     <td class="align-middle <%= value.resAmount == 0 ? 'bg-red text-white' : '' %>"><%= value.resName %></td>
                     <% if(value.resStatus == '1'){ %>
-                    <td class="align-middle"><%= value.total %></td>
+                    <td class="align-middle text-center"><%= value.total %></td>
                     <% }else{ %>
                       <td></td>
                       <% } %>
                     <% if(value.resStatus == '1'){ %>
-                    <td class="align-middle <%= value.resAmount == 0 ? 'bg-red text-white' : ' text-danger ' %>">
+                    <td class="text-center align-middle <%= value.resAmount == 0 ? 'bg-red text-white' : ' text-danger ' %>">
                       <% if(value.future == 0) { %>
                         - </td>
                       <% }else { %>
                       <%= value.future %></td>
                       <%} %>
                     <% }else {%>
-                      <td class="align-middle <%= value.resAmount == 0 ? 'bg-red text-white' : '' %>" ></td>
+                      <td class="text-center align-middle <%= value.resAmount == 0 ? 'bg-red text-white' : '' %>" ></td>
                       <% } %>
-                      <td class="align-middle <%= value.resAmount == 0 ? 'bg-red text-white' : '' %>"><%= value.resAmount %></td>
+                      <td class="text-center align-middle <%= value.resAmount == 0 ? 'bg-red text-white' : '' %>"><%= value.resAmount %></td>
                     <td class="align-middle">
                       <button 
                       onclick="return ConfirmPlus(<%= value.resId %>)"
@@ -244,7 +244,7 @@
     
   </script>
 
-  <script>
+  <!-- <script>
 // dataTable
 $(".table").dataTable({"bAutoWidth": false , 
 aoColumns : [
@@ -254,6 +254,6 @@ aoColumns : [
 
     ]
 });
-  </script>
+  </script> -->
 
 </html>

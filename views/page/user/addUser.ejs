@@ -166,7 +166,7 @@
             <div class="card card-register mx-auto mt-5">
               <div class="card-header">+เพิ่มบุคลากร</div>
               <div class="card-body">
-                <form action="/adduser" method="POST"  name="formAdd" onsubmit="checkForm()" enctype="multipart/form-data">
+                <form action="/adduser" method="POST"  name="formAdd" onsubmit="checkFormAdd()" enctype="multipart/form-data">
                   <div class="form-group">
                     <div class="form-row">
                       <div class="col-md-6">
@@ -317,7 +317,7 @@
   return false; return true;
   }
   
-  function checkForm()
+  function checkFormAdd()
   { if(!checkID(document.formAdd.idCard.value)){
     alert('รหัสประชาชนไม่ถูกต้อง'); 
     event.preventDefault();
