@@ -36,7 +36,38 @@ const addActivity = (req, res) => {
   })
 }
 const PostaddActivity = (req, res) => {
-  const { name, date, dateEnd, score, detail } = req.body  
+  const { name, date, dateEnd, score, detail } = req.body 
+  
+  
+  if(date == '' || dateEnd == '' || date > dateEnd || dateEnd < date){
+    const sql2 = "SELECT * FROM `activity` order BY actId DESC"
+    //ค่ากิจกรรม
+    con.query(sql2, (err, respon2) => {
+      const sqlnum = "SELECT activity.actId FROM `register` INNER JOIN `register_detail` INNER JOIN activity INNER JOIN user ON register.actId = activity.actId AND register.regId = register_detail.regId AND register_detail.userId = user.userId "
+      //นับจำนวนคนเข้าร่วมกิจกรรม
+      con.query(sqlnum, async (err, respon) => {
+        let result = {}
+        await respon.map(value => {
+          result[value.actId] ? result[value.actId]++ : result[value.actId] = 1
+        })
+        res.render('page/ativity/activityPage', {
+          peopleJoin: result,
+          listsActivity: respon2,
+          data: {
+            css:true,
+            err:true,
+            msg : 'กรุณาตรวจสอบวันที่',
+            cls : 'alert alert-danger',
+            dashboard: false,
+            managerUser: false,
+            managerActivity: true,
+            managerResource: false
+          }
+        })
+      })
+    })
+  }else{
+
   const generateRandomCode = (() => {
     const USABLE_CHARACTERS = "abcdefghijklmnopqrstuvwxyz0123456789".split("");
     return length => {
@@ -74,7 +105,7 @@ const PostaddActivity = (req, res) => {
       })
     })
   })
-
+  }
 }
 
 const editActivity = async (req, res) => {
@@ -354,7 +385,7 @@ const listJoin = (req, res) => {
       con.query(sqlReturn, [IdActivity], (err, responReturn) => {
         const sqlActivity = "SELECT * FROM `activity` WHERE `actId` = ?"
         con.query(sqlActivity, [IdActivity], (err, responActivity) => {
-console.table(responRe);
+// console.table(responRe);
 
           res.render('page/ativity/listJoinActivity', {
             nameActivity: responActivity,

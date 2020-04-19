@@ -772,6 +772,8 @@ const historyOneDay = (req, res) => {
 };
 
 const historyAll = (req, res) => {
+  
+  
   const sql =
   "SELECT user.userId,user.userPosition,user.userFname,user.userLname,user.userArea,user.userImage,resource.resName,activity.actName,order_detail.deRes_date,order_detail.deRes_status ,order_detail.deRes_amount as total FROM order_detail INNER JOIN `order` ON order.orderId = order_detail.orderId  INNER JOIN activity ON activity.actId = order.actId  INNER JOIN resource ON resource.resId = order_detail.resId INNER JOIN user ON user.userId = order_detail.userId ORDER BY order_detail.deRes_date DESC"
   // "SELECT resource.resName,activity.actName,order_detail.deRes_date,order_detail.deRes_status ,order_detail.deRes_amount as total FROM order_detail INNER JOIN `order` ON order.orderId = order_detail.orderId INNER JOIN activity ON activity.actId = order.actId INNER JOIN resource ON resource.resId = order_detail.resId ORDER BY order_detail.deRes_date DESC";

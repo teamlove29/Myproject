@@ -54,7 +54,7 @@
 
         <div style="display:none;" id="loadedPage" class="animate-bottom">
 <div class="table-responsive mb-5">
-  <table class="table table-bordered " id="example"  width="100%" cellspacing="0">
+  <table data-order='[[ 0, "DESC" ]]' class="table table-bordered " id="dataTable"  width="100%" >
       <thead class="thead-light">
           <tr>
             <th>วัน/เดือน/ปี</th>
@@ -66,6 +66,7 @@
           </tr>
       </thead>
       <tbody>
+        
         <% if(listHitoryAll != ''){ %>
           <% listHitoryAll.map((value,index) => {  %>
           <%  
@@ -83,6 +84,7 @@
           mm = monthArray[mm]
          var today = dd + ' ' + mm + ' ' + yyyy;
       %>
+
           <tr>
               <td><%= today %></td>
               <td><%= value.resName %></td>
